@@ -1,0 +1,32 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  padding: 10px 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center; /* Ensures vertical alignment */
+  justify-content: space-between; /* Spaces out logo and logout button */
+}
+
+.logo {
+  height: 50px;
+}
+
+.logout-btn {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 100px;
+  margin-right: 30px; /* Adds space between button and window edge */
+}
+
+.logout-btn:hover {
+  background-color: darkred;
+}
