@@ -5,6 +5,7 @@ import Profile from "./pages/Profile";
 import Home from "./pages/Home";
 import Navbar from "./pages/Navbar";
 import AuthGuard from "./pages/AuthGuard";
+import Delegation from "./pages/Delegations.js";
 
 function App() {
   return (
@@ -17,8 +18,8 @@ function App() {
         {/* Protected Routes - Accessible only after login */}
         <Route path="/home" element={<AuthGuard><Home /></AuthGuard>} />
         <Route path="/profile" element={<AuthGuard><Profile /></AuthGuard>} />
-        {/* <Route path="/checklist" element={<AuthGuard><Checklist /></AuthGuard>} />
         <Route path="/delegation" element={<AuthGuard><Delegation /></AuthGuard>} />
+        {/* <Route path="/checklist" element={<AuthGuard><Checklist /></AuthGuard>} />
         <Route path="/report" element={<AuthGuard><Report /></AuthGuard>} /> */}
       </Routes>
     </Router>
