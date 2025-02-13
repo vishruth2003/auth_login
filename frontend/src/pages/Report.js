@@ -1,5 +1,7 @@
 import Sidebar from "../components/Sidebar"; // Import Sidebar
 import "./Report.css";
+import Sidebar from "./Sidebar.js";
+
 
 const Report = () => {
   return (

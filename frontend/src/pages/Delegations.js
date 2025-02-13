@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Delegations.css";
+import Sidebar from "./Sidebar.js";
 
 const Delegations = () => {
   const [employees, setEmployees] = useState([]);
@@ -39,11 +40,14 @@ const Delegations = () => {
 
   return (
     <div className="delegations-container">
+      <Sidebar/>
       <h1 className="delegations-heading">Create Task</h1>
       <form className="delegations-form" onSubmit={handleSubmit}>
         <label>Employee Name:</label>
         <select name="empname" value={formData.empname} onChange={handleChange} required>
-          <option value="">Select Employee</option>
+          <option value="" disabled>
+            Select Employee
+          </option>
           {employees.map((emp, index) => (
             <option key={index} value={emp.empname}>{emp.empname}</option>
           ))}

@@ -1,5 +1,6 @@
 import Sidebar from "../components/Sidebar"; // Import Sidebar
 import "./Checklist.css";
+import Sidebar from "./Sidebar.js";
 
 const Checklist = () => {
   return (

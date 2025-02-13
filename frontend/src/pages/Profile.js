@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Profile.css";
+import Sidebar from "./Sidebar.js";
+
 
 const Profile = () => {
   const [user, setUser] = useState({
@@ -56,6 +58,7 @@ const Profile = () => {
   return (
     <div>
       <h1>Profile Page</h1>
+      <Sidebar/>
       {error && <div style={{ color: "red" }}>{error}</div>}
 
       {showModal && (
