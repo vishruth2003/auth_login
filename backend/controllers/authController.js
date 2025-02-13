@@ -1,8 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const db = require("../models");
-
-const User = db.User;
+const { User, Delegation } = require("../models");
 
 exports.signup = async (req, res) => {
     try {
@@ -70,10 +68,26 @@ exports.updateProfile = async (req, res) => {
       const user = await User.findByPk(req.user.id);
       if (!user) return res.status(404).json({ error: "User not found" });
 
+      // ✅ Log user details before update
+      console.log("Updating User:", user.id, userName, userPhone, roleId, roleName, projectStatus);
+
       await user.update({ userName, userPhone, roleId, roleName, projectStatus });
 
-      res.json({ message: "Profile updated successfully", success: true }); // Add success flag
+      // ✅ Check if Delegation entry exists
+      let existingDelegation = await Delegation.findOne({ where: { empname: user.userName } });
+
+      if (!existingDelegation) {
+          console.log("Creating new delegation for:", userName);
+          existingDelegation = await Delegation.create({ empname: userName });
+      } else {
+          console.log("Updating delegation for:", userName);
+          await existingDelegation.update({ empname: userName });
+      }
+
+      res.json({ message: "Profile updated successfully", success: true });
+
   } catch (error) {
+      console.error("Profile update error:", error);  // ✅ Log full error
       res.status(500).json({ error: error.message });
   }
 };

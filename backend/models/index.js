@@ -16,20 +16,27 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
+// ✅ Load models
 fs
   .readdirSync(__dirname)
   .filter(file => {
     return (
       file.indexOf('.') !== 0 &&
       file !== basename &&
-      file.slice(-3) === '.js' &&
-      file.indexOf('.test.js') === -1
+      file.endsWith('.js') &&
+      !file.startsWith('index')
     );
   })
   .forEach(file => {
     const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
     db[model.name] = model;
   });
+
+// ✅ Define Associations Here
+if (db.User && db.Delegation) {
+  db.User.hasMany(db.Delegation, { foreignKey: 'empname', sourceKey: 'userName' });
+  db.Delegation.belongsTo(db.User, { foreignKey: 'empname', targetKey: 'userName' });
+}
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {

@@ -3,6 +3,7 @@ module.exports = {
     await queryInterface.addColumn('Users', 'userName', {
       type: Sequelize.STRING,
       allowNull: true,
+      unique: true
     });
     await queryInterface.addColumn('Users', 'userPhone', {
       type: Sequelize.STRING,
