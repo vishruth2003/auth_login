@@ -4,16 +4,14 @@ const createDelegation = async (req, res) => {
   try {
     const { userName, dept, custName, task, plannedDate } = req.body;
 
-    // Check if the user exists in the Users table
     const user = await User.findOne({ where: { userName } });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Store userName instead of userId in Delegations
     const delegation = await Delegation.create({
-      userName,  // Store userName instead of userId
+      userName, 
       dept,
       custName,
       task,

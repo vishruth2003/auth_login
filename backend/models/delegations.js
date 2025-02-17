@@ -15,11 +15,10 @@ module.exports = (sequelize, DataTypes) => {
     planneddate: DataTypes.DATE,
   });
 
-  // ✅ Define Foreign Key Relationship
   Delegation.associate = (models) => {
     Delegation.belongsTo(models.User, {
       foreignKey: "empname",
-      targetKey: "userName", // ✅ Ensures reference is to a unique, indexed column
+      targetKey: "userName",
       onDelete: "CASCADE",
       onUpdate: "CASCADE",
     });

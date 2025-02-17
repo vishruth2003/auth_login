@@ -8,10 +8,9 @@ const Navbar = () => {
 
   const hideHomeLink = location.pathname === "/login" || location.pathname === "/signup";
 
-  // Logout function
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/login", { replace: true }); // Redirect to login after logout
+    navigate("/login", { replace: true }); 
   };
 
   return (

@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Navbar from "./pages/Navbar";
 import AuthGuard from "./pages/AuthGuard";
 import Delegation from "./pages/Delegations.js";
+import Report from "./pages/Report.js";
 
 function App() {
   return (
@@ -19,8 +20,8 @@ function App() {
         <Route path="/home" element={<AuthGuard><Home /></AuthGuard>} />
         <Route path="/profile" element={<AuthGuard><Profile /></AuthGuard>} />
         <Route path="/delegation" element={<AuthGuard><Delegation /></AuthGuard>} />
-        {/* <Route path="/checklist" element={<AuthGuard><Checklist /></AuthGuard>} />
-        <Route path="/report" element={<AuthGuard><Report /></AuthGuard>} /> */}
+        {/* <Route path="/checklist" element={<AuthGuard><Checklist /></AuthGuard>} /> */}
+        <Route path="/report" element={<AuthGuard><Report /></AuthGuard>} />
       </Routes>
     </Router>
   );

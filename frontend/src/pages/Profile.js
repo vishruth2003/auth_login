@@ -14,7 +14,7 @@ const Profile = () => {
     projectStatus: "",
   });
   const [error, setError] = useState("");
-  const [showModal, setShowModal] = useState(false); // State for popup
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const Profile = () => {
         const response = await axios.get("http://localhost:5000/auth/profile", {
           headers: { Authorization: token },
         });
-        setUser(response.data.user); // Populate the form fields with user data
+        setUser(response.data.user); 
       } catch (error) {
         setError("Failed to load user profile.");
       }
@@ -43,11 +43,11 @@ const Profile = () => {
         headers: { Authorization: token },
       });
 
-      setShowModal(true); // Show popup on success
+      setShowModal(true); 
 
       setTimeout(() => {
         setShowModal(false);
-        navigate("/home"); // Redirect to home page after modal closes
+        navigate("/home"); 
       }, 2000);
       
     } catch (error) {

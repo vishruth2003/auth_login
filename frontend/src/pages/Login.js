@@ -19,11 +19,10 @@ const Login = () => {
 
       localStorage.setItem("token", response.data.token);
 
-      // Redirect based on user status
       if (response.data.isNewUser) {
-        navigate("/profile");  // Redirect new user to Profile page
+        navigate("/profile"); 
       } else {
-        navigate("/home");     // Redirect existing user to Home page
+        navigate("/home");   
       }
       
     } catch (error) {

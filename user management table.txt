@@ -1,0 +1,24 @@
+user management table
+token
+user id
+user name
+user email id
+user password (hash password)
+session logout after time
+role id
+role name
+user phone number
+status
+
+sequelize
+
+login using tokens
+
+
+session logout 10mins
+
+logo
+pms
+checklist
+delegation-> create task ->emp name, dept, cust name, task, planned date, submit
+report(dropdown)->name, startdate,end_date
