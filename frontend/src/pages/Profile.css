@@ -92,4 +92,90 @@ body {
     padding: 15px;
     border-radius: 5px;
   }
+  .profile-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .profile-card {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+  }
+  
+  .profile-card h2 {
+    margin-bottom: 10px;
+  }
+  
+  .profile-card p {
+    font-size: 16px;
+    margin: 8px 0;
+  }
+  
+  .profile-card button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .profile-card button:hover {
+    background: #0056b3;
+  }
+  
+  .profile-form {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+  }
+  
+  .profile-form div {
+    margin-bottom: 15px;
+  }
+  
+  .profile-form label {
+    font-weight: bold;
+  }
+  
+  .profile-form input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .button-group button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .button-group button:hover {
+    background: #218838;
+  }
+  
+  .button-group button:last-child {
+    background: #dc3545;
+  }
+  
+  .button-group button:last-child:hover {
+    background: #c82333;
+  }
   

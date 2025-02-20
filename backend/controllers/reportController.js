@@ -17,10 +17,10 @@ const createOrUpdateReport = async (req, res) => {
 
     if (existingReport) {
       await existingReport.update({ startDate, endDate });
-      return res.json({ message: "Report updated successfully" });
+      return res.json(existingReport);
     } else {
-      await Report.create({ name, startDate, endDate });
-      return res.json({ message: "Report created successfully" });
+      const newReport = await Report.create({ name, startDate, endDate });
+      return res.json(newReport);
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
