@@ -16,7 +16,6 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-// ✅ Load models
 fs
   .readdirSync(__dirname)
   .filter(file => {
@@ -32,7 +31,6 @@ fs
     db[model.name] = model;
   });
 
-// ✅ Define Associations Here
 if (db.User && db.Delegation) {
   db.User.hasMany(db.Delegation, { foreignKey: 'empname', sourceKey: 'userName' });
   db.Delegation.belongsTo(db.User, { foreignKey: 'empname', targetKey: 'userName' });

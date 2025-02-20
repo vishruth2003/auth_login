@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "./Home.css";
-import Sidebar from "./Sidebar.js";
+import "../styles/Home.css";
+import Sidebar from "../styles/Sidebar.js";
 
 const Home = () => {
   const [userName, setUserName] = useState("");
@@ -27,7 +27,6 @@ const Home = () => {
   return (
     <div className="home-container">
       <Sidebar/>
-      {/* Main Content */}
       <div className="main-content">
         <h1 className="welcome-text">Welcome, {userName}!</h1>
       </div>

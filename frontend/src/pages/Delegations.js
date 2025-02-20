@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./Delegations.css";
-import Sidebar from "./Sidebar.js";
+import "../styles/Delegations.css";
+import Sidebar from "../styles/Sidebar.js";
 
 const Delegations = () => {
   const [employees, setEmployees] = useState([]);
-  const [tasks, setTasks] = useState([]); // Stores the task entries
+  const [tasks, setTasks] = useState([]); 
   const [formData, setFormData] = useState({
     empname: "",
     dept: "",
@@ -14,10 +14,9 @@ const Delegations = () => {
     planneddate: "",
   });
   const [showModal, setShowModal] = useState(false);
-  const [showForm, setShowForm] = useState(false); // Controls the visibility of the form
-  const [editTaskIndex, setEditTaskIndex] = useState(null); // To track which task is being edited
+  const [showForm, setShowForm] = useState(false); 
+  const [editTaskIndex, setEditTaskIndex] = useState(null); 
 
-  // Load tasks from local storage on component mount
   useEffect(() => {
     const storedTasks = JSON.parse(localStorage.getItem("tasks"));
     if (storedTasks) {
@@ -46,20 +45,16 @@ const Delegations = () => {
 
         let updatedTasks;
         if (editTaskIndex !== null) {
-          // If editing an existing task
           updatedTasks = [...tasks];
           updatedTasks[editTaskIndex] = formData;
         } else {
-          // If creating a new task
           updatedTasks = [...tasks, formData];
         }
 
-        // Save updated tasks to local storage
         localStorage.setItem("tasks", JSON.stringify(updatedTasks));
 
         setTasks(updatedTasks);
 
-        // Clear form fields
         setFormData({
           empname: "",
           dept: "",
@@ -68,9 +63,8 @@ const Delegations = () => {
           planneddate: "",
         });
 
-        // Close the form after submitting
         setShowForm(false);
-        setEditTaskIndex(null); // Reset edit task index
+        setEditTaskIndex(null); 
 
         setTimeout(() => {
           setShowModal(false);
@@ -82,9 +76,9 @@ const Delegations = () => {
   };
 
   const handleEdit = (index) => {
-    setEditTaskIndex(index); // Set the task index to edit
-    setFormData(tasks[index]); // Pre-fill the form with the task data
-    setShowForm(true); // Open the form
+    setEditTaskIndex(index); 
+    setFormData(tasks[index]); 
+    setShowForm(true); 
   };
 
   return (
@@ -101,7 +95,6 @@ const Delegations = () => {
           </div>
         )}
 
-        {/* Table displaying the list of tasks */}
         <div className="tasks-table-container">
           <table className="tasks-table">
             <thead>
@@ -111,7 +104,7 @@ const Delegations = () => {
                 <th>Customer Name</th>
                 <th>Task</th>
                 <th>Planned Date</th>
-                <th>Action</th> {/* New column for Edit button */}
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -133,12 +126,10 @@ const Delegations = () => {
           </table>
         </div>
 
-        {/* Button to trigger the creation of a new task */}
         <button onClick={() => setShowForm(true)} className="create-task-btn">
           Create Task
         </button>
 
-        {/* Form (Modal-like pop-up) for creating or editing a task */}
         {showForm && (
           <div className="task-form-overlay">
             <div className="task-form-container">

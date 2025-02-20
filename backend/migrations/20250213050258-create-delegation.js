@@ -11,8 +11,8 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
         references: {
-          model: 'Users',  // Table name (case-sensitive)
-          key: 'username', // Foreign key reference
+          model: 'Users',  
+          key: 'username', 
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',

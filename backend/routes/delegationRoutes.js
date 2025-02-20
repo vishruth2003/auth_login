@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const { Delegation } = require("../models");
 
-// Get all employee names for dropdown
 router.get("/employees", async (req, res) => {
   try {
     const employees = await Delegation.findAll({ attributes: ["empname"] });
@@ -12,11 +11,9 @@ router.get("/employees", async (req, res) => {
   }
 });
 
-// Create or update a delegation task
 router.post("/create-task", async (req, res) => {
   try {
     const { empname, dept, custname, task, planneddate } = req.body;
-
     const existingDelegation = await Delegation.findOne({ where: { empname } });
 
     if (existingDelegation) {

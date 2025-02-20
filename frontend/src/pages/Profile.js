@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./Profile.css";
-import Sidebar from "./Sidebar.js";
+import "../styles/Profile.css";
+import Sidebar from "../styles/Sidebar.js";
 
 const Profile = () => {
   const [user, setUser] = useState({
@@ -15,7 +15,7 @@ const Profile = () => {
   const [originalUser, setOriginalUser] = useState(null);
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [isEditing, setIsEditing] = useState(true); // Default to true (editable)
+  const [isEditing, setIsEditing] = useState(true); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,7 +31,6 @@ const Profile = () => {
         setUser(userData);
         setOriginalUser(userData);
 
-        // If all fields are filled, switch to view mode
         if (userData.userName && userData.userPhone && userData.roleId && userData.roleName && userData.projectStatus) {
           setIsEditing(false);
         }
@@ -86,7 +85,6 @@ const Profile = () => {
       )}
 
       {!isEditing ? (
-        // Display profile in a card format
         <div className="profile-card">
           <h2>{user.userName}</h2>
           <p><strong>Phone:</strong> {user.userPhone}</p>
@@ -96,7 +94,6 @@ const Profile = () => {
           <button onClick={() => setIsEditing(true)}>Edit Profile</button>
         </div>
       ) : (
-        // Editable form
         <form onSubmit={handleUpdateProfile} className="profile-form">
           <div>
             <label>User Name:</label>

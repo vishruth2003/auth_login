@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png"; 
-import "./Navbar.css";  
+import "../styles/Navbar.css";  
 
 const Navbar = () => {
   const location = useLocation();

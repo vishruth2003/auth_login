@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Sidebar from "./Sidebar.js";
-import "./Report.css";
+import Sidebar from "../styles/Sidebar.js";
+import "../styles/Report.css";
 
 const Report = () => {
   const [reports, setReports] = useState([]);
@@ -17,7 +17,6 @@ const Report = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Fetch users when component mounts
   useEffect(() => {
     setLoading(true);
     axios.get("http://localhost:5000/api/reports/names")
@@ -32,7 +31,6 @@ const Report = () => {
       });
   }, []);
 
-  // Fetch existing reports when component mounts
   useEffect(() => {
     setLoading(true);
     axios.get("http://localhost:5000/api/reports")
@@ -59,12 +57,10 @@ const Report = () => {
       return;
     }
 
-    // Check if a report with this name already exists
     const existingReportIndex = reports.findIndex(
       (report) => report.name === formData.name
     );
 
-    // If it exists, set editReportIndex to update that report
     if (existingReportIndex !== -1 && editReportIndex === null) {
       setEditReportIndex(existingReportIndex);
     }
@@ -78,7 +74,6 @@ const Report = () => {
           updatedReports = [...reports];
           updatedReports[editReportIndex] = response.data;
         } else if (existingReportIndex !== -1) {
-          // Update existing report if name already exists
           updatedReports = [...reports];
           updatedReports[existingReportIndex] = response.data;
         } else {
@@ -87,7 +82,6 @@ const Report = () => {
 
         setReports(updatedReports);
 
-        // Clear form fields
         setFormData({
           name: "",
           startDate: "",
@@ -112,7 +106,6 @@ const Report = () => {
     setShowForm(true);
   };
 
-  // Function to extract the appropriate field from user objects
   const getUserDisplayName = (user) => {
     if (user.name) return user.name;
     if (user.userName) return user.userName;
@@ -121,18 +114,17 @@ const Report = () => {
     return JSON.stringify(user);
   };
 
-  // Function to format dates (YYYY-MM-DD)
   const formatDate = (dateString) => {
     if (!dateString) return '';
     
     try {
       const date = new Date(dateString);
-      if (isNaN(date.getTime())) return dateString; // Return original if invalid
+      if (isNaN(date.getTime())) return dateString; 
       
-      return date.toISOString().split('T')[0]; // Returns YYYY-MM-DD
+      return date.toISOString().split('T')[0]; 
     } catch (error) {
       console.error("Error formatting date:", error);
-      return dateString; // Return original on error
+      return dateString; 
     }
   };
 
@@ -150,7 +142,6 @@ const Report = () => {
           </div>
         )}
 
-        {/* Report Table - Only shown if reports exist */}
         {reports.length > 0 && (
           <table className="report-table">
             <thead>
@@ -182,7 +173,6 @@ const Report = () => {
           Create Report
         </button>
 
-        {/* Form for creating or editing a report */}
         {showForm && (
           <div className="form-modal">
             <div className="form-modal-content">
