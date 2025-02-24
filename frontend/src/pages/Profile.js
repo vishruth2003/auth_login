@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../styles/Profile.css";
-import Sidebar from "../styles/Sidebar.js";
+import Sidebar from "./Sidebar.js";
 
 const Profile = () => {
   const [user, setUser] = useState({

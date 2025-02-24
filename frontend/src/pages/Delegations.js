@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/Delegations.css";
-import Sidebar from "../styles/Sidebar.js";
+import Sidebar from "./Sidebar.js";
 
 const Delegations = () => {
   const [employees, setEmployees] = useState([]);

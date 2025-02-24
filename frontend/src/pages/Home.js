@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "../styles/Home.css";
-import Sidebar from "../styles/Sidebar.js";
+import Sidebar from "./Sidebar.js";
 
 const Home = () => {
   const [userName, setUserName] = useState("");
