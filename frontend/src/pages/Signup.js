@@ -1,13 +1,14 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../styles/Signup.css";
+import signImage from "../assets/signup.avif";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); 
-  const [existingUser, setExistingUser] = useState(false); 
+  const [existingUser, setExistingUser] = useState(false);
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
@@ -29,40 +30,46 @@ const Signup = () => {
     }
   };
 
-  const redirectToLogin = () => {
-    navigate("/login");
-  };
-
   return (
-    <div>
-      <h1>Signup Page</h1>
-      {error && <div style={{ color: "red" }}>{error}</div>} 
-      <form onSubmit={handleSignup}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            placeholder="Email"
-            onChange={(e) => setEmail(e.target.value)}
-            required
+    <div className="login-container">
+      <div className="login-content">
+        <div className="login-form-container">
+          <h1 className="login-title">Create Account</h1>
+          {error && <div className="error-message">{error}</div>}
+          <form onSubmit={handleSignup}>
+            <div className="form-group">
+              <input
+                type="email"
+                placeholder="Email"
+                className="input-field"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="password"
+                placeholder="Password"
+                className="input-field"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="submit-button">Sign Up</button>
+          </form>
+          <div className="signup-option">
+            <p>Already have an account? <Link to="/login" className="login-link">Log In</Link></p>
+          </div>
+        </div>
+        <div className="login-illustration">
+          <img 
+            src={signImage} 
+            alt="Login illustration" 
           />
         </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            placeholder="Password"
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Sign Up</button>
-      </form>
-
-        <div>
-          <button onClick={redirectToLogin}>Already have an account? Login</button>
-        </div>
-
+      </div>
     </div>
   );
 };

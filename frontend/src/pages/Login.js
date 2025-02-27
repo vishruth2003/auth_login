@@ -1,6 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import "../styles/Login.css"; 
+import loginImage from "../assets/login.jpeg";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -20,11 +23,10 @@ const Login = () => {
       localStorage.setItem("token", response.data.token);
 
       if (response.data.isNewUser) {
-        navigate("/profile"); 
+        navigate("/profile");
       } else {
-        navigate("/home");   
+        navigate("/home");
       }
-      
     } catch (error) {
       if (error.response && error.response.status === 400) {
         setError("Invalid email or password");
@@ -35,32 +37,51 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h1>Login Page</h1>
-      {error && <div style={{ color: "red" }}>{error}</div>}
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
+    <div className="login-container">
+      <div className="login-content">
+        <div className="login-form-container">
+          <h1 className="login-title">User Login</h1>
+          
+          {error && <div className="error-message">{error}</div>}
+          
+          <form onSubmit={handleLogin}>
+            <div className="form-group">
+              <input
+                type="email"
+                className="input-field"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            
+            <div className="form-group">
+              <input
+                type="password"
+                className="input-field"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            
+            <button type="submit" className="submit-button">Login</button>
+            
+            <div className="login-option">
+              <p>Don't have an account? <Link to="/signup" className="signup-link">Sign up</Link></p>
+            </div>
+          </form>
+        </div>
+        
+        <div className="login-illustration">
+          <img 
+            src={loginImage} 
+            alt="Login illustration" 
           />
         </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
+      </div>
     </div>
   );
 };
