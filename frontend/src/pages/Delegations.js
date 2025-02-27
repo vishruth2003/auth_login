@@ -5,6 +5,7 @@ import Sidebar from "./Sidebar.js";
 
 const Delegations = () => {
   const [employees, setEmployees] = useState([]);
+  const [customers, setCustomers] = useState([]); // Add state for customers
   const [tasks, setTasks] = useState([]); 
   const [formData, setFormData] = useState({
     empname: "",
@@ -29,6 +30,14 @@ const Delegations = () => {
       })
       .catch((error) => {
         console.error("Error fetching employee names:", error);
+      });
+
+    axios.get("http://localhost:5000/api/customers") // Fetch customers
+      .then((response) => {
+        setCustomers(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching customers:", error);
       });
   }, []);
 
@@ -146,7 +155,12 @@ const Delegations = () => {
                 <input type="text" name="dept" value={formData.dept} onChange={handleChange} required />
 
                 <label>Customer Name:</label>
-                <input type="text" name="custname" value={formData.custname} onChange={handleChange} required />
+                <select name="custname" value={formData.custname} onChange={handleChange} required>
+                  <option value="" disabled>Select Customer</option>
+                  {customers.map((customer, index) => (
+                    <option key={index} value={customer.custname}>{customer.custname}</option>
+                  ))}
+                </select>
 
                 <label>Task:</label>
                 <input type="text" name="task" value={formData.task} onChange={handleChange} required />
