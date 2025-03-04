@@ -5,7 +5,7 @@ import Sidebar from "./Sidebar.js";
 
 const Delegations = () => {
   const [employees, setEmployees] = useState([]);
-  const [customers, setCustomers] = useState([]); // Add state for customers
+  const [customers, setCustomers] = useState([]); 
   const [tasks, setTasks] = useState([]); 
   const [formData, setFormData] = useState({
     empname: "",
@@ -32,7 +32,7 @@ const Delegations = () => {
         console.error("Error fetching employee names:", error);
       });
 
-    axios.get("http://localhost:5000/api/customers") // Fetch customers
+    axios.get("http://localhost:5000/api/customers")
       .then((response) => {
         setCustomers(response.data);
       })
@@ -43,6 +43,21 @@ const Delegations = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleEmployeeChange = async (e) => {
+    const empname = e.target.value;
+    setFormData({ ...formData, empname });
+  
+    try {
+      const response = await axios.get(`http://localhost:5000/auth/users/${empname}/department`);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        dept: response.data.department,
+      }));
+    } catch (error) {
+      console.error("Error fetching department:", error);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -144,7 +159,7 @@ const Delegations = () => {
             <div className="task-form-container">
               <form className="delegations-form" onSubmit={handleSubmit}>
                 <label>Employee Name:</label>
-                <select name="empname" value={formData.empname} onChange={handleChange} required>
+                <select name="empname" value={formData.empname} onChange={handleEmployeeChange} required>
                   <option value="" disabled>Select Employee</option>
                   {employees.map((emp, index) => (
                     <option key={index} value={emp.empname}>{emp.empname}</option>
@@ -152,7 +167,7 @@ const Delegations = () => {
                 </select>
 
                 <label>Department:</label>
-                <input type="text" name="dept" value={formData.dept} onChange={handleChange} required />
+                <input type="text" name="dept" value={formData.dept} readOnly />
 
                 <label>Customer Name:</label>
                 <select name="custname" value={formData.custname} onChange={handleChange} required>

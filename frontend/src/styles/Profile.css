@@ -1,4 +1,3 @@
-/* General Styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -9,7 +8,6 @@ body {
     margin: 0;
   }
   
-  /* Profile Container */
   .profile-container {
     background: white;
     padding: 20px;
@@ -19,20 +17,17 @@ body {
     text-align: center;
   }
   
-  /* Headings */
   h1 {
     color: #333;
     margin-bottom: 15px;
   }
   
-  /* Form Styles */
   form {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
   
-  /* Label */
   label {
     font-weight: bold;
     text-align: left;
@@ -40,7 +35,6 @@ body {
     margin-top: 10px;
   }
   
-  /* Input Fields */
   input {
     width: 90%;
     padding: 10px;
@@ -49,7 +43,6 @@ body {
     border-radius: 5px;
   }
   
-  /* Buttons */
   button {
     background-color: #007bff;
     color: white;
@@ -66,12 +59,10 @@ body {
     background-color: #0056b3;
   }
   
-  /* Error Message */
   .error {
     color: red;
     margin-top: 10px;
   }
-  /* Modal Box */
 .modal {
     position: fixed;
     top: 50%;

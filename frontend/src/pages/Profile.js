@@ -11,6 +11,7 @@ const Profile = () => {
     roleId: "",
     roleName: "",
     projectStatus: "",
+    department: "",
   });
   const [originalUser, setOriginalUser] = useState(null);
   const [error, setError] = useState("");
@@ -31,7 +32,7 @@ const Profile = () => {
         setUser(userData);
         setOriginalUser(userData);
 
-        if (userData.userName && userData.userPhone && userData.roleId && userData.roleName && userData.projectStatus) {
+        if (userData.userName && userData.userPhone && userData.roleId && userData.roleName && userData.projectStatus && userData.department) {
           setIsEditing(false);
         }
       } catch (error) {
@@ -72,57 +73,59 @@ const Profile = () => {
   return (
     <div>
       <Sidebar/>
-    <div className="profile-container">
-      <h1>Profile Page</h1>
-      {error && <div style={{ color: "red" }}>{error}</div>}
+      <div className="profile-container">
+        <h1>Profile Page</h1>
+        {error && <div style={{ color: "red" }}>{error}</div>}
 
-      {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <p>Profile updated successfully!</p>
+        {showModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <p>Profile updated successfully!</p>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {!isEditing ? (
-        <div className="profile-card">
-          <h2>{user.userName}</h2>
-          <p><strong>Phone:</strong> {user.userPhone}</p>
-          <p><strong>Role ID:</strong> {user.roleId}</p>
-          <p><strong>Role Name:</strong> {user.roleName}</p>
-          <p><strong>Project Status:</strong> {user.projectStatus}</p>
-          <button onClick={() => setIsEditing(true)}>Edit Profile</button>
-        </div>
-      ) : (
-        <form onSubmit={handleUpdateProfile} className="profile-form">
-          <div>
-            <label>User Name:</label>
-            <input type="text" value={user.userName} onChange={(e) => setUser({ ...user, userName: e.target.value })} required />
+        {!isEditing ? (
+          <div className="profile-card">
+            <h2>{user.userName}</h2>
+            <p><strong>Phone:</strong> {user.userPhone}</p>
+            <p><strong>Role ID:</strong> {user.roleId}</p>
+            <p><strong>Role Name:</strong> {user.roleName}</p>
+            <p><strong>Project Status:</strong> {user.projectStatus}</p>
+            <p><strong>Department:</strong> {user.department}</p>
+            <button onClick={() => setIsEditing(true)}>Edit Profile</button>
           </div>
-          <div>
-            <label>Phone Number:</label>
-            <input type="text" value={user.userPhone} onChange={(e) => setUser({ ...user, userPhone: e.target.value })} required />
-          </div>
-          <div>
-            <label>Role ID:</label>
-            <input type="text" value={user.roleId} onChange={(e) => setUser({ ...user, roleId: e.target.value })} required />
-          </div>
-          <div>
-            <label>Role Name:</label>
-            <input type="text" value={user.roleName} onChange={(e) => setUser({ ...user, roleName: e.target.value })} required />
-          </div>
-          <div>
-            <label>Project Status:</label>
-            <input type="text" value={user.projectStatus} onChange={(e) => setUser({ ...user, projectStatus: e.target.value })} required />
-          </div>
-
-          <div className="button-group">
-            <button type="submit">Save</button>
+        ) : (
+          <form onSubmit={handleUpdateProfile} className="profile-form">
+            <div>
+              <label>User Name:</label>
+              <input type="text" value={user.userName} onChange={(e) => setUser({ ...user, userName: e.target.value })} required />
+            </div>
+            <div>
+              <label>Phone:</label>
+              <input type="text" value={user.userPhone} onChange={(e) => setUser({ ...user, userPhone: e.target.value })} required />
+            </div>
+            <div>
+              <label>Role ID:</label>
+              <input type="text" value={user.roleId} onChange={(e) => setUser({ ...user, roleId: e.target.value })} required />
+            </div>
+            <div>
+              <label>Role Name:</label>
+              <input type="text" value={user.roleName} onChange={(e) => setUser({ ...user, roleName: e.target.value })} required />
+            </div>
+            <div>
+              <label>Project Status:</label>
+              <input type="text" value={user.projectStatus} onChange={(e) => setUser({ ...user, projectStatus: e.target.value })} required />
+            </div>
+            <div>
+              <label>Department:</label>
+              <input type="text" value={user.department} onChange={(e) => setUser({ ...user, department: e.target.value })} required />
+            </div>
+            <button type="submit">Update Profile</button>
             <button type="button" onClick={handleCancelEdit}>Cancel</button>
-          </div>
-        </form>
-      )}
-    </div>
+          </form>
+        )}
+      </div>
     </div>
   );
 };

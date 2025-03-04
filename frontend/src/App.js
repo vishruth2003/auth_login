@@ -16,7 +16,6 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
 
-        {/* Protected Routes - Accessible only after login */}
         <Route path="/home" element={<AuthGuard><Home /></AuthGuard>} />
         <Route path="/profile" element={<AuthGuard><Profile /></AuthGuard>} />
         <Route path="/delegation" element={<AuthGuard><Delegation /></AuthGuard>} />

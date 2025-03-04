@@ -3,15 +3,14 @@
     height: 100vh;
 }
 
-/* Main content (welcome message) */
 .main-content {
     flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 270px; /* Adjust for sidebar width */
+    margin-left: 270px; 
     text-align: center;
-    margin-top: -500px; /* Keeps the welcome message in the desired position */
+    margin-top: -500px; 
 }
 
 .welcome-text {

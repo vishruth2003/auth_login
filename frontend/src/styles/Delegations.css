@@ -96,7 +96,6 @@
   background-color: #f9f9f9;
 }
 
-/* Overlay for the form (modal effect) */
 .task-form-overlay {
   position: fixed;
   top: 0;
@@ -109,7 +108,6 @@
   align-items: center;
 }
 
-/* Form container within the overlay */
 .task-form-container {
   background-color: white;
   padding: 20px;

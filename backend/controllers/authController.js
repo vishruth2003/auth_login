@@ -31,7 +31,7 @@ exports.login = async (req, res) => {
     const token = jwt.sign({ id: user.id }, "your_jwt_secret", { expiresIn: "1h" });
     await user.update({ token });
 
-    const isNewUser = !user.userName || !user.userPhone || !user.roleId || !user.roleName || !user.projectStatus;
+    const isNewUser = !user.userName || !user.userPhone || !user.roleId || !user.roleName || !user.projectStatus || !user.department;
 
     res.json({ 
       message: "Login successful", 
@@ -46,7 +46,7 @@ exports.login = async (req, res) => {
 exports.getProfile = async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id, { 
-      attributes: ["userName", "userPhone", "roleId", "roleName", "projectStatus"]
+      attributes: ["userName", "userPhone", "roleId", "roleName", "projectStatus", "department"]
     });
 
     if (!user) return res.status(404).json({ error: "User not found" });
@@ -59,12 +59,12 @@ exports.getProfile = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
-    const { userName, userPhone, roleId, roleName, projectStatus } = req.body;
+    const { userName, userPhone, roleId, roleName, projectStatus, department } = req.body;
 
     const user = await User.findByPk(req.user.id);
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    await user.update({ userName, userPhone, roleId, roleName, projectStatus });
+    await user.update({ userName, userPhone, roleId, roleName, projectStatus, department });
 
     let existingDelegation = await Delegation.findOne({ where: { empname: user.userName } });
 
@@ -102,8 +102,21 @@ exports.getUserDetails = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.findAll({ attributes: ["id", "userName"] }); // Include id
+    const users = await User.findAll({ attributes: ["id", "userName"] });
     res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.getUserDepartment = async (req, res) => {
+  try {
+    const { userName } = req.params;
+    const user = await User.findOne({ where: { userName }, attributes: ["department"] });
+
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    res.json({ department: user.department });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -1,4 +1,3 @@
-/* Signup.css */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 * {
@@ -169,7 +168,6 @@
   font-size: 14px;
 }
 
-/* Responsive design */
 @media (max-width: 992px) {
   .signup-form-container {
     padding: 40px;

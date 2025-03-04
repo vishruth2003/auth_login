@@ -14,25 +14,26 @@ module.exports = (sequelize, DataTypes) => {
     token: { type: DataTypes.STRING, 
       allowNull: true },
 
-      userName: { 
-        type: DataTypes.STRING, 
-        allowNull: true,
-        unique: true
-      }, 
-      
+    userName: { 
+      type: DataTypes.STRING, 
+      allowNull: true,
+      unique: true
+    }, 
 
     userPhone: { type: DataTypes.STRING,
-       allowNull: true },  
+      allowNull: true },  
 
     roleId: { type: DataTypes.INTEGER,
-       allowNull: true },  
+      allowNull: true },  
 
     roleName: { type: DataTypes.STRING, 
       allowNull: true },  
 
     projectStatus: { type: DataTypes.STRING, 
       allowNull: true },  
-      
+
+    department: { type: DataTypes.STRING, 
+      allowNull: true },  
   });
 
   return User;

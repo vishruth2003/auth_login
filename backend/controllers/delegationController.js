@@ -2,7 +2,7 @@ const { User, Delegation } = require("../models");
 
 const createDelegation = async (req, res) => {
   try {
-    const { userName, dept, custName, task, plannedDate } = req.body;
+    const { userName, custName, task, plannedDate } = req.body;
 
     const user = await User.findOne({ where: { userName } });
 
@@ -11,8 +11,8 @@ const createDelegation = async (req, res) => {
     }
 
     const delegation = await Delegation.create({
-      userName, 
-      dept,
+      userName,
+      dept: user.department, 
       custName,
       task,
       plannedDate
