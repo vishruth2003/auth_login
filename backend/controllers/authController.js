@@ -121,3 +121,12 @@ exports.getUserDepartment = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.getAllUsernames = async (req, res) => {
+  try {
+    const users = await User.findAll({ attributes: ["userName"] });
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

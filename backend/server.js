@@ -6,6 +6,7 @@ const authRoutes = require("./routes/authRoutes");
 const delegationRoutes = require("./routes/delegationRoutes"); 
 const reportRoutes = require("./routes/reportRoutes");
 const customerRoutes = require("./routes/customerRoutes");
+const checklistRoutes = require("./routes/checklistRoutes");
 
 const app = express();
 app.use(express.json());
@@ -15,6 +16,7 @@ app.use("/auth", authRoutes);
 app.use("/api/delegations", delegationRoutes); 
 app.use("/api/reports", reportRoutes);
 app.use("/api", customerRoutes);
+app.use("/api", checklistRoutes);
 
 db.sequelize.sync().then(() => {
   app.listen(5000, () => console.log("Server running on port 5000"));
