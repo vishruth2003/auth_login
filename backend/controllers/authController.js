@@ -77,7 +77,7 @@ exports.updateProfile = async (req, res) => {
     let existingReport = await Report.findOne({ where: { name: user.userName } });
 
     if (!existingReport) {
-      await Report.create({ name: userName, startDate: new Date(), endDate: new Date() });
+      await Report.create({ name: userName});
     } else {
       await existingReport.update({ name: userName });
     }

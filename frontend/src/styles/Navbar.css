@@ -3,30 +3,69 @@
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #fff;
-  padding: 10px 20px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  height: 70px;
+  background-color: #ffffff;
+  padding: 0 25px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   display: flex;
-  align-items: center; 
-  justify-content: space-between; 
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
 }
 
 .logo {
-  height: 50px;
+  height: 40px;
+  transition: transform 0.2s ease;
 }
 
+.logo:hover {
+  transform: scale(1.05);
+}
+
+
 .logout-btn {
-  background-color: red;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 10px;
+  background-color: #f8f9fa;
+  color: #dc3545;
+  border: 1px solid #dc3545;
+  padding: 8px 16px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
-  width: 100px;
-  margin-right: 30px; 
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
 }
 
 .logout-btn:hover {
-  background-color: darkred;
+  background-color: #dc3545;
+  color: white;
 }
+
+.logout-icon {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4'/%3E%3Cpolyline points='16 17 21 12 16 7'/%3E%3Cline x1='21' y1='12' x2='9' y2='12'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+

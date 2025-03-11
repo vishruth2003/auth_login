@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png"; 
-import "../styles/Navbar.css";  
+import logo from "../assets/logo.png";
+import "../styles/Navbar.css";
 
 const Navbar = () => {
   const location = useLocation();
@@ -10,22 +10,28 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/login", { replace: true }); 
+    navigate("/login", { replace: true });
   };
 
   return (
     <nav className="navbar">
-      {hideHomeLink ? (
-        <img src={logo} alt="Logo" className="logo" />
-      ) : (
-        <>
-          <a href="/home">
+      <div className="navbar-left">
+        {hideHomeLink ? (
+          <img src={logo} alt="Logo" className="logo" />
+        ) : (
+          <a href="/home" className="logo-link">
             <img src={logo} alt="Logo" className="logo" />
           </a>
-          {location.pathname !== "/login" && (
-            <button className="logout-btn" onClick={handleLogout}>Logout</button>
-          )}
-        </>
+        )}
+      </div>
+
+      {!hideHomeLink && (
+        <div className="navbar-right">
+          <button className="logout-btn" onClick={handleLogout}>
+            <i className="logout-icon"></i>
+            <span>Logout</span>
+          </button>
+        </div>
       )}
     </nav>
   );
