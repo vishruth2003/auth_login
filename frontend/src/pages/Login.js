@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import "../styles/Login.css"; 
+import "../styles/Login.css"; // ✅ Corrected import (lowercase)
 import loginImage from "../assets/login.jpeg";
 
 const Login = () => {
@@ -37,49 +37,49 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-content">
-        <div className="login-form-container">
-          <h1 className="login-title">User Login</h1>
-          
-          {error && <div className="error-message">{error}</div>}
-          
+    <div className="login-page-container">
+      <div className="login-page-content">
+        <div className="login-form-wrapper">
+          <h1 className="login-heading">User Login</h1>
+
+          {error && <div className="login-error-msg">{error}</div>}
+
           <form onSubmit={handleLogin}>
-            <div className="form-group">
+            <div className="login-input-group">
               <input
                 type="email"
-                className="input-field"
+                className="login-input-field"
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
-            
-            <div className="form-group">
+
+            <div className="login-input-group">
               <input
                 type="password"
-                className="input-field"
+                className="login-input-field"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
-            
-            <button type="submit" className="submit-button">Login</button>
-            
-            <div className="login-option">
-              <p>Don't have an account? <Link to="/signup" className="signup-link">Sign up</Link></p>
+
+            <button type="submit" className="login-submit-btn">Login</button>
+
+            <div className="login-extra-option">
+              <p>
+                Don't have an account?{" "}
+                <Link to="/signup" className="login-signup-link">Sign up</Link>
+              </p>
             </div>
           </form>
         </div>
-        
-        <div className="login-illustration">
-          <img 
-            src={loginImage} 
-            alt="Login illustration" 
-          />
+
+        <div className="login-image-container">
+          <img src={loginImage} alt="Login illustration" />
         </div>
       </div>
     </div>

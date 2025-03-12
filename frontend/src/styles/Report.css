@@ -1,106 +1,331 @@
+/* Main layout adjustments for navbar and sidebar */
+body {
+  margin: 0;
+  padding: 0;
+}
+
 .report-container {
-    display: flex;
-    height: 100vh;
-  }
-  
+  display: flex;
+  height: 100vh;
+}
+
+.report-content {
+  max-width: 1000px;
+  margin: 0 0 0 350px; /* Adding margin to account for sidebar (220px + some padding) */
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  margin-top: 150px; /* Space for the 70px navbar + some padding */
+  flex: 1;
+}
+
+.report-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: linear-gradient(90deg, #4776E6, #8E54E9);
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 25px;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  position: relative;
+}
+
+h1::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, #4776E6, #8E54E9);
+  margin: 10px auto 0;
+  border-radius: 3px;
+}
+
+/* Table styling */
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  overflow: hidden;
+  margin-top: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+.report-table th, 
+.report-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.report-table th {
+  background-color: #f8f9fa;
+  color: #2c3e50;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  border-top: none;
+}
+
+.report-table tr:last-child td {
+  border-bottom: none;
+}
+
+.report-table tr:hover {
+  background-color: #f8f8f8;
+  transition: background-color 0.3s ease;
+}
+
+.report-table tr:nth-child(even) {
+  background-color: #f9fafc;
+}
+
+/* Create button */
+.create-report-btn {
+  margin-top: 25px;
+  background: linear-gradient(90deg, #4776E6, #8E54E9);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(71, 118, 230, 0.2);
+}
+
+.create-report-btn:hover {
+  background: linear-gradient(90deg, #3a5fc8, #7740c8);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(71, 118, 230, 0.3);
+}
+
+/* Form styles - Enhanced */
+.form-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.form-modal-content {
+  background-color: white;
+  padding: 35px;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  width: 550px;
+  max-width: 90%;
+  text-align: left;
+  animation: slideIn 0.3s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-top: 6px solid #4776E6;
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.report-form {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 10px;
+}
+
+.report-form label {
+  font-weight: 600;
+  color: #2c3e50;
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.report-form input, 
+.report-form select {
+  width: 100%;
+  padding: 14px 18px;
+  margin-top: 5px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #f9fafc;
+  box-sizing: border-box;
+  margin-bottom: 16px;
+}
+
+.report-form input:focus,
+.report-form select:focus {
+  border-color: #4776E6;
+  box-shadow: 0 0 0 3px rgba(71, 118, 230, 0.1);
+  outline: none;
+  background-color: #fff;
+}
+
+.report-form input[readonly] {
+  background-color: #f0f0f0;
+  border: 2px solid #ddd;
+  cursor: not-allowed;
+}
+
+.report-form button {
+  padding: 14px 26px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.report-form button[type="submit"] {
+  background: linear-gradient(90deg, #2ecc71, #27ae60);
+  color: white;
+  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);
+}
+
+.report-form button[type="submit"]:hover {
+  background: linear-gradient(90deg, #27ae60, #219652);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(46, 204, 113, 0.3);
+}
+
+.report-form button[type="button"] {
+  background: linear-gradient(90deg, #e74c3c, #c0392b);
+  color: white;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
+}
+
+.report-form button[type="button"]:hover {
+  background: linear-gradient(90deg, #c0392b, #a33225);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.3);
+}
+
+/* Modal styling for success message */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background: white;
+  color: #333;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  width: 400px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.3s ease;
+  position: relative;
+  border-top: 6px solid #2ecc71;
+}
+
+.modal-content p {
+  font-size: 1.3rem;
+  margin: 15px 0 0;
+  color: #2ecc71;
+  font-weight: 600;
+}
+
+/* Empty state */
+.report-empty {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #f9fafc;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.report-empty p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
   .report-content {
-    flex: 1;
+    margin-left: 240px;
+    max-width: calc(100% - 260px);
+  }
+}
+
+@media (max-width: 992px) {
+  .report-content {
+    margin-left: 230px;
     padding: 20px;
-    overflow-y: auto;
   }
   
-  h1 {
-    text-align: center;
-  }
-  
-  .report-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  
-  .report-table th, .report-table td {
+  .report-table th, 
+  .report-table td {
     padding: 10px;
-    border: 1px solid #ddd;
-    text-align: left;
-  }
-  
-  .report-table th {
-    background-color: #f4f4f4;
-  }
-  
-  .create-report-btn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  
-  .create-report-btn:hover {
-    background-color: #45a049;
-  }
-  
-  .form-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
   
   .form-modal-content {
-    background-color: white;
+    width: 500px;
+  }
+}
+
+@media (max-width: 768px) {
+  .report-content {
+    margin: 90px 15px 15px 15px;
+    max-width: none;
+  }
+  
+  .form-modal-content {
+    width: 90%;
     padding: 20px;
-    border-radius: 8px;
-    width: 400px;
-    max-width: 90%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
   
-  .report-form {
-    display: flex;
-    flex-direction: column;
+  .modal-content {
+    width: 90%;
   }
   
-  .report-form label {
-    margin-bottom: 8px;
-    font-weight: bold;
+  /* For mobile views, add horizontal scrolling to the table */
+  .report-table {
+    overflow-x: auto;
+    min-width: 650px;
   }
-  
-  .report-form input, .report-form select {
-    padding: 8px;
-    margin-bottom: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .report-form button {
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .report-form button:hover {
-    background-color: #45a049;
-  }
-  
-  .report-form .close-btn {
-    background-color: #f44336;
-    margin-top: 10px;
-  }
-  
-  .report-form .close-btn:hover {
-    background-color: #e53935;
-  }
-  
- 
-  
+}

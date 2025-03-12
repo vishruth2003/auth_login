@@ -72,14 +72,14 @@ const Profile = () => {
 
   return (
     <div>
-      <Sidebar/>
+      <Sidebar />
       <div className="profile-container">
-        <h1>Profile Page</h1>
-        {error && <div style={{ color: "red" }}>{error}</div>}
+        <h1 className="profile-title">Profile Page</h1>
+        {error && <div className="profile-error">{error}</div>}
 
         {showModal && (
-          <div className="modal">
-            <div className="modal-content">
+          <div className="profile-modal">
+            <div className="profile-modal-content">
               <p>Profile updated successfully!</p>
             </div>
           </div>
@@ -93,36 +93,38 @@ const Profile = () => {
             <p><strong>Role Name:</strong> {user.roleName}</p>
             <p><strong>Project Status:</strong> {user.projectStatus}</p>
             <p><strong>Department:</strong> {user.department}</p>
-            <button onClick={() => setIsEditing(true)}>Edit Profile</button>
+            <button className="profile-edit-btn" onClick={() => setIsEditing(true)}>Edit Profile</button>
           </div>
         ) : (
           <form onSubmit={handleUpdateProfile} className="profile-form">
-            <div>
+            <div className="profile-form-group">
               <label>User Name:</label>
-              <input type="text" value={user.userName} onChange={(e) => setUser({ ...user, userName: e.target.value })} required />
+              <input type="text" className="profile-input" value={user.userName} onChange={(e) => setUser({ ...user, userName: e.target.value })} required />
             </div>
-            <div>
+            <div className="profile-form-group">
               <label>Phone:</label>
-              <input type="text" value={user.userPhone} onChange={(e) => setUser({ ...user, userPhone: e.target.value })} required />
+              <input type="text" className="profile-input" value={user.userPhone} onChange={(e) => setUser({ ...user, userPhone: e.target.value })} required />
             </div>
-            <div>
+            <div className="profile-form-group">
               <label>Role ID:</label>
-              <input type="text" value={user.roleId} onChange={(e) => setUser({ ...user, roleId: e.target.value })} required />
+              <input type="text" className="profile-input" value={user.roleId} onChange={(e) => setUser({ ...user, roleId: e.target.value })} required />
             </div>
-            <div>
+            <div className="profile-form-group">
               <label>Role Name:</label>
-              <input type="text" value={user.roleName} onChange={(e) => setUser({ ...user, roleName: e.target.value })} required />
+              <input type="text" className="profile-input" value={user.roleName} onChange={(e) => setUser({ ...user, roleName: e.target.value })} required />
             </div>
-            <div>
+            <div className="profile-form-group">
               <label>Project Status:</label>
-              <input type="text" value={user.projectStatus} onChange={(e) => setUser({ ...user, projectStatus: e.target.value })} required />
+              <input type="text" className="profile-input" value={user.projectStatus} onChange={(e) => setUser({ ...user, projectStatus: e.target.value })} required />
             </div>
-            <div>
+            <div className="profile-form-group">
               <label>Department:</label>
-              <input type="text" value={user.department} onChange={(e) => setUser({ ...user, department: e.target.value })} required />
+              <input type="text" className="profile-input" value={user.department} onChange={(e) => setUser({ ...user, department: e.target.value })} required />
             </div>
-            <button type="submit">Update Profile</button>
-            <button type="button" onClick={handleCancelEdit}>Cancel</button>
+            <div className="profile-button-group">
+              <button type="submit" className="profile-submit-btn">Update Profile</button>
+              <button type="button" className="profile-cancel-btn" onClick={handleCancelEdit}>Cancel</button>
+            </div>
           </form>
         )}
       </div>

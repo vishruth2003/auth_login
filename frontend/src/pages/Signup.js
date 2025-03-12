@@ -31,39 +31,39 @@ const Signup = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-content">
-        <div className="login-form-container">
-          <h1 className="login-title">Create Account</h1>
-          {error && <div className="error-message">{error}</div>}
+    <div className="signup-container">
+      <div className="signup-content">
+        <div className="signup-form-container">
+          <h1 className="signup-title">Create Account</h1>
+          {error && <div className="signup-error-message">{error}</div>}
           <form onSubmit={handleSignup}>
-            <div className="form-group">
+            <div className="signup-form-group">
               <input
                 type="email"
                 placeholder="Email"
-                className="input-field"
+                className="signup-input-field"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
-            <div className="form-group">
+            <div className="signup-form-group">
               <input
                 type="password"
                 placeholder="Password"
-                className="input-field"
+                className="signup-input-field"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
-            <button type="submit" className="submit-button">Sign Up</button>
+            <button type="submit" className="signup-submit-button">Sign Up</button>
           </form>
           <div className="signup-option">
-            <p>Already have an account? <Link to="/login" className="login-link">Log In</Link></p>
+            <p>Already have an account? <Link to="/login" className="signup-login-link">Log In</Link></p>
           </div>
         </div>
-        <div className="login-illustration">
+        <div className="signup-illustration">
           <img 
             src={signImage} 
             alt="Login illustration" 

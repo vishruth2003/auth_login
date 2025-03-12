@@ -42,12 +42,12 @@
   text-align: center;
 }
 
-.form-group {
+.signup-form-group {
   margin-bottom: 25px;
   position: relative;
 }
 
-.input-field {
+.signup-input-field {
   width: 100%;
   padding: 15px 20px;
   border: none;
@@ -58,11 +58,11 @@
   transition: all 0.3s ease;
 }
 
-.input-field:focus {
+.signup-input-field:focus {
   box-shadow: 0 0 0 2px rgba(241, 90, 41, 0.2);
 }
 
-.submit-button {
+.signup-submit-button {
   width: 100%;
   padding: 15px;
   background-color: #f15a29;
@@ -79,7 +79,7 @@
   box-shadow: 0 5px 15px rgba(241, 90, 41, 0.3);
 }
 
-.submit-button:hover {
+.signup-submit-button:hover {
   background-color: #e04d1c;
   transform: translateY(-2px);
 }
@@ -89,7 +89,7 @@
   margin-top: 25px;
 }
 
-.login-link {
+.signup-login-link {
   color: #f15a29;
   cursor: pointer;
   font-weight: 500;
@@ -97,7 +97,7 @@
   text-decoration: none;
 }
 
-.login-link:hover {
+.signup-login-link:hover {
   color: #f15a29;
   text-decoration: underline;
 }
@@ -111,28 +111,6 @@
   align-items: center;
   overflow: hidden;
   padding: 20px;
-}
-
-.signup-illustration::before {
-  content: '';
-  position: absolute;
-  top: -10%;
-  right: -10%;
-  width: 200px;
-  height: 200px;
-  background-color: rgba(241, 90, 41, 0.1);
-  border-radius: 50%;
-}
-
-.signup-illustration::after {
-  content: '';
-  position: absolute;
-  bottom: -10%;
-  left: -10%;
-  width: 250px;
-  height: 250px;
-  background-color: rgba(241, 90, 41, 0.05);
-  border-radius: 50%;
 }
 
 .signup-illustration img {
@@ -158,7 +136,7 @@
   }
 }
 
-.error-message {
+.signup-error-message {
   color: #e74c3c;
   margin-bottom: 20px;
   padding: 10px;
@@ -166,54 +144,4 @@
   border-radius: 8px;
   text-align: center;
   font-size: 14px;
-}
-
-@media (max-width: 992px) {
-  .signup-form-container {
-    padding: 40px;
-  }
-}
-
-@media (max-width: 768px) {
-  .signup-content {
-    flex-direction: column;
-  }
-  
-  .signup-form-container,
-  .signup-illustration {
-    width: 100%;
-  }
-  
-  .signup-form-container {
-    padding: 40px 30px;
-    order: 2;
-  }
-  
-  .signup-illustration {
-    height: 300px;
-    order: 1;
-  }
-  
-  .signup-illustration img {
-    max-height: 280px;
-  }
-}
-
-@media (max-width: 480px) {
-  .signup-container {
-    padding: 20px;
-  }
-  
-  .signup-title {
-    font-size: 28px;
-    margin-bottom: 30px;
-  }
-  
-  .signup-illustration {
-    height: 250px;
-  }
-  
-  .signup-illustration img {
-    max-height: 230px;
-  }
 }
