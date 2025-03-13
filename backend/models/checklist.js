@@ -3,12 +3,15 @@ module.exports = (sequelize, DataTypes) => {
       id: { 
         type: DataTypes.INTEGER, 
         autoIncrement: true, 
-        primaryKey: true 
+        primaryKey: true
       },
   
       empname: { 
         type: DataTypes.STRING, 
-        allowNull: false 
+        allowNull: false,
+        set(value) {
+          this.setDataValue('empname', value.trim());
+          }
       },
   
       department: { 

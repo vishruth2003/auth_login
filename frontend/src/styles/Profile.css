@@ -1,4 +1,3 @@
-/* Main layout adjustments for navbar and sidebar */
 body {
   margin: 0;
   padding: 0;
@@ -6,26 +5,24 @@ body {
 
 .profile-container {
   max-width: 800px;
-  margin: 0 0 0 450px; /* Adding margin to account for sidebar (220px + some padding) */
+  margin: 0 0 0 450px;
   padding: 30px;
   background-color: #ffffff;
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
-  margin-top: 120px; /* Space for the 70px navbar + some padding */
+  margin-top: 120px; 
 }
 
-/* Ensure the sidebar doesn't overlap with our content */
 .sidebar {
   width: 220px;
   position: fixed;
   left: 0;
-  top: 70px; /* Start below the navbar */
-  height: calc(100vh - 70px); /* Full height minus navbar */
+  top: 70px; 
+  height: calc(100vh - 70px); 
 }
 
-/* Rest of the styling for profile content */
 .profile-container::before {
   content: "";
   position: absolute;
@@ -256,7 +253,6 @@ body {
   justify-content: center;
 }
 
-/* For responsive design */
 @media (max-width: 1200px) {
   .profile-container {
     margin-left: 240px;
@@ -287,10 +283,5 @@ body {
   
   .profile-modal-content {
     width: 90%;
-  }
-  
-  /* Assuming your sidebar has a mobile toggle or is hidden on mobile */
-  .sidebar {
-    display: none;
   }
 }

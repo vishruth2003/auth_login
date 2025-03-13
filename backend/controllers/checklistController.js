@@ -18,3 +18,14 @@ exports.getAllChecklists = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.getChecklistsByUser = async (req, res) => {
+  try {
+    const { userName } = req.params;
+    const checklists = await Checklist.findAll({ where: { empname: userName.trim() } });
+    res.json(checklists);
+  } catch (error) {
+    console.error("Error fetching checklists:", error);
+    res.status(500).json({ error: error.message });
+  }
+};

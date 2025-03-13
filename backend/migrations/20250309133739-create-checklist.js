@@ -10,7 +10,10 @@ module.exports = {
       },
       empname: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        set(value) {
+          this.setDataValue('empname', value.trim());
+        }
       },
       department: {
         type: Sequelize.STRING,
