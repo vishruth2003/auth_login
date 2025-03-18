@@ -29,3 +29,16 @@ exports.getChecklistsByUser = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.completeChecklist = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const checklist = await Checklist.findByPk(id);
+    if (!checklist) return res.status(404).json({ error: "Checklist not found" });
+
+    await checklist.update({ progress: 'end' });
+    res.json({ message: "Checklist completed successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
