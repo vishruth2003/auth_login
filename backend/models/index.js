@@ -31,10 +31,6 @@ fs
     db[model.name] = model;
   });
 
-if (db.User && db.Delegation) {
-  db.User.hasMany(db.Delegation, { foreignKey: 'empname', sourceKey: 'userName' });
-  db.Delegation.belongsTo(db.User, { foreignKey: 'empname', targetKey: 'userName' });
-}
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {

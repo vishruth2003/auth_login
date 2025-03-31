@@ -66,14 +66,7 @@ exports.updateProfile = async (req, res) => {
 
     await user.update({ userName, userPhone, roleId, roleName, projectStatus, department });
 
-    let existingDelegation = await Delegation.findOne({ where: { empname: user.userName } });
-
-    if (!existingDelegation) {
-      await Delegation.create({ empname: userName });
-    } else {
-      await existingDelegation.update({ empname: userName });
-    }
-
+    
     let existingReport = await Report.findOne({ where: { name: user.userName } });
 
     if (!existingReport) {

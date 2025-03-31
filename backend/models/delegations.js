@@ -15,14 +15,5 @@ module.exports = (sequelize, DataTypes) => {
     planneddate: DataTypes.DATE,
   });
 
-  Delegation.associate = (models) => {
-    Delegation.belongsTo(models.User, {
-      foreignKey: "empname",
-      targetKey: "userName",
-      onDelete: "CASCADE",
-      onUpdate: "CASCADE",
-    });
-  };
-
   return Delegation;
 };

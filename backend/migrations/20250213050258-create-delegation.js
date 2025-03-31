@@ -9,13 +9,7 @@ module.exports = {
       },
       empname: {
         type: Sequelize.STRING,
-        allowNull: true,
-        references: {
-          model: 'Users',  
-          key: 'username', 
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        allowNull: true, // Allow empname to be null
       },
       dept: Sequelize.STRING,
       custname: Sequelize.STRING,

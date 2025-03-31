@@ -28,8 +28,9 @@ const Delegations = () => {
       const [delegationsRes, employeesRes, customersRes] = await Promise.all([
         axios.get("http://localhost:5000/api/delegations"),
         axios.get("http://localhost:5000/api/delegations/employees"),
-        axios.get("http://localhost:5000/api/customers"),
+        axios.get("http://localhost:5000/api/delegations/customers"),
       ]);
+
       setDelegations(delegationsRes.data);
       setEmployees(employeesRes.data);
       setCustomers(customersRes.data);
@@ -44,18 +45,13 @@ const Delegations = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleEmployeeChange = async (e) => {
-    const empname = e.target.value;
-    setFormData({ ...formData, empname });
-
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/auth/users/${empname}/department`
-      );
-      setFormData((prev) => ({ ...prev, dept: response.data.department }));
-    } catch (error) {
-      console.error("Error fetching department:", error);
-    }
+  const handleEmployeeChange = (e) => {
+    const selectedUser = employees.find(emp => emp.userName === e.target.value);
+    setFormData({
+      ...formData,
+      empname: selectedUser ? selectedUser.userName : "", // Set empname only if selected
+      dept: selectedUser ? selectedUser.department : "", // Dynamically populate dept
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -65,7 +61,8 @@ const Delegations = () => {
     try {
       await axios.post("http://localhost:5000/api/delegations/create-task", formData);
       setShowModal(true);
-      fetchData();
+      fetchData(); // Reload data after submission
+      setFormData({ empname: "", dept: "", custname: "", task: "", planneddate: "" }); // Clear form fields
       setShowForm(false);
     } catch (error) {
       console.error("Error submitting task:", error);
@@ -73,6 +70,10 @@ const Delegations = () => {
       setLoading(false);
       setTimeout(() => setShowModal(false), 2000);
     }
+  };
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString();
   };
 
   return (
@@ -101,22 +102,26 @@ const Delegations = () => {
               </tr>
             </thead>
             <tbody>
-              {delegations.length > 0 ? (
-                delegations.map((delegation, index) => (
-                  <tr key={index}>
-                    <td>{delegation.empname}</td>
-                    <td>{delegation.dept}</td>
-                    <td>{delegation.custname}</td>
-                    <td>{delegation.task}</td>
-                    <td>{delegation.planneddate}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="5" style={{ textAlign: "center" }}>No delegations found</td>
-                </tr>
-              )}
-            </tbody>
+  {delegations.length > 0 ? (
+    delegations.map((delegation, index) => (
+      <tr key={index}>
+        <td>{delegation.empname}</td>
+        <td>{delegation.dept}</td>
+        <td>{delegation.custname}</td>
+        <td>{delegation.task}</td>
+        {delegation.planneddate ? (
+          <td>{new Date(delegation.planneddate).toLocaleDateString()}</td>
+        ) : (
+          <td></td>
+        )}
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="4" style={{ textAlign: "center" }}>No delegations found</td>
+    </tr>
+  )}
+</tbody>
           </table>
         </div>
 
@@ -132,7 +137,7 @@ const Delegations = () => {
                 <select name="empname" value={formData.empname} onChange={handleEmployeeChange} required>
                   <option value="">Select Employee</option>
                   {employees.map((emp, index) => (
-                    <option key={index} value={emp.empname}>{emp.empname}</option>
+                    <option key={index} value={emp.userName}>{emp.userName}</option>
                   ))}
                 </select>
                 
