@@ -11,11 +11,7 @@ module.exports = {
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: false,
-        references: {
-          model: 'Users',
-          key: 'userName'
-        }
+        allowNull: true,
       },
       startDate: {
         type: Sequelize.DATE,

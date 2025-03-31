@@ -2,11 +2,7 @@ module.exports = (sequelize, DataTypes) => {
     const Report = sequelize.define("Report", {
       name: {
         type: DataTypes.STRING,
-        allowNull: false,
-        references: {
-          model: 'Users',
-          key: 'userName' 
-        }
+        allowNull: true,
       },
       startDate: {
         type: DataTypes.DATE,
@@ -17,13 +13,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true
       }
     });
-  
-    Report.associate = (models) => {
-      Report.belongsTo(models.User, {
-        foreignKey: 'name',
-        targetKey: 'userName'
-      });
-    };
-  
+
     return Report;
   };

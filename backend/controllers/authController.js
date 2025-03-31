@@ -66,15 +66,6 @@ exports.updateProfile = async (req, res) => {
 
     await user.update({ userName, userPhone, roleId, roleName, projectStatus, department });
 
-    
-    let existingReport = await Report.findOne({ where: { name: user.userName } });
-
-    if (!existingReport) {
-      await Report.create({ name: userName});
-    } else {
-      await existingReport.update({ name: userName });
-    }
-
     res.json({ message: "Profile updated successfully", success: true });
   } catch (error) {
     res.status(500).json({ error: error.message });

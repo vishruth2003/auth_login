@@ -125,7 +125,7 @@ const Report = () => {
     ))
   ) : (
     <tr>
-      <td colSpan="3" style={{ textAlign: "center" }}></td>
+      <td colSpan="3" style={{ textAlign: "center" }}>No reports created</td>
     </tr>
   )}
 </tbody>
@@ -140,28 +140,28 @@ const Report = () => {
           <div className="form-modal">
             <div className="form-modal-content">
               <form className="report-form" onSubmit={handleSubmit}>
-                <label>Name:</label>
-                <select 
-                  name="name" 
-                  value={formData.name} 
-                  onChange={handleChange} 
-                  required
-                >
-                  <option value="" disabled>Select User</option>
-                  {loading ? (
-                    <option disabled>Loading users...</option>
-                  ) : error ? (
-                    <option disabled>{error}</option>
-                  ) : users.length > 0 ? (
-                    users.map((user, index) => (
-                      <option key={index} value={user.name}>
-                        {user.name}
-                      </option>
-                    ))
-                  ) : (
-                    <option disabled>No users found</option>
-                  )}
-                </select>
+              <label>Name:</label>
+<select 
+  name="name" 
+  value={formData.name} 
+  onChange={handleChange} 
+  required
+>
+  <option value="" disabled>Select User</option>
+  {loading ? (
+    <option disabled>Loading users...</option>
+  ) : error ? (
+    <option disabled>{error}</option>
+  ) : users.length > 0 ? (
+    users.map((user, index) => (
+      <option key={index} value={user.userName}>
+        {user.userName}
+      </option>
+    ))
+  ) : (
+    <option disabled>No users found</option>
+  )}
+</select>
 
                 <label>Start Date:</label>
                 <input 

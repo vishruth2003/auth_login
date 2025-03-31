@@ -1,4 +1,4 @@
-const { Report } = require("../models");
+const { Report, User } = require("../models");
 
 const getAllReports = async (req, res) => {
   try {
@@ -13,15 +13,10 @@ const createOrUpdateReport = async (req, res) => {
   try {
     const { name, startDate, endDate } = req.body;
 
-    const existingReport = await Report.findOne({ where: { name } });
+    // Always create a new report entry
+    const newReport = await Report.create({ name, startDate, endDate });
 
-    if (existingReport) {
-      await existingReport.update({ startDate, endDate });
-      return res.json(existingReport);
-    } else {
-      const newReport = await Report.create({ name, startDate, endDate });
-      return res.json(newReport);
-    }
+    return res.status(201).json({ message: "Report created successfully", report: newReport });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -29,8 +24,8 @@ const createOrUpdateReport = async (req, res) => {
 
 const getAllReportNames = async (req, res) => {
   try {
-    const reports = await Report.findAll({ attributes: ["name"] });
-    res.json(reports);
+    const users = await User.findAll({ attributes: ["userName"] }); // Fetch usernames from Users table
+    res.json(users);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
