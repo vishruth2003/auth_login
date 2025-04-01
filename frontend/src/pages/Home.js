@@ -8,6 +8,7 @@ const Home = () => {
   const [todaysTasks, setTodaysTasks] = useState([]);
   const [upcomingTasks, setUpcomingTasks] = useState([]);
   const [delegations, setDelegations] = useState([]); // State for delegations
+  const [reports, setReports] = useState([]); // State for reports
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("checklist");
 
@@ -23,12 +24,13 @@ const Home = () => {
         const username = userResponse.data.userName.trim();
         setUserName(username);
 
-        // Fetch delegations for the logged-in user
-        const delegationResponse = await axios.get("http://localhost:5000/api/delegations", {
+        // Fetch reports for the logged-in user
+        const reportResponse = await axios.get("http://localhost:5000/api/reports", {
           headers: { Authorization: token },
         });
 
-        setDelegations(delegationResponse.data); // No need to filter here as the backend already filters
+        setReports(reportResponse.data); // Store reports in state
+        console.log("Fetched Reports:", reportResponse.data); // Debugging: Log fetched reports
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -79,6 +81,32 @@ const Home = () => {
       console.error("Error completing delegation:", error);
     }
   };
+
+  const handleCompleteReport = async (report) => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/reports/${report.id}/complete`,
+        {},
+        { headers: { Authorization: token } }
+      );
+  
+      console.log("Backend response:", response.data);
+      const updatedReport = response.data.report;
+  
+      // Update state with the new progress and completion date
+      setReports((prevReports) =>
+        prevReports.map((r) =>
+          r.id === report.id
+            ? { ...r, progress: updatedReport.progress, completionDate: updatedReport.completionDate }
+            : r
+        )
+      );
+    } catch (error) {
+      console.error("Error completing report:", error);
+    }
+  };
+  
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -233,12 +261,66 @@ const Home = () => {
             )}
           </>
         );
-      case "report":
-        return (
-          <div className="empty-state">
-            <p>Report view is coming soon.</p>
-          </div>
-        );
+        case "report":
+          return (
+            <>
+              <div className="tasks-header">
+                <h2>Reports</h2>
+              </div>
+        
+              {isLoading ? (
+                <div className="loading-state">
+                  <p>Loading reports...</p>
+                </div>
+              ) : (
+                <>
+                  {reports.length > 0 ? (
+                    <div className="table-container">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Progress</th>
+                            <th>Completion Date</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {reports.map((report, index) => (
+                            <tr key={index}>
+                              <td>{report.name}</td>
+                              <td>{new Date(report.startDate).toLocaleDateString()}</td>
+                              <td>{new Date(report.endDate).toLocaleDateString()}</td>
+                              <td>{report.progress || "pending"}</td>
+                              <td>
+                                {report.completionDate
+                                  ? new Date(report.completionDate).toLocaleDateString()
+                                  : "N/A"}
+                              </td>
+                              <td>
+                                <button
+                                  onClick={() => handleCompleteReport(report)}
+                                  disabled={report.progress === "completed"}
+                                >
+                                  ✔️
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <div className="empty-state">
+                      <p>No reports found.</p>
+                    </div>
+                  )}
+                </>
+              )}
+            </>
+          );
       default:
         return null;
     }

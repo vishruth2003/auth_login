@@ -28,7 +28,15 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
+      progress: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      completionDate: {
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
