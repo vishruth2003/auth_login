@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true, 
       primaryKey: true
     },
-
     empname: { 
       type: DataTypes.STRING, 
       allowNull: false,
@@ -13,40 +12,37 @@ module.exports = (sequelize, DataTypes) => {
         this.setDataValue('empname', value.trim());
       }
     },
-
     department: { 
       type: DataTypes.STRING, 
       allowNull: true 
     },
-
     custname: { 
       type: DataTypes.STRING, 
       allowNull: false 
     },
-
     frequency: { 
       type: DataTypes.STRING, 
       allowNull: false 
     },
-
     startdate: { 
       type: DataTypes.DATE, 
       allowNull: false 
     },
-
     enddate: { 
       type: DataTypes.DATE, 
       allowNull: false 
     },
-
     taskname: { 
       type: DataTypes.STRING, 
       allowNull: false 
     },
-
     progress: { 
       type: DataTypes.STRING, 
       allowNull: true 
+    },
+    lastCompletedDate: { 
+      type: DataTypes.DATE, 
+      allowNull: true // Track the last date the task was completed
     }
   });
 

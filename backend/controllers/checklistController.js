@@ -34,10 +34,54 @@ exports.completeChecklist = async (req, res) => {
   try {
     const { id } = req.params;
     const checklist = await Checklist.findByPk(id);
+
     if (!checklist) return res.status(404).json({ error: "Checklist not found" });
 
-    await checklist.update({ progress: 'end' });
-    res.json({ message: "Checklist completed successfully" });
+    const startDate = new Date(checklist.startdate);
+    const endDate = new Date(checklist.enddate);
+    const today = new Date();
+
+    // Calculate the total number of working days (excluding weekends) between startDate and endDate
+    const getWorkingDays = (start, end) => {
+      let count = 0;
+      let currentDate = new Date(start);
+
+      while (currentDate <= end) {
+        const day = currentDate.getDay();
+        if (day !== 0 && day !== 6) count++; // Exclude weekends
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+
+      return count;
+    };
+
+    const totalWorkingDays = getWorkingDays(startDate, endDate);
+
+    // Track progress as a number (e.g., days completed)
+    const currentProgress = checklist.progress ? parseInt(checklist.progress) : 0;
+
+    // Check if the task is within the valid date range
+    if (today >= startDate && today <= endDate) {
+      // Ensure the task is only marked once per day
+      const lastCompletedDate = new Date(checklist.lastCompletedDate || 0);
+      if (lastCompletedDate.toDateString() === today.toDateString()) {
+        return res.status(400).json({ error: "Task already marked for today" });
+      }
+
+      const updatedProgress = currentProgress + 1;
+
+      if (updatedProgress >= totalWorkingDays) {
+        // If progress equals total working days, mark as "end"
+        await checklist.update({ progress: "end", lastCompletedDate: today });
+        return res.json({ message: "Checklist completed successfully" });
+      } else {
+        // Otherwise, increment progress and mark as "pending"
+        await checklist.update({ progress: updatedProgress.toString(), lastCompletedDate: today });
+        return res.json({ message: "Checklist progress updated", progress: updatedProgress });
+      }
+    } else {
+      return res.status(400).json({ error: "Task is outside the valid date range" });
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -6,9 +6,15 @@ module.exports = {
       type: Sequelize.STRING,
       allowNull: true,
     });
+    
+    await queryInterface.addColumn('Checklists', 'lastCompletedDate', {
+      type: Sequelize.DATE,
+      allowNull: true,
+    });
   },
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.removeColumn('Checklists', 'progress');
+    await queryInterface.removeColumn('Checklists', 'lastCompletedDate');
   }
 };
