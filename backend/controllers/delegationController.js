@@ -24,4 +24,27 @@ const createDelegation = async (req, res) => {
   }
 };
 
-module.exports = { createDelegation };
+const completeDelegation = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const delegation = await Delegation.findByPk(id);
+
+    if (!delegation) return res.status(404).json({ error: "Delegation not found" });
+
+    const plannedDate = new Date(delegation.planneddate);
+    const today = new Date();
+
+    // Check if the task is being completed before or on the planned date
+    if (today <= plannedDate) {
+      await delegation.update({ progress: "completed" });
+      return res.json({ message: "Delegation marked as completed successfully" });
+    } else {
+      await delegation.update({ progress: "pending" });
+      return res.json({ message: "Delegation is pending as it was not completed on time" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = { createDelegation, completeDelegation };

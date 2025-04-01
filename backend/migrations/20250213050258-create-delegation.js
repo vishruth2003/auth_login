@@ -23,6 +23,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
+      progress: {
+        type: Sequelize.STRING,
+        allowNull: true, 
+      }
     });
   },
 

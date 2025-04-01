@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
     custname: DataTypes.STRING,
     task: DataTypes.STRING,
     planneddate: DataTypes.DATE,
+    progress: {
+      type: DataTypes.STRING,
+      allowNull: true, // Track the progress of the delegation
+    },
   });
 
   return Delegation;
