@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const { Delegation, User, Customer } = require("../models");
-const { completeDelegation } = require("../controllers/delegationController"); // Correctly import the function
-const authMiddleware = require("../middleware/authMiddleware");
 
 // Fetch employees with department
 router.get("/employees", async (req, res) => {
@@ -14,11 +12,10 @@ router.get("/employees", async (req, res) => {
   }
 });
 
-// Fetch all delegations for the logged-in user
-router.get("/", authMiddleware, async (req, res) => {
+// Fetch all delegations
+router.get("/", async (req, res) => {
   try {
-    const userName = req.user.userName; // Get the logged-in user's username from the token
-    const delegations = await Delegation.findAll({ where: { empname: userName } });
+    const delegations = await Delegation.findAll();
     res.json(delegations);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -58,8 +55,5 @@ router.post("/create-task", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
-// Route to mark a delegation as completed
-router.put("/:id/complete", completeDelegation);
 
 module.exports = router;
