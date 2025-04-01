@@ -24,13 +24,29 @@ const Home = () => {
         const username = userResponse.data.userName.trim();
         setUserName(username);
 
-        // Fetch reports for the logged-in user
-        const reportResponse = await axios.get("http://localhost:5000/api/reports", {
+        // Fetch all tasks
+        const checklistResponse = await axios.get(`http://localhost:5000/api/checklists/${username}`, {
           headers: { Authorization: token },
         });
 
-        setReports(reportResponse.data); // Store reports in state
-        console.log("Fetched Reports:", reportResponse.data); // Debugging: Log fetched reports
+        const allTasks = checklistResponse.data;
+        const today = new Date();
+
+        // Separate today's tasks and upcoming tasks
+        const todaysTasks = allTasks.filter(
+          (task) => new Date(task.startdate).toDateString() === today.toDateString()
+        );
+        const upcomingTasks = allTasks.filter((task) => {
+          const startDate = new Date(task.startdate);
+          const endDate = new Date(task.enddate);
+          return today >= startDate && today <= endDate; // Tasks that are ongoing or upcoming
+        });
+
+        setTodaysTasks(todaysTasks);
+        setUpcomingTasks(upcomingTasks);
+
+        // Fetch reports
+        await fetchReports();
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -40,6 +56,19 @@ const Home = () => {
 
     fetchUserData();
   }, []);
+
+  const fetchReports = async () => {
+    const token = localStorage.getItem("token");
+
+    try {
+      const reportResponse = await axios.get("http://localhost:5000/api/reports", {
+        headers: { Authorization: token },
+      });
+      setReports(reportResponse.data);
+    } catch (error) {
+      console.error("Error fetching reports:", error);
+    }
+  };
 
   const handleCompleteTask = async (task) => {
     const token = localStorage.getItem("token");
@@ -261,43 +290,43 @@ const Home = () => {
             )}
           </>
         );
-        case "report":
-          return (
-            <>
-              <div className="tasks-header">
-                <h2>Reports</h2>
+      case "report":
+        return (
+          <>
+            <div className="tasks-header">
+              <h2>Reports</h2>
+            </div>
+
+            {isLoading ? (
+              <div className="loading-state">
+                <p>Loading reports...</p>
               </div>
-        
-              {isLoading ? (
-                <div className="loading-state">
-                  <p>Loading reports...</p>
-                </div>
-              ) : (
-                <>
-                  {reports.length > 0 ? (
-                    <div className="table-container">
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>Name</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Progress</th>
-                            <th>Completion Date</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {reports.map((report, index) => (
-                            <tr key={index}>
-                              <td>{report.name}</td>
-                              <td>{new Date(report.startDate).toLocaleDateString()}</td>
-                              <td>{new Date(report.endDate).toLocaleDateString()}</td>
-                              <td>{report.progress || "pending"}</td>
-                              <td>
-                                {report.completionDate
-                                  ? new Date(report.completionDate).toLocaleDateString()
-                                  : "N/A"}
+            ) : (
+              <>
+                {reports.length > 0 ? (
+                  <div className="table-container">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Start Date</th>
+                          <th>End Date</th>
+                          <th>Progress</th>
+                          <th>Completion Date</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {reports.map((report, index) => (
+                          <tr key={index}>
+                            <td>{report.name}</td>
+                            <td>{new Date(report.startDate).toLocaleDateString()}</td>
+                            <td>{new Date(report.endDate).toLocaleDateString()}</td>
+                            <td>{report.progress || "pending"}</td>
+                            <td>
+                              {report.completionDate
+                                ? new Date(report.completionDate).toLocaleDateString()
+                                : "N/A"}
                               </td>
                               <td>
                                 <button
