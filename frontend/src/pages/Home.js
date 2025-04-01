@@ -57,6 +57,23 @@ const Home = () => {
     fetchUserData();
   }, []);
 
+  useEffect(() => {
+    const fetchDelegations = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get("http://localhost:5000/api/delegations", {
+          headers: { Authorization: token },
+        });
+        console.log("Fetched delegations:", response.data); // Debugging log
+        setDelegations(response.data);
+      } catch (error) {
+        console.error("Error fetching delegations:", error);
+      }
+    };
+
+    fetchDelegations();
+  }, []);
+
   const fetchReports = async () => {
     const token = localStorage.getItem("token");
 
@@ -96,14 +113,23 @@ const Home = () => {
   const handleCompleteDelegation = async (delegation) => {
     const token = localStorage.getItem("token");
     try {
-      await axios.put(`http://localhost:5000/api/delegations/${delegation.id}/complete`, {}, {
-        headers: { Authorization: token },
-      });
-
+      const today = new Date();
+      const plannedDate = new Date(delegation.planneddate);
+  
+      // Determine progress based on the planned date
+      const progress = today <= plannedDate ? "completed" : "pending";
+  
+      // Send the update request to the backend
+      await axios.put(
+        `http://localhost:5000/api/delegations/${delegation.id}/complete`,
+        { progress }, // Send the progress in the request body
+        { headers: { Authorization: token } }
+      );
+  
       // Update delegations locally
       setDelegations((prevDelegations) =>
         prevDelegations.map((d) =>
-          d.id === delegation.id ? { ...d, progress: "completed" } : d
+          d.id === delegation.id ? { ...d, progress } : d
         )
       );
     } catch (error) {
@@ -234,62 +260,62 @@ const Home = () => {
             )}
           </>
         );
-      case "delegation":
-        return (
-          <>
-            <div className="tasks-header">
-              <h2>Delegations</h2>
-            </div>
-
-            {isLoading ? (
-              <div className="loading-state">
-                <p>Loading delegations...</p>
+        case "delegation":
+          return (
+            <>
+              <div className="tasks-header">
+                <h2>Delegations</h2>
               </div>
-            ) : (
-              <>
-                {delegations.length > 0 ? (
-                  <div className="table-container">
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Employee Name</th>
-                          <th>Customer Name</th>
-                          <th>Task</th>
-                          <th>Planned Date</th>
-                          <th>Progress</th>
-                          <th>Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {delegations.map((delegation, index) => (
-                          <tr key={index}>
-                            <td>{delegation.empname}</td>
-                            <td>{delegation.custname}</td>
-                            <td>{delegation.task}</td>
-                            <td>{new Date(delegation.planneddate).toLocaleDateString()}</td>
-                            <td>{delegation.progress || "pending"}</td>
-                            <td>
-                              <button
-                                onClick={() => handleCompleteDelegation(delegation)}
-                                disabled={delegation.progress === "completed"}
-                              >
-                                ✔️
-                              </button>
-                            </td>
+        
+              {isLoading ? (
+                <div className="loading-state">
+                  <p>Loading delegations...</p>
+                </div>
+              ) : (
+                <>
+                  {delegations.length > 0 ? (
+                    <div className="table-container">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Employee Name</th>
+                            <th>Customer Name</th>
+                            <th>Task</th>
+                            <th>Planned Date</th>
+                            <th>Progress</th>
+                            <th>Action</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ) : (
-                  <div className="empty-state">
-                    <p>No delegations found.</p>
-                  </div>
-                )}
-              </>
-            )}
-          </>
-        );
+                        </thead>
+                        <tbody>
+                          {delegations.map((delegation, index) => (
+                            <tr key={index}>
+                              <td>{delegation.empname}</td>
+                              <td>{delegation.custname}</td>
+                              <td>{delegation.task}</td>
+                              <td>{new Date(delegation.planneddate).toLocaleDateString()}</td>
+                              <td>{delegation.progress || "pending"}</td>
+                              <td>
+                                <button
+                                  onClick={() => handleCompleteDelegation(delegation)}
+                                  disabled={delegation.progress === "completed"}
+                                >
+                                  ✔️
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <div className="empty-state">
+                      <p>No delegations found.</p>
+                    </div>
+                  )}
+                </>
+              )}
+            </>
+          );
       case "report":
         return (
           <>

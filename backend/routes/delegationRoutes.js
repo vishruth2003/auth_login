@@ -56,4 +56,21 @@ router.post("/create-task", async (req, res) => {
   }
 });
 
+router.put("/:id/complete", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { progress } = req.body; // Get the progress from the request body
+
+    const delegation = await Delegation.findByPk(id);
+    if (!delegation) return res.status(404).json({ error: "Delegation not found" });
+
+    // Update the progress field
+    await delegation.update({ progress });
+
+    res.json({ message: "Delegation updated successfully", delegation });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;
