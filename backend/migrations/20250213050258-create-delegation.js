@@ -9,7 +9,7 @@ module.exports = {
       },
       empname: {
         type: Sequelize.STRING,
-        allowNull: true, // Allow empname to be null
+        allowNull: true, 
       },
       dept: Sequelize.STRING,
       custname: Sequelize.STRING,

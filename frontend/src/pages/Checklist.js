@@ -46,7 +46,6 @@ const Checklists = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    // Clear errors when field is edited
     if (formErrors[e.target.name]) {
       setFormErrors({...formErrors, [e.target.name]: null});
     }
@@ -127,10 +126,8 @@ const Checklists = () => {
       .then(() => {
         setShowModal(true);
 
-        // Add the new checklist to the list
         setChecklists([...checklists, formData]);
 
-        // Reset form data
         setFormData({
           empname: "",
           department: "",
@@ -143,7 +140,6 @@ const Checklists = () => {
 
         setShowForm(false);
 
-        // Auto close the success modal after 2 seconds
         setTimeout(() => {
           setShowModal(false);
         }, 2000);

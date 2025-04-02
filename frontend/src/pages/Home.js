@@ -7,8 +7,8 @@ const Home = () => {
   const [userName, setUserName] = useState("");
   const [todaysTasks, setTodaysTasks] = useState([]);
   const [upcomingTasks, setUpcomingTasks] = useState([]);
-  const [delegations, setDelegations] = useState([]); // State for delegations
-  const [reports, setReports] = useState([]); // State for reports
+  const [delegations, setDelegations] = useState([]); 
+  const [reports, setReports] = useState([]); 
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("checklist");
 
@@ -24,7 +24,6 @@ const Home = () => {
         const username = userResponse.data.userName.trim();
         setUserName(username);
 
-        // Fetch all tasks
         const checklistResponse = await axios.get(`http://localhost:5000/api/checklists/${username}`, {
           headers: { Authorization: token },
         });
@@ -32,20 +31,18 @@ const Home = () => {
         const allTasks = checklistResponse.data;
         const today = new Date();
 
-        // Separate today's tasks and upcoming tasks
         const todaysTasks = allTasks.filter(
           (task) => new Date(task.startdate).toDateString() === today.toDateString()
         );
         const upcomingTasks = allTasks.filter((task) => {
           const startDate = new Date(task.startdate);
           const endDate = new Date(task.enddate);
-          return today >= startDate && today <= endDate; // Tasks that are ongoing or upcoming
+          return today >= startDate && today <= endDate; 
         });
 
         setTodaysTasks(todaysTasks);
         setUpcomingTasks(upcomingTasks);
 
-        // Fetch reports
         await fetchReports();
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -64,7 +61,7 @@ const Home = () => {
         const response = await axios.get("http://localhost:5000/api/delegations", {
           headers: { Authorization: token },
         });
-        console.log("Fetched delegations:", response.data); // Debugging log
+        console.log("Fetched delegations:", response.data); 
         setDelegations(response.data);
       } catch (error) {
         console.error("Error fetching delegations:", error);
@@ -94,7 +91,6 @@ const Home = () => {
         headers: { Authorization: token },
       });
 
-      // Update today's tasks locally
       setTodaysTasks((prevTasks) =>
         prevTasks.filter((t) => t.id !== task.id)
       );
@@ -116,17 +112,14 @@ const Home = () => {
       const today = new Date();
       const plannedDate = new Date(delegation.planneddate);
   
-      // Determine progress based on the planned date
       const progress = today <= plannedDate ? "completed" : "pending";
   
-      // Send the update request to the backend
       await axios.put(
         `http://localhost:5000/api/delegations/${delegation.id}/complete`,
-        { progress }, // Send the progress in the request body
+        { progress },
         { headers: { Authorization: token } }
       );
   
-      // Update delegations locally
       setDelegations((prevDelegations) =>
         prevDelegations.map((d) =>
           d.id === delegation.id ? { ...d, progress } : d
@@ -149,7 +142,6 @@ const Home = () => {
       console.log("Backend response:", response.data);
       const updatedReport = response.data.report;
   
-      // Update state with the new progress and completion date
       setReports((prevReports) =>
         prevReports.map((r) =>
           r.id === report.id

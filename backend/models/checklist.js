@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     lastCompletedDate: { 
       type: DataTypes.DATE, 
-      allowNull: true // Track the last date the task was completed
+      allowNull: true 
     }
   });
 

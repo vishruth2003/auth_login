@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     planneddate: DataTypes.DATE,
     progress: {
       type: DataTypes.STRING,
-      allowNull: true, // Track the progress of the delegation
+      allowNull: true, 
     },
   });
 

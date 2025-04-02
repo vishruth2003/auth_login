@@ -46,7 +46,15 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
+      progress: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      lastcompleteddate: {
+        type: Sequelize.DATE,
+        allowNull: true
+      },
     });
   },
 

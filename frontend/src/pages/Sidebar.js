@@ -12,6 +12,12 @@ const Sidebar = () => {
     <div className="sidebar">
       <div className="sidebar-content">
         <ul>
+          <li className={isActive("/dashboard") ? "active" : ""}>
+            <Link to="/dashboard">
+              <i className="icon dashboard-icon"></i>
+              <span>Dashboard</span>
+            </Link>
+          </li>
           <li className={isActive("/home") ? "active" : ""}>
             <Link to="/home">
               <i className="icon home-icon"></i>

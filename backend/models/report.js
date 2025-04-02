@@ -14,12 +14,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       progress: {
         type: DataTypes.STRING,
-        allowNull: true, // Track the progress of the report
+        allowNull: true, 
         defaultValue: "pending",
       },
       completionDate: {
         type: DataTypes.DATE,
-        allowNull: true, // Track the completion date of the report
+        allowNull: true, 
       },
     });
 

@@ -12,8 +12,6 @@ const getAllReports = async (req, res) => {
 const createOrUpdateReport = async (req, res) => {
   try {
     const { name, startDate, endDate } = req.body;
-
-    // Always create a new report entry
     const newReport = await Report.create({ name, startDate, endDate });
 
     return res.status(201).json({ message: "Report created successfully", report: newReport });
@@ -24,7 +22,7 @@ const createOrUpdateReport = async (req, res) => {
 
 const getAllReportNames = async (req, res) => {
   try {
-    const users = await User.findAll({ attributes: ["userName"] }); // Fetch usernames from Users table
+    const users = await User.findAll({ attributes: ["userName"] }); 
     res.json(users);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -46,13 +44,11 @@ const completeReport = async (req, res) => {
 
     let updatedReport;
     if (today >= startDate && today <= endDate) {
-      // Mark as completed within valid date range
       updatedReport = await report.update({
         progress: "completed",
         completionDate: today,
       });
     } else {
-      // Keep progress pending if clicked outside valid range
       updatedReport = await report.update({
         progress: "pending",
         completionDate: null,

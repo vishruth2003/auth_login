@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const { Delegation, User, Customer } = require("../models");
 
-// Fetch employees with department
 router.get("/employees", async (req, res) => {
   try {
     const employees = await User.findAll({ attributes: ["userName", "department"] });
@@ -12,7 +11,6 @@ router.get("/employees", async (req, res) => {
   }
 });
 
-// Fetch all delegations
 router.get("/", async (req, res) => {
   try {
     const delegations = await Delegation.findAll();
@@ -22,7 +20,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Fetch customers
 router.get("/customers", async (req, res) => {
   try {
     const customers = await Customer.findAll({ attributes: ["custname"] });
@@ -36,15 +33,13 @@ router.post("/create-task", async (req, res) => {
   try {
     const { empname, dept, custname, task, planneddate } = req.body;
 
-    // Validate required fields
     if (!custname || !task || !planneddate) {
       return res.status(400).json({ error: "Customer name, task, and planned date are required" });
     }
 
-    // Create a new delegation entry
     const newDelegation = await Delegation.create({
-      empname: empname || null, // Store empname only if provided
-      dept: dept || null,       // Store dept only if provided
+      empname: empname || null, 
+      dept: dept || null,       
       custname,
       task,
       planneddate,
@@ -59,12 +54,11 @@ router.post("/create-task", async (req, res) => {
 router.put("/:id/complete", async (req, res) => {
   try {
     const { id } = req.params;
-    const { progress } = req.body; // Get the progress from the request body
+    const { progress } = req.body; 
 
     const delegation = await Delegation.findByPk(id);
     if (!delegation) return res.status(404).json({ error: "Delegation not found" });
 
-    // Update the progress field
     await delegation.update({ progress });
 
     res.json({ message: "Delegation updated successfully", delegation });

@@ -49,8 +49,8 @@ const Delegations = () => {
     const selectedUser = employees.find(emp => emp.userName === e.target.value);
     setFormData({
       ...formData,
-      empname: selectedUser ? selectedUser.userName : "", // Set empname only if selected
-      dept: selectedUser ? selectedUser.department : "", // Dynamically populate dept
+      empname: selectedUser ? selectedUser.userName : "", 
+      dept: selectedUser ? selectedUser.department : "", 
     });
   };
 
@@ -61,8 +61,8 @@ const Delegations = () => {
     try {
       await axios.post("http://localhost:5000/api/delegations/create-task", formData);
       setShowModal(true);
-      fetchData(); // Reload data after submission
-      setFormData({ empname: "", dept: "", custname: "", task: "", planneddate: "" }); // Clear form fields
+      fetchData(); 
+      setFormData({ empname: "", dept: "", custname: "", task: "", planneddate: "" }); 
       setShowForm(false);
     } catch (error) {
       console.error("Error submitting task:", error);

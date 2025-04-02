@@ -34,7 +34,6 @@ const completeDelegation = async (req, res) => {
     const plannedDate = new Date(delegation.planneddate);
     const today = new Date();
 
-    // Check if the task is being completed before or on the planned date
     if (today <= plannedDate) {
       await delegation.update({ progress: "completed" });
       return res.json({ message: "Delegation marked as completed successfully" });

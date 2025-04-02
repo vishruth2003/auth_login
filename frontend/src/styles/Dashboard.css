@@ -1,0 +1,432 @@
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .dashboard-content {
+    flex-grow: 1;
+    padding: 24px;
+    background-color: #f0f2f5;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    transition: all 0.3s ease;
+  }
+  
+  .dashboard-heading {
+    text-align: left;
+    margin-bottom: 24px;
+    color: #1a1a2e;
+    font-size: 2rem;
+    font-weight: 700;
+    position: relative;
+    padding-bottom: 12px;
+  }
+  
+  .dashboard-heading::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, #4776E6, #8E54E9);
+    border-radius: 2px;
+  }
+  
+  .dashboard-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+    color: #4776E6;
+    height: 300px;
+  }
+  
+  .dashboard-spinner {
+    border: 5px solid rgba(71, 118, 230, 0.2);
+    border-radius: 50%;
+    border-top: 5px solid #4776E6;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .dashboard-tabs {
+    display: flex;
+    margin-bottom: 24px;
+    border-bottom: none;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 2px;
+  }
+  
+  .tab-button {
+    padding: 14px 20px;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #606060;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    flex: 1;
+    text-align: center;
+  }
+  
+  .tab-button.active {
+    color: #fff;
+    background: linear-gradient(135deg, #4776E6, #8E54E9);
+    box-shadow: 0 5px 15px rgba(71, 118, 230, 0.3);
+  }
+  
+  .tab-button:hover:not(.active) {
+    color: #4776E6;
+    background-color: rgba(71, 118, 230, 0.05);
+  }
+  
+  .stats-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  
+  .stat-card {
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    background-color: #fff;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  .stat-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+  }
+  
+  .checklist-card::before {
+    background: linear-gradient(to bottom, #4776E6, #8E54E9);
+  }
+  
+  .delegation-card::before {
+    background: linear-gradient(to bottom, #8E54E9, #4776E6);
+  }
+  
+  .report-card::before {
+    background: linear-gradient(to bottom, #2ecc71, #27ae60);
+  }
+  
+  .stat-card h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #1a1a2e;
+    font-size: 1.5rem;
+    padding-left: 10px;
+  }
+  
+  .stat-numbers {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+  
+  .stat-item:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: -25%;
+    top: 10%;
+    height: 80%;
+    width: 1px;
+    background-color: #eaeaea;
+  }
+  
+  .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 5px;
+    background: linear-gradient(135deg, #4776E6, #8E54E9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .stat-label {
+    font-size: 0.9rem;
+    color: #606060;
+  }
+  
+  .chart-container {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    padding: 24px;
+    margin-bottom: 32px;
+    transition: all 0.3s ease;
+  }
+  
+  .chart-container:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  .chart-title {
+    color: #1a1a2e;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 10px;
+  }
+  
+  .chart-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(90deg, #4776E6, #8E54E9);
+    border-radius: 2px;
+  }
+  
+  .dashboard-tab-content {
+    animation: fadeIn 0.5s ease;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .stats-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .stat-pill {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 30px;
+    padding: 12px 24px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+  }
+  
+  .stat-pill:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  }
+  
+  .stat-title {
+    font-size: 0.9rem;
+    color: #606060;
+    margin-right: 12px;
+  }
+  
+  .stat-count {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1a1a2e;
+  }
+  
+  .completed {
+    background-color: rgba(46, 204, 113, 0.1);
+  }
+  
+  .completed .stat-count {
+    color: #2ecc71;
+  }
+  
+  .pending {
+    background-color: rgba(231, 76, 60, 0.1);
+  }
+  
+  .pending .stat-count {
+    color: #e74c3c;
+  }
+  
+  .checklists-table-container,
+  .delegations-table-container,
+  .reports-table-container {
+    overflow-x: auto;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    padding: 24px;
+    margin-bottom: 24px;
+    transition: all 0.3s ease;
+  }
+  
+  .checklists-table-container:hover,
+  .delegations-table-container:hover,
+  .reports-table-container:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  .checklist-title,
+  .delegation-title,
+  .report-title {
+    text-align: left;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    color: #1a1a2e;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 10px;
+  }
+  
+  .checklist-title::after,
+  .delegation-title::after,
+  .report-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(90deg, #4776E6, #8E54E9);
+    border-radius: 2px;
+  }
+  
+  .checklists-table,
+  .delegations-table,
+  .reports-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .checklists-table th,
+  .delegations-table th,
+  .reports-table th {
+    padding: 16px;
+    text-align: left;
+    background-color: #f8f9fa;
+    color: #1a1a2e;
+    font-weight: 600;
+    border-bottom: 1px solid #eaeaea;
+  }
+  
+  .checklists-table td,
+  .delegations-table td,
+  .reports-table td {
+    padding: 16px;
+    border-bottom: 1px solid #eaeaea;
+    color: #444;
+  }
+  
+  .checklists-table tr:last-child td,
+  .delegations-table tr:last-child td,
+  .reports-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .checklists-table tr:nth-child(even),
+  .delegations-table tr:nth-child(even),
+  .reports-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .checklists-table tr:hover,
+  .delegations-table tr:hover,
+  .reports-table tr:hover {
+    background-color: #f0f5ff;
+  }
+  
+  .completed-progress {
+    color: #2ecc71;
+    font-weight: 600;
+  }
+  
+  .pending-progress {
+    color: #e74c3c;
+    font-weight: 600;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .dashboard-tabs {
+      flex-wrap: wrap;
+    }
+    
+    .tab-button {
+      flex: 1 0 40%;
+      margin: 2px;
+    }
+    
+    .stats-cards {
+      grid-template-columns: 1fr;
+    }
+    
+    .stats-summary {
+      flex-direction: column;
+    }
+    
+    .stat-pill {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+  
+  .recharts-tooltip-wrapper {
+    background: white !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  }
+  
+  .recharts-default-tooltip {
+    background-color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 10px 14px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  }
+  
+  .recharts-tooltip-item {
+    color: #1a1a2e !important;
+  }
+  
+  .recharts-legend-item-text {
+    color: #444 !important;
+  }
+  
+  .recharts-pie-sector:nth-child(1) {
+    fill: #4776E6;
+  }
+  
+  .recharts-pie-sector:nth-child(2) {
+    fill: #8E54E9;
+  }
+  
+  .recharts-pie-sector:nth-child(3) {
+    fill: #2ecc71;
+  }

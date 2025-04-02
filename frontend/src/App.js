@@ -8,6 +8,7 @@ import AuthGuard from "./pages/AuthGuard";
 import Delegation from "./pages/Delegations.js";
 import Report from "./pages/Report.js";
 import Checklist from "./pages/Checklist.js";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -16,12 +17,12 @@ function App() {
       <Routes>
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-
         <Route path="/home" element={<AuthGuard><Home /></AuthGuard>} />
         <Route path="/profile" element={<AuthGuard><Profile /></AuthGuard>} />
         <Route path="/delegation" element={<AuthGuard><Delegation /></AuthGuard>} />
         <Route path="/checklist" element={<AuthGuard><Checklist /></AuthGuard>} />
         <Route path="/report" element={<AuthGuard><Report /></AuthGuard>} />
+        <Route path="/dashboard" element={<AuthGuard><Dashboard /></AuthGuard>} /> 
       </Routes>
     </Router>
   );
