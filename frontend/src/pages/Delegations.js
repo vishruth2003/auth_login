@@ -19,6 +19,10 @@ const Delegations = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    document.title = "Delegations";
+  }, []);
+
+  useEffect(() => {
     fetchData();
   }, []);
 

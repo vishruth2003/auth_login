@@ -4,6 +4,10 @@ import "../styles/Checklist.css";
 import Sidebar from "./Sidebar.js";
 
 const Checklists = () => {
+  useEffect(() => {
+    document.title = "Checklist";
+  }, []);
+
   const [checklists, setChecklists] = useState([]);
   const [usernames, setUsernames] = useState([]);
   const [customers, setCustomers] = useState([]);

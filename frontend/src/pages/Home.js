@@ -2,8 +2,13 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/Home.css";
 import Sidebar from "./Sidebar.js";
+import React from "react";
 
 const Home = () => {
+  useEffect(() => {
+    document.title = "Home";
+  }, []);
+
   const [userName, setUserName] = useState("");
   const [todaysTasks, setTodaysTasks] = useState([]);
   const [upcomingTasks, setUpcomingTasks] = useState([]);
@@ -11,6 +16,16 @@ const Home = () => {
   const [reports, setReports] = useState([]); 
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("checklist");
+
+  const isTaskCompletedToday = (task) => {
+    if (!task.lastCompletedDate) return false;
+    const lastCompletedDate = new Date(task.lastCompletedDate);
+    const today = new Date();
+    return (
+      lastCompletedDate.toDateString() === today.toDateString() &&
+      task.completedToday
+    );
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -31,13 +46,20 @@ const Home = () => {
         const allTasks = checklistResponse.data;
         const today = new Date();
 
-        const todaysTasks = allTasks.filter(
-          (task) => new Date(task.startdate).toDateString() === today.toDateString()
-        );
+        const todaysTasks = allTasks.filter((task) => {
+          const startDate = new Date(task.startdate);
+          const endDate = new Date(task.enddate);
+          return (
+            today >= startDate &&
+            today <= endDate &&
+            !isTaskCompletedToday(task)
+          );
+        });
+
         const upcomingTasks = allTasks.filter((task) => {
           const startDate = new Date(task.startdate);
           const endDate = new Date(task.enddate);
-          return today >= startDate && today <= endDate; 
+          return today >= startDate && today <= endDate;
         });
 
         setTodaysTasks(todaysTasks);
@@ -91,19 +113,15 @@ const Home = () => {
         headers: { Authorization: token },
       });
 
+      const today = new Date().toISOString();
       setTodaysTasks((prevTasks) =>
-        prevTasks.filter((t) => t.id !== task.id)
+        prevTasks.map((t) =>
+          t.id === task.id ? { ...t, lastCompletedDate: today, completedToday: true } : t
+        )
       );
     } catch (error) {
       console.error("Error completing task:", error);
     }
-  };
-
-  const isTaskCompletedToday = (task) => {
-    if (!task.lastCompletedDate) return false;
-    const lastCompletedDate = new Date(task.lastCompletedDate);
-    const today = new Date();
-    return lastCompletedDate.toDateString() === today.toDateString();
   };
 
   const handleCompleteDelegation = async (delegation) => {

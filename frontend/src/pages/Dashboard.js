@@ -20,6 +20,10 @@ import "../styles/Dashboard.css";
 import Sidebar from "./Sidebar";
 
 const Dashboard = () => {
+  useEffect(() => {
+    document.title = "Dashboard";
+  }, []);
+
   const [checklists, setChecklists] = useState([]);
   const [delegations, setDelegations] = useState([]);
   const [reports, setReports] = useState([]);
@@ -30,6 +34,21 @@ const Dashboard = () => {
 
   const username = localStorage.getItem("username");
 
+  // Helper function to normalize progress values
+  const isCompleted = (progress) => {
+    if (!progress) return false;
+    
+    // Convert to string if it's not already
+    const progressStr = String(progress).trim();
+    
+    // Check various formats that could represent 100%
+    return progressStr === "100%" || 
+           progressStr === "100" || 
+           progressStr === "1" || 
+           progressStr.toLowerCase() === "complete" || 
+           progressStr.toLowerCase() === "completed";
+  };
+
   useEffect(() => {
     const fetchChecklists = async () => {
       try {
@@ -37,6 +56,7 @@ const Dashboard = () => {
           headers: { username },
         });
         setChecklists(response.data);
+        console.log("Checklist data:", response.data); // Debug log
       } catch (error) {
         console.error("Error fetching checklist data:", error);
       } finally {
@@ -50,6 +70,7 @@ const Dashboard = () => {
           headers: { username },
         });
         setDelegations(response.data);
+        console.log("Delegation data:", response.data); // Debug log
       } catch (error) {
         console.error("Error fetching delegation data:", error);
       } finally {
@@ -63,6 +84,7 @@ const Dashboard = () => {
           headers: { username },
         });
         setReports(response.data);
+        console.log("Report data:", response.data); // Debug log
       } catch (error) {
         console.error("Error fetching report data:", error);
       } finally {
@@ -81,20 +103,20 @@ const Dashboard = () => {
 
   const stats = useMemo(() => {
     const checklistStats = {
-      completed: checklists.filter(item => item.progress === "100%").length,
-      pending: checklists.filter(item => item.progress !== "100%").length,
+      completed: checklists.filter(item => isCompleted(item.progress)).length,
+      pending: checklists.filter(item => !isCompleted(item.progress)).length,
       total: checklists.length
     };
 
     const delegationStats = {
-      completed: delegations.filter(item => item.progress === "100%").length,
-      pending: delegations.filter(item => item.progress !== "100%").length,
+      completed: delegations.filter(item => isCompleted(item.progress)).length,
+      pending: delegations.filter(item => !isCompleted(item.progress)).length,
       total: delegations.length
     };
 
     const reportStats = {
-      completed: reports.filter(item => item.progress === "100%").length,
-      pending: reports.filter(item => item.progress !== "100%").length,
+      completed: reports.filter(item => isCompleted(item.progress)).length,
+      pending: reports.filter(item => !isCompleted(item.progress)).length,
       total: reports.length
     };
 
@@ -398,7 +420,7 @@ const Dashboard = () => {
                           <td>{checklist.empname}</td>
                           <td>{formatDate(checklist.startdate)}</td>
                           <td>{formatDate(checklist.enddate)}</td>
-                          <td className={checklist.progress === "100%" ? "completed-progress" : "pending-progress"}>
+                          <td className={isCompleted(checklist.progress) ? "completed-progress" : "pending-progress"}>
                             {checklist.progress || "N/A"}
                           </td>
                           <td>{checklist.lastCompletedDate ? formatDate(checklist.lastCompletedDate) : "N/A"}</td>
@@ -470,7 +492,7 @@ const Dashboard = () => {
                           <td>{delegation.empname}</td>
                           <td>{delegation.task}</td>
                           <td>{formatDate(delegation.planneddate)}</td>
-                          <td className={delegation.progress === "100%" ? "completed-progress" : "pending-progress"}>
+                          <td className={isCompleted(delegation.progress) ? "completed-progress" : "pending-progress"}>
                             {delegation.progress || "N/A"}
                           </td>
                         </tr>
@@ -541,7 +563,7 @@ const Dashboard = () => {
                           <td>{report.name}</td>
                           <td>{formatDate(report.startDate)}</td>
                           <td>{formatDate(report.endDate)}</td>
-                          <td className={report.progress === "100%" ? "completed-progress" : "pending-progress"}>
+                          <td className={isCompleted(report.progress) ? "completed-progress" : "pending-progress"}>
                             {report.progress || "N/A"}
                           </td>
                           <td>{report.completionDate ? formatDate(report.completionDate) : "N/A"}</td>

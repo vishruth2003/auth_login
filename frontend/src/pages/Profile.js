@@ -5,6 +5,10 @@ import "../styles/Profile.css";
 import Sidebar from "./Sidebar.js";
 
 const Profile = () => {
+  useEffect(() => {
+    document.title = "Profile";
+  }, []);
+
   const [user, setUser] = useState({
     userName: "",
     userPhone: "",

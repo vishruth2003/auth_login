@@ -4,6 +4,10 @@ import Sidebar from "./Sidebar.js";
 import "../styles/Report.css";
 
 const Report = () => {
+  useEffect(() => {
+    document.title = "Report";
+  }, []);
+
   const [reports, setReports] = useState([]);
   const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState({

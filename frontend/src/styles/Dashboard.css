@@ -173,8 +173,10 @@
     margin-bottom: 5px;
     background: linear-gradient(135deg, #4776E6, #8E54E9);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
-  }
+    color: transparent; 
+}
   
   .stat-label {
     font-size: 0.9rem;
