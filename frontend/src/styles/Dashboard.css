@@ -1,11 +1,13 @@
 .dashboard-container {
-    display: flex;
-    min-height: 100vh;
-  }
+  display: flex;
+  min-height: 100vh;
+  padding-top: 70px; 
+}
   
   .dashboard-content {
     flex-grow: 1;
     padding: 24px;
+    margin-left: 220px;
     background-color: #f0f2f5;
     font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
     transition: all 0.3s ease;

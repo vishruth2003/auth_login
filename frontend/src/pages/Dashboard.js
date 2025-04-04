@@ -34,19 +34,13 @@ const Dashboard = () => {
 
   const username = localStorage.getItem("username");
 
-  // Helper function to normalize progress values
   const isCompleted = (progress) => {
     if (!progress) return false;
     
-    // Convert to string if it's not already
-    const progressStr = String(progress).trim();
+    const progressStr = String(progress).trim().toLowerCase();
     
-    // Check various formats that could represent 100%
-    return progressStr === "100%" || 
-           progressStr === "100" || 
-           progressStr === "1" || 
-           progressStr.toLowerCase() === "complete" || 
-           progressStr.toLowerCase() === "completed";
+    return progressStr === "complete" || 
+           progressStr === "completed";
   };
 
   useEffect(() => {
@@ -56,7 +50,7 @@ const Dashboard = () => {
           headers: { username },
         });
         setChecklists(response.data);
-        console.log("Checklist data:", response.data); // Debug log
+        console.log("Checklist data:", response.data); 
       } catch (error) {
         console.error("Error fetching checklist data:", error);
       } finally {
@@ -70,7 +64,7 @@ const Dashboard = () => {
           headers: { username },
         });
         setDelegations(response.data);
-        console.log("Delegation data:", response.data); // Debug log
+        console.log("Delegation data:", response.data); 
       } catch (error) {
         console.error("Error fetching delegation data:", error);
       } finally {
@@ -84,7 +78,7 @@ const Dashboard = () => {
           headers: { username },
         });
         setReports(response.data);
-        console.log("Report data:", response.data); // Debug log
+        console.log("Report data:", response.data); 
       } catch (error) {
         console.error("Error fetching report data:", error);
       } finally {
