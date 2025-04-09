@@ -13,7 +13,7 @@
   align-items: center;
   min-height: 100vh;
   background-color: #f8f9fa;
-  padding: 40px;
+  padding: 40px 20px; /* Reduced padding on smaller screens */
 }
 
 .signup-content {
@@ -124,6 +124,16 @@
   filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
 }
 
+.signup-error-message {
+  color: #e74c3c;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: rgba(231, 76, 60, 0.1);
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+}
+
 @keyframes float {
   0% {
     transform: translateY(0px);
@@ -136,12 +146,82 @@
   }
 }
 
-.signup-error-message {
-  color: #e74c3c;
-  margin-bottom: 20px;
-  padding: 10px;
-  background-color: rgba(231, 76, 60, 0.1);
-  border-radius: 8px;
-  text-align: center;
-  font-size: 14px;
+/* Tablet Responsive Styles */
+@media screen and (max-width: 1024px) {
+  .signup-form-container {
+    padding: 40px 50px;
+  }
+  
+  .signup-title {
+    font-size: 28px;
+    margin-bottom: 30px;
+  }
+}
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+  .signup-content {
+    flex-direction: column-reverse;
+  }
+  
+  .signup-form-container,
+  .signup-illustration {
+    width: 100%;
+  }
+  
+  .signup-form-container {
+    padding: 40px 30px;
+  }
+  
+  .signup-title {
+    font-size: 24px;
+    margin-bottom: 25px;
+  }
+  
+  .signup-illustration {
+    max-height: 250px;
+    padding: 15px;
+  }
+  
+  .signup-illustration img {
+    max-height: 200px;
+  }
+  
+  .signup-input-field,
+  .signup-submit-button {
+    padding: 12px 15px;
+    font-size: 14px;
+  }
+  
+  .signup-form-group {
+    margin-bottom: 20px;
+  }
+}
+
+/* Small Mobile Devices */
+@media screen and (max-width: 480px) {
+  .signup-container {
+    padding: 20px 10px;
+  }
+  
+  .signup-form-container {
+    padding: 30px 20px;
+  }
+  
+  .signup-illustration {
+    max-height: 180px;
+  }
+  
+  .signup-illustration img {
+    max-height: 150px;
+  }
+  
+  .signup-title {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+  
+  .signup-option {
+    font-size: 14px;
+  }
 }

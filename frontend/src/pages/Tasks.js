@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import "../styles/Home.css";
+import "../styles/Tasks.css";
 import Sidebar from "./Sidebar.js";
 import React from "react";
 
 const Home = () => {
   useEffect(() => {
-    document.title = "Home";
+    document.title = "Tasks";
   }, []);
 
   const [userName, setUserName] = useState("");

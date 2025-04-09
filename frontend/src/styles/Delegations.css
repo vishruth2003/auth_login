@@ -4,7 +4,7 @@ body {
 }
 
 .delegations-container {
-  max-width: 1000px;
+  max-width: 700px;
   margin: 0 0 0 350px; 
   padding: 30px;
   background-color: #ffffff;
@@ -44,126 +44,18 @@ body {
   border-radius: 3px;
 }
 
-.tasks-table-container {
-  margin-top: 30px;
-  overflow-x: auto; 
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-  border-radius: 10px;
-}
-
-.tasks-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-  overflow: hidden;
-}
-
-.tasks-table th, 
-.tasks-table td {
-  padding: 15px;
-  text-align: left;
-  border-bottom: 1px solid #eaeaea;
-}
-
-.tasks-table th {
-  background-color: #f8f9fa;
-  color: #2c3e50;
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 0.85rem;
-  letter-spacing: 0.5px;
-  border-top: none;
-}
-
-.tasks-table tr:last-child td {
-  border-bottom: none;
-}
-
-.tasks-table tr:hover {
-  background-color: #f8f8f8;
-  transition: background-color 0.3s ease;
-}
-
-.tasks-table tr:nth-child(even) {
-  background-color: #f9fafc;
-}
-
-.create-task-btn {
-  margin-top: 25px;
-  background: linear-gradient(90deg, #4776E6, #8E54E9);
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(71, 118, 230, 0.2);
-}
-
-.create-task-btn:hover {
-  background: linear-gradient(90deg, #3a5fc8, #7740c8);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(71, 118, 230, 0.3);
-}
-
-.edit-btn {
-  background: linear-gradient(90deg, #f39c12, #e67e22);
-  color: white;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(243, 156, 18, 0.2);
-}
-
-.edit-btn:hover {
-  background: linear-gradient(90deg, #e67e22, #d35400);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
-}
-
-.task-form-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
 .task-form-container {
   background-color: white;
   padding: 35px;
   border-radius: 20px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-  width: 550px;
-  max-width: 90%;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  width: 100%;
   text-align: left;
-  animation: slideIn 0.3s ease;
   max-height: 90vh;
   overflow-y: auto;
   border-top: 6px solid #4776E6;
-}
-
-@keyframes slideIn {
-  from { transform: translateY(-50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  margin-top: 20px;
+  box-sizing: border-box;
 }
 
 .delegations-form {
@@ -209,6 +101,12 @@ body {
   cursor: not-allowed;
 }
 
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
 .delegations-form button {
   padding: 14px 26px;
   border: none;
@@ -217,7 +115,16 @@ body {
   font-weight: 600;
   font-size: 1rem;
   transition: all 0.3s ease;
-  margin: 10px 10px 0 0;
+  flex: 1;
+  margin: 0 10px;
+}
+
+.delegations-form button:first-child {
+  margin-left: 0;
+}
+
+.delegations-form button:last-child {
+  margin-right: 0;
 }
 
 .delegations-form button[type="submit"] {
@@ -259,6 +166,11 @@ body {
   animation: fadeIn 0.3s ease;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 .modal-content {
   background: white;
   color: #333;
@@ -270,6 +182,11 @@ body {
   animation: slideIn 0.3s ease;
   position: relative;
   border-top: 6px solid #2ecc71;
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 .modal-content p {
@@ -292,13 +209,8 @@ body {
     padding: 20px;
   }
   
-  .tasks-table th, 
-  .tasks-table td {
-    padding: 10px;
-  }
-  
   .task-form-container {
-    width: 500px;
+    padding: 25px;
   }
 }
 
@@ -309,11 +221,19 @@ body {
   }
   
   .task-form-container {
-    width: 90%;
+    width: 100%;
     padding: 20px;
   }
   
   .modal-content {
     width: 90%;
+  }
+  
+  .form-buttons {
+    flex-direction: column;
+  }
+  
+  .delegations-form button {
+    margin: 10px 0;
   }
 }

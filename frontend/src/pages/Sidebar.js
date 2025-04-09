@@ -18,12 +18,12 @@ const Sidebar = () => {
               <span>Dashboard</span>
             </Link>
           </li>
-          <li className={isActive("/home") ? "active" : ""}>
-            <Link to="/home">
-              <i className="icon home-icon"></i>
-              <span>Home</span>
-            </Link>
-          </li>
+          <li className={isActive("/tasks") ? "active" : ""}>
+  <Link to="/tasks">
+    <i className="icon tasks-icon"></i>
+    <span>Tasks</span>
+  </Link>
+</li>
           <li className={isActive("/profile") ? "active" : ""}>
             <Link to="/profile">
               <i className="icon profile-icon"></i>
