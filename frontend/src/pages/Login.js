@@ -29,7 +29,7 @@ const Login = () => {
       if (response.data.isNewUser) {
         navigate("/profile");
       } else {
-        navigate("/home");
+        navigate("/tasks");
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {

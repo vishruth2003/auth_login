@@ -196,16 +196,16 @@ body {
   font-weight: 600;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1500px) {
   .delegations-container {
-    margin-left: 240px;
+    margin-left: 140px;
     max-width: calc(100% - 260px);
   }
 }
 
 @media (max-width: 992px) {
   .delegations-container {
-    margin-left: 230px;
+    margin-left: 140px;
     padding: 20px;
   }
   

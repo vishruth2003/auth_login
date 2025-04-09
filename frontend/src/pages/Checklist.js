@@ -164,7 +164,6 @@ const Checklists = () => {
         )}
 
         <div className="checklist-form-container">
-          <h2 className="form-title">New Checklist</h2>
           <form className="checklists-form" onSubmit={handleSubmit}>
             <div className="form-group form-field-transition">
               <label>Employee Name:</label>

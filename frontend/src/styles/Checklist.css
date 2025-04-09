@@ -267,16 +267,16 @@ body {
   box-shadow: 0 10px 20px rgba(46, 204, 113, 0.3);
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1500px) {
   .checklists-container {
-    margin-left: 240px;
+    margin-left: 140px;
     max-width: calc(100% - 260px);
   }
 }
 
 @media (max-width: 992px) {
   .checklists-container {
-    margin-left: 230px;
+    margin-left: 140px;
     padding: 20px;
   }
   

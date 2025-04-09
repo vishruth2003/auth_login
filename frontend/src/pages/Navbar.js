@@ -7,7 +7,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const hideHomeLink = location.pathname === "/login" || location.pathname === "/signup";
-
+  
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login", { replace: true });
@@ -19,7 +19,7 @@ const Navbar = () => {
         {hideHomeLink ? (
           <img src={logo} alt="Logo" className="logo" />
         ) : (
-          <a href="/home" className="logo-link">
+          <a href="/tasks" className="logo-link">
             <img src={logo} alt="Logo" className="logo" />
           </a>
         )}

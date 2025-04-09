@@ -1,16 +1,22 @@
 /* Sidebar Styles */
 .sidebar {
-  width: 220px;
+  width: 250px;
   background-color: #f8f9fa;
   color: #333;
   height: 100vh;
   position: fixed;
-  left: 0;
-  top: 70px;
+  left: -280px; /* Start hidden by default with extra space to avoid flickering */
+  top: 0;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
-  z-index: 900;
+  z-index: 990; /* Below navbar but above most content */
   overflow-y: auto;
+  padding-top: 70px; /* Exact height of the navbar */
+}
+
+.sidebar.open {
+  left: 0;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-content {
@@ -24,7 +30,7 @@
 }
 
 .sidebar ul li {
-  margin: 5px 0;
+  margin: 8px 0;
   transition: all 0.2s ease;
 }
 
@@ -35,7 +41,8 @@
   display: flex;
   align-items: center;
   padding: 12px 20px;
-  border-radius: 0;
+  border-radius: 8px;
+  margin: 0 10px;
   transition: all 0.2s ease;
   font-weight: 500;
 }
@@ -62,22 +69,25 @@
   background-position: center;
 }
 
-/* Hamburger Menu Styles */
+/* Hamburger Menu Styles - Integrated with navbar */
 .hamburger-menu {
-  display: none;
+  display: flex;
   position: fixed;
-  top: 20px;
-  left: 20px;
+  top: 15px; /* Centered in navbar */
+  left: 25px;
   width: 40px;
   height: 40px;
   cursor: pointer;
-  z-index: 1000;
-  background-color: #fff;
-  border-radius: 50%;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1001; /* Above navbar */
+  background-color: transparent;
   justify-content: center;
   align-items: center;
   transition: all 0.3s ease;
+  border-radius: 50%;
+}
+
+.hamburger-menu:hover {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .hamburger-icon {
@@ -128,7 +138,7 @@
   transform: rotate(-135deg);
 }
 
-/* Overlay for mobile view */
+/* Overlay for all views */
 .sidebar-overlay {
   position: fixed;
   top: 0;
@@ -136,7 +146,7 @@
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 800;
+  z-index: 980; /* Below sidebar, above content */
   display: none;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -181,27 +191,22 @@
 
 /* Responsive Styles */
 @media screen and (max-width: 768px) {
-  .hamburger-menu {
-    display: flex;
-  }
-  
   .sidebar {
-    width: 250px;
-    left: -250px;
-    top: 0;
-    height: 100vh;
-    padding-top: 70px;
-    box-shadow: none;
-  }
-  
-  .sidebar.open {
-    left: 0;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 280px;
   }
   
   .sidebar ul li a {
-    padding: 15px 20px;
+    padding: 14px 20px;
     font-size: 16px;
+  }
+  
+  /* Adjust logo positioning in navbar when sidebar is open */
+  .navbar .navbar-left {
+    transition: margin-left 0.3s ease;
+  }
+  
+  .sidebar.open + .navbar .navbar-left {
+    margin-left: 280px;
   }
 }
 
@@ -209,14 +214,15 @@
 @media screen and (max-width: 480px) {
   .sidebar {
     width: 85%;
-    left: -100%;
   }
   
   .hamburger-menu {
-    top: 15px;
     left: 15px;
-    width: 36px;
-    height: 36px;
+  }
+  
+  /* Make sure navbar has space for hamburger */
+  .navbar .navbar-left {
+    margin-left: 45px;
   }
 }
 
@@ -235,12 +241,34 @@
   left: 0;
 }
 
-.sidebar:not(.open) {
-  left: -250px;
+/* Main content adjustments */
+.main-content {
+  transition: margin-left 0.3s ease;
+  margin-left: 0;
+  padding: 80px 20px 20px 20px;
 }
 
-@media screen and (min-width: 769px) {
-  .sidebar {
-    left: 0 !important;
+.main-content.sidebar-open {
+  margin-left: 250px;
+}
+
+@media screen and (max-width: 768px) {
+  .main-content.sidebar-open {
+    margin-left: 0;
+  }
+}
+
+/* When sidebar is open, push navbar content (optional) */
+.navbar {
+  transition: padding-left 0.3s ease;
+}
+
+body.sidebar-open .navbar {
+  padding-left: 250px;
+}
+
+@media screen and (max-width: 768px) {
+  body.sidebar-open .navbar {
+    padding-left: 25px;
   }
 }

@@ -27,8 +27,9 @@
 
 .main-content {
   max-width: 1200px;
-  margin: 0 0px 0 280px;
+  margin: 0 0px 0 170px;
   padding-top: 220px;
+  padding-left: 20px;
   flex-grow: 1;
 }
 
@@ -184,14 +185,14 @@ tr:nth-child(even) {
   font-size: 1.1rem;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
   .welcome-text {
-    left: 240px;
+    left: 580px;
     font-size: 3rem;
   }
 
   .main-content {
-    margin-left: 240px;
+    margin-left: 20px;
   }
 }
 
@@ -202,8 +203,8 @@ tr:nth-child(even) {
   }
 
   .main-content {
-    margin-left: 230px;
     margin-right: 20px;
+    margin-left: 20px;
   }
   
   th, td {
@@ -213,14 +214,14 @@ tr:nth-child(even) {
 
 @media (max-width: 768px) {
   .welcome-text {
-    left: 20px;
+    left: 180px;
     font-size: 2.5rem;
-    top: 30px;
+    top: 75px;
   }
 
   .main-content {
     margin: 0 15px 15px 15px;
-    padding-top: 100px;
+    padding-top: 170px;
   }
   
   .tasks-header h2 {

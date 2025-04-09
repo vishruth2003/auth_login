@@ -75,7 +75,7 @@ const Profile = () => {
       setTimeout(() => {
         setShowModal(false);
         setIsEditing(false);
-        navigate("/home");
+        navigate("/tasks");
       }, 2000);
       
     } catch (error) {
