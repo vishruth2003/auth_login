@@ -15,6 +15,14 @@ module.exports = {
       custname: Sequelize.STRING,
       task: Sequelize.STRING,
       planneddate: Sequelize.DATE,
+      startdate: { 
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
+      remarks: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

@@ -13,6 +13,14 @@ module.exports = (sequelize, DataTypes) => {
     custname: DataTypes.STRING,
     task: DataTypes.STRING,
     planneddate: DataTypes.DATE,
+    startdate: { 
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    remarks: { 
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     progress: {
       type: DataTypes.STRING,
       allowNull: true, 

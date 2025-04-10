@@ -31,18 +31,19 @@ router.get("/customers", async (req, res) => {
 
 router.post("/create-task", async (req, res) => {
   try {
-    const { empname, dept, custname, task, planneddate } = req.body;
+    const { empname, dept, custname, task, planneddate, startdate } = req.body;
 
-    if (!custname || !task || !planneddate) {
-      return res.status(400).json({ error: "Customer name, task, and planned date are required" });
+    if (!custname || !task || !planneddate || !startdate) {
+      return res.status(400).json({ error: "Customer name, task, planned date, and start date are required" });
     }
 
     const newDelegation = await Delegation.create({
-      empname: empname || null, 
-      dept: dept || null,       
+      empname: empname || null,
+      dept: dept || null,
       custname,
       task,
       planneddate,
+      startdate,
     });
 
     return res.json({ message: "Task created successfully", delegation: newDelegation });

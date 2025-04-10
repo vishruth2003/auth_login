@@ -59,7 +59,12 @@ const Delegations = () => {
     setLoading(true);
 
     try {
-      await axios.post("http://localhost:5000/api/delegations/create-task", formData);
+      const dataToSend = {
+        ...formData,
+        startdate: new Date().toISOString(), 
+      };
+
+      await axios.post("http://localhost:5000/api/delegations/create-task", dataToSend);
       setShowModal(true);
       setFormData({ empname: "", dept: "", custname: "", task: "", planneddate: "" });
     } catch (error) {

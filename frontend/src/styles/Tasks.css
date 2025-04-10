@@ -74,6 +74,49 @@
   border-radius: 3px 3px 0 0;
 }
 
+/* Subtabs styling */
+.subtabs-container {
+  display: flex;
+  margin-bottom: 30px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+}
+
+.subtab {
+  flex: 1;
+  padding: 12px 15px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: 500;
+  color: #7f8c8d;
+  transition: all 0.3s ease;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.subtab:hover {
+  color: #4776E6;
+  background-color: #f9fafc;
+}
+
+.subtab.active {
+  color: #4776E6;
+  background-color: #f8f9fa;
+}
+
+.subtab.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #4776E6, #8E54E9);
+  border-radius: 2px 2px 0 0;
+}
+
 .tasks-header {
   display: flex;
   align-items: center;
@@ -210,6 +253,11 @@ tr:nth-child(even) {
   th, td {
     padding: 15px;
   }
+  
+  .subtab {
+    padding: 10px 8px;
+    font-size: 0.85rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -235,5 +283,10 @@ tr:nth-child(even) {
   .tab {
     padding: 12px 10px;
     font-size: 0.9rem;
+  }
+  
+  .subtab {
+    padding: 8px 5px;
+    font-size: 0.8rem;
   }
 }
