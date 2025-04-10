@@ -80,3 +80,19 @@ exports.completeChecklist = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.updateRemarks = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { remarks } = req.body;
+
+    const checklist = await Checklist.findByPk(id);
+    if (!checklist) return res.status(404).json({ error: "Checklist not found" });
+
+    await checklist.update({ remarks });
+
+    res.json({ message: "Remarks updated successfully", checklist });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

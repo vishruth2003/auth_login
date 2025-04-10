@@ -12,10 +12,13 @@ const Home = () => {
   const [userName, setUserName] = useState("");
   const [todaysTasks, setTodaysTasks] = useState([]);
   const [upcomingTasks, setUpcomingTasks] = useState([]);
+  const [completedTasks, setCompletedTasks] = useState([]);
+  const [pendingTasks, setPendingTasks] = useState([]);
   const [delegations, setDelegations] = useState([]); 
   const [reports, setReports] = useState([]); 
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("checklist");
+  const [activeSubTab, setActiveSubTab] = useState("today");
 
   const isTaskCompletedToday = (task) => {
     if (!task.lastCompletedDate) return false;
@@ -46,12 +49,14 @@ const Home = () => {
         const allTasks = checklistResponse.data;
         const today = new Date();
 
+        // Filter tasks for different categories
         const todaysTasks = allTasks.filter((task) => {
           const startDate = new Date(task.startdate);
           const endDate = new Date(task.enddate);
           return (
             today >= startDate &&
             today <= endDate &&
+            today.toDateString() === startDate.toDateString() &&
             !isTaskCompletedToday(task)
           );
         });
@@ -59,11 +64,30 @@ const Home = () => {
         const upcomingTasks = allTasks.filter((task) => {
           const startDate = new Date(task.startdate);
           const endDate = new Date(task.enddate);
-          return today >= startDate && today <= endDate;
+          return (
+            (startDate > today || (startDate <= today && endDate >= today)) &&
+            task.progress !== "end"
+          );
+        });
+
+        const completedTasks = allTasks.filter((task) => {
+          return task.progress === "end" || task.progress === "completed"; // Only include tasks explicitly marked as completed
+        });
+
+        const pendingTasks = allTasks.filter((task) => {
+          const endDate = new Date(task.enddate);
+          const today = new Date();
+          return (
+            today > endDate && // Task is past its end date
+            task.progress !== "end" && // Task is not completed
+            task.progress !== "completed" // Task is not explicitly marked as completed
+          );
         });
 
         setTodaysTasks(todaysTasks);
         setUpcomingTasks(upcomingTasks);
+        setCompletedTasks(completedTasks);
+        setPendingTasks(pendingTasks);
 
         await fetchReports();
       } catch (error) {
@@ -114,11 +138,17 @@ const Home = () => {
       });
 
       const today = new Date().toISOString();
+
+      // Update today's tasks
       setTodaysTasks((prevTasks) =>
-        prevTasks.map((t) =>
-          t.id === task.id ? { ...t, lastCompletedDate: today, completedToday: true } : t
-        )
+        prevTasks.filter((t) => t.id !== task.id)
       );
+
+      // Update the task's progress locally
+      setCompletedTasks((prevTasks) => [
+        ...prevTasks,
+        { ...task, lastCompletedDate: today, completedToday: true }
+      ]);
     } catch (error) {
       console.error("Error completing task:", error);
     }
@@ -171,161 +201,286 @@ const Home = () => {
       console.error("Error completing report:", error);
     }
   };
+
+  const handleUpdateRemarks = async (taskId, remarks) => {
+    const token = localStorage.getItem("token");
+    try {
+      await axios.put(
+        `http://localhost:5000/api/checklists/${taskId}/remarks`,
+        { remarks },
+        { headers: { Authorization: token } }
+      );
+
+      // Update the pendingTasks state with the new remarks
+      setPendingTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.id === taskId ? { ...task, remarks } : task
+        )
+      );
+    } catch (error) {
+      console.error("Error updating remarks:", error);
+    }
+  };
   
+  const filterDelegations = () => {
+    const today = new Date();
+    switch (activeSubTab) {
+      case "today":
+        return delegations.filter(del => {
+          const plannedDate = new Date(del.planneddate);
+          return plannedDate.toDateString() === today.toDateString() && del.progress !== "completed";
+        });
+      case "upcoming":
+        return delegations.filter(del => {
+          const plannedDate = new Date(del.planneddate);
+          return plannedDate > today;
+        });
+      case "completed":
+        return delegations.filter(del => del.progress === "completed");
+      case "pending":
+        return delegations.filter(del => {
+          const plannedDate = new Date(del.planneddate);
+          return plannedDate < today && del.progress !== "completed";
+        });
+      default:
+        return delegations.filter(del => {
+          const plannedDate = new Date(del.planneddate);
+          return plannedDate.toDateString() === today.toDateString() && del.progress !== "completed";
+        });
+    }
+  };
+
+  const renderSubTabs = () => {
+    return (
+      <div className="subtabs-container">
+        <div
+          className={`subtab ${activeSubTab === "today" ? "active" : ""}`}
+          onClick={() => setActiveSubTab("today")}
+        >
+          Today's
+        </div>
+        <div
+          className={`subtab ${activeSubTab === "upcoming" ? "active" : ""}`}
+          onClick={() => setActiveSubTab("upcoming")}
+        >
+          Upcoming
+        </div>
+        <div
+          className={`subtab ${activeSubTab === "completed" ? "active" : ""}`}
+          onClick={() => setActiveSubTab("completed")}
+        >
+          Completed
+        </div>
+        <div
+          className={`subtab ${activeSubTab === "pending" ? "active" : ""}`}
+          onClick={() => setActiveSubTab("pending")}
+        >
+          Pending
+        </div>
+      </div>
+    );
+  };
+
+  const renderChecklistContent = () => {
+    let tasksToShow = [];
+    let title = "";
+
+    switch (activeSubTab) {
+      case "today":
+        tasksToShow = todaysTasks;
+        title = "Today's Tasks";
+        break;
+      case "upcoming":
+        tasksToShow = upcomingTasks;
+        title = "Upcoming & Ongoing Tasks";
+        break;
+      case "completed":
+        tasksToShow = completedTasks;
+        title = "Completed Tasks";
+        break;
+      case "pending":
+        tasksToShow = pendingTasks;
+        title = "Pending Tasks";
+        break;
+      default:
+        tasksToShow = todaysTasks;
+        title = "Today's Tasks";
+    }
+
+    return (
+      <>
+        <div className="tasks-header">
+          <h2>{title}</h2>
+        </div>
+
+        {isLoading ? (
+          <div className="loading-state">
+            <p>Loading your tasks...</p>
+          </div>
+        ) : (
+          <>
+            {tasksToShow.length > 0 ? (
+              <div className="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Task</th>
+                      <th>Customer</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      {activeSubTab === "pending" && <th>Remarks</th>}
+                      {activeSubTab !== "upcoming" && activeSubTab !== "completed" && <th>Action</th>}
+                      {activeSubTab === "completed" && <th>Completion Date</th>}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {tasksToShow.map((task, index) => (
+                      <tr key={index}>
+                        <td>{task.taskname}</td>
+                        <td>{task.custname}</td>
+                        <td>{new Date(task.startdate).toLocaleDateString()}</td>
+                        <td>{new Date(task.enddate).toLocaleDateString()}</td>
+                        {activeSubTab === "pending" && (
+                          <td>
+                            <input
+                              type="text"
+                              placeholder="Enter remarks"
+                              value={task.remarks || ""}
+                              onChange={(e) =>
+                                handleUpdateRemarks(task.id, e.target.value)
+                              }
+                            />
+                          </td>
+                        )}
+                        {activeSubTab !== "upcoming" && activeSubTab !== "completed" && (
+                          <td>
+                            <button
+                              onClick={() => handleCompleteTask(task)}
+                              disabled={isTaskCompletedToday(task)}
+                            >
+                              ✔️
+                            </button>
+                          </td>
+                        )}
+                        {activeSubTab === "completed" && (
+                          <td>
+                            {task.lastCompletedDate
+                              ? new Date(task.lastCompletedDate).toLocaleDateString()
+                              : "N/A"}
+                          </td>
+                        )}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="empty-state">
+                <p>No {title.toLowerCase()} found.</p>
+              </div>
+            )}
+          </>
+        )}
+      </>
+    );
+  };
+
+  const renderDelegationContent = () => {
+    const filteredDelegations = filterDelegations();
+    let title = "";
+
+    switch (activeSubTab) {
+      case "today":
+        title = "Today's Delegations";
+        break;
+      case "upcoming":
+        title = "Upcoming & Ongoing Delegations";
+        break;
+      case "completed":
+        title = "Completed Delegations";
+        break;
+      case "pending":
+        title = "Pending Delegations";
+        break;
+      default:
+        title = "Today's Delegations";
+    }
+
+    return (
+      <>
+        <div className="tasks-header">
+          <h2>{title}</h2>
+        </div>
+
+        {isLoading ? (
+          <div className="loading-state">
+            <p>Loading delegations...</p>
+          </div>
+        ) : (
+          <>
+            {filteredDelegations.length > 0 ? (
+              <div className="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Employee Name</th>
+                      <th>Customer Name</th>
+                      <th>Task</th>
+                      <th>Planned Date</th>
+                      <th>Progress</th>
+                      {activeSubTab !== "upcoming" && activeSubTab !== "completed" && <th>Action</th>}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredDelegations.map((delegation, index) => (
+                      <tr key={index}>
+                        <td>{delegation.empname}</td>
+                        <td>{delegation.custname}</td>
+                        <td>{delegation.task}</td>
+                        <td>{new Date(delegation.planneddate).toLocaleDateString()}</td>
+                        <td>{delegation.progress || "pending"}</td>
+                        {activeSubTab !== "upcoming" && activeSubTab !== "completed" && (
+                          <td>
+                            <button
+                              onClick={() => handleCompleteDelegation(delegation)}
+                              disabled={delegation.progress === "completed"}
+                            >
+                              ✔️
+                            </button>
+                          </td>
+                        )}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="empty-state">
+                <p>No {title.toLowerCase()} found.</p>
+              </div>
+            )}
+          </>
+        )}
+      </>
+    );
+  };
 
   const renderTabContent = () => {
     switch (activeTab) {
       case "checklist":
         return (
           <>
-            <div className="tasks-header">
-              <h2>Today's Tasks</h2>
-            </div>
-
-            {isLoading ? (
-              <div className="loading-state">
-                <p>Loading your tasks...</p>
-              </div>
-            ) : (
-              <>
-                {todaysTasks.length > 0 ? (
-                  <div className="table-container">
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Task</th>
-                          <th>Customer</th>
-                          <th>Start Date</th>
-                          <th>End Date</th>
-                          <th>Check</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {todaysTasks.map((task, index) => (
-                          <tr key={index}>
-                            <td>{task.taskname}</td>
-                            <td>{task.custname}</td>
-                            <td>{new Date(task.startdate).toLocaleDateString()}</td>
-                            <td>{new Date(task.enddate).toLocaleDateString()}</td>
-                            <td>
-                              <button
-                                onClick={() => handleCompleteTask(task)}
-                                disabled={isTaskCompletedToday(task)}
-                              >
-                                ✔️
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ) : (
-                  <div className="empty-state">
-                    <p>No tasks found for today.</p>
-                  </div>
-                )}
-              </>
-            )}
-
-            <div className="tasks-header">
-              <h2>Upcoming Tasks</h2>
-            </div>
-
-            {isLoading ? (
-              <div className="loading-state">
-                <p>Loading your tasks...</p>
-              </div>
-            ) : (
-              <>
-                {upcomingTasks.length > 0 ? (
-                  <div className="table-container">
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Task</th>
-                          <th>Customer</th>
-                          <th>Start Date</th>
-                          <th>End Date</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {upcomingTasks.map((task, index) => (
-                          <tr key={index}>
-                            <td>{task.taskname}</td>
-                            <td>{task.custname}</td>
-                            <td>{new Date(task.startdate).toLocaleDateString()}</td>
-                            <td>{new Date(task.enddate).toLocaleDateString()}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ) : (
-                  <div className="empty-state">
-                    <p>No upcoming tasks found.</p>
-                  </div>
-                )}
-              </>
-            )}
+            {renderSubTabs()}
+            {renderChecklistContent()}
           </>
         );
-        case "delegation":
-          return (
-            <>
-              <div className="tasks-header">
-                <h2>Delegations</h2>
-              </div>
-        
-              {isLoading ? (
-                <div className="loading-state">
-                  <p>Loading delegations...</p>
-                </div>
-              ) : (
-                <>
-                  {delegations.length > 0 ? (
-                    <div className="table-container">
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>Employee Name</th>
-                            <th>Customer Name</th>
-                            <th>Task</th>
-                            <th>Planned Date</th>
-                            <th>Progress</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {delegations.map((delegation, index) => (
-                            <tr key={index}>
-                              <td>{delegation.empname}</td>
-                              <td>{delegation.custname}</td>
-                              <td>{delegation.task}</td>
-                              <td>{new Date(delegation.planneddate).toLocaleDateString()}</td>
-                              <td>{delegation.progress || "pending"}</td>
-                              <td>
-                                <button
-                                  onClick={() => handleCompleteDelegation(delegation)}
-                                  disabled={delegation.progress === "completed"}
-                                >
-                                  ✔️
-                                </button>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  ) : (
-                    <div className="empty-state">
-                      <p>No delegations found.</p>
-                    </div>
-                  )}
-                </>
-              )}
-            </>
-          );
+      case "delegation":
+        return (
+          <>
+            {renderSubTabs()}
+            {renderDelegationContent()}
+          </>
+        );
       case "report":
         return (
           <>
@@ -399,13 +554,19 @@ const Home = () => {
         <div className="tabs-container">
           <div
             className={`tab ${activeTab === "checklist" ? "active" : ""}`}
-            onClick={() => setActiveTab("checklist")}
+            onClick={() => {
+              setActiveTab("checklist");
+              setActiveSubTab("today");
+            }}
           >
             Checklist
           </div>
           <div
             className={`tab ${activeTab === "delegation" ? "active" : ""}`}
-            onClick={() => setActiveTab("delegation")}
+            onClick={() => {
+              setActiveTab("delegation");
+              setActiveSubTab("today");
+            }}
           >
             Delegation
           </div>
