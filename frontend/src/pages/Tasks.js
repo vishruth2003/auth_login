@@ -19,6 +19,10 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("checklist");
   const [activeSubTab, setActiveSubTab] = useState("today");
+  const [todaysDelegations, setTodaysDelegations] = useState([]);
+  const [upcomingDelegations, setUpcomingDelegations] = useState([]);
+  const [completedDelegations, setCompletedDelegations] = useState([]);
+  const [pendingDelegations, setPendingDelegations] = useState([]);
 
   const isTaskCompletedToday = (task) => {
     if (!task.lastCompletedDate) return false;
@@ -49,7 +53,6 @@ const Home = () => {
         const allTasks = checklistResponse.data;
         const today = new Date();
 
-        // Filter tasks for different categories
         const todaysTasks = allTasks.filter((task) => {
           const startDate = new Date(task.startdate);
           const endDate = new Date(task.enddate);
@@ -71,16 +74,16 @@ const Home = () => {
         });
 
         const completedTasks = allTasks.filter((task) => {
-          return task.progress === "end" || task.progress === "completed"; // Only include tasks explicitly marked as completed
+          return task.progress === "end" || task.progress === "completed"; 
         });
 
         const pendingTasks = allTasks.filter((task) => {
           const endDate = new Date(task.enddate);
           const today = new Date();
           return (
-            today > endDate && // Task is past its end date
-            task.progress !== "end" && // Task is not completed
-            task.progress !== "completed" // Task is not explicitly marked as completed
+            today > endDate && 
+            task.progress !== "end" && 
+            task.progress !== "completed" 
           );
         });
 
@@ -103,14 +106,63 @@ const Home = () => {
   useEffect(() => {
     const fetchDelegations = async () => {
       const token = localStorage.getItem("token");
+      setIsLoading(true);
+
       try {
-        const response = await axios.get("http://localhost:5000/api/delegations", {
+        const userResponse = await axios.get("http://localhost:5000/auth/user", {
           headers: { Authorization: token },
         });
-        console.log("Fetched delegations:", response.data); 
-        setDelegations(response.data);
+        const username = userResponse.data.userName.trim();
+
+        const delegationsResponse = await axios.get(`http://localhost:5000/api/delegations/${username}`, {
+          headers: { Authorization: token },
+        });
+
+        const allDelegations = delegationsResponse.data;
+        const today = new Date();
+
+        const isWeekend = (date) => {
+          const day = date.getDay();
+          return day === 0 || day === 6; 
+        };
+
+        const todaysDelegations = allDelegations.filter((delegation) => {
+          const startDate = new Date(delegation.startdate);
+          const endDate = new Date(delegation.planneddate);
+          return (
+            today >= startDate &&
+            today <= endDate &&
+            !isWeekend(today) &&
+            delegation.progress !== "completed"
+          );
+        });
+
+        const upcomingDelegations = allDelegations.filter((delegation) => {
+          const startDate = new Date(delegation.startdate);
+          const endDate = new Date(delegation.planneddate);
+          return (
+            (startDate > today || (startDate <= today && endDate >= today)) &&
+            delegation.progress !== "completed"
+          );
+        });
+
+        const completedDelegations = allDelegations.filter((delegation) => {
+          return delegation.progress === "completed";
+        });
+
+        const pendingDelegations = allDelegations.filter((delegation) => {
+          const endDate = new Date(delegation.planneddate);
+          return today > endDate && delegation.progress !== "completed";
+        });
+
+        setTodaysDelegations(todaysDelegations);
+        setUpcomingDelegations(upcomingDelegations);
+        setCompletedDelegations(completedDelegations);
+        setPendingDelegations(pendingDelegations);
       } catch (error) {
         console.error("Error fetching delegations:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -139,12 +191,10 @@ const Home = () => {
 
       const today = new Date().toISOString();
 
-      // Update today's tasks
       setTodaysTasks((prevTasks) =>
         prevTasks.filter((t) => t.id !== task.id)
       );
 
-      // Update the task's progress locally
       setCompletedTasks((prevTasks) => [
         ...prevTasks,
         { ...task, lastCompletedDate: today, completedToday: true }
@@ -157,24 +207,25 @@ const Home = () => {
   const handleCompleteDelegation = async (delegation) => {
     const token = localStorage.getItem("token");
     try {
-      const today = new Date();
-      const plannedDate = new Date(delegation.planneddate);
-  
-      const progress = today <= plannedDate ? "completed" : "pending";
-  
-      await axios.put(
-        `http://localhost:5000/api/delegations/${delegation.id}/complete`,
-        { progress },
+      const response = await axios.put(
+        `http://localhost:5000/api/delegations/${delegation.id}/progress`,
+        {}, 
         { headers: { Authorization: token } }
       );
-  
-      setDelegations((prevDelegations) =>
-        prevDelegations.map((d) =>
-          d.id === delegation.id ? { ...d, progress } : d
+
+      setTodaysDelegations((prev) =>
+        prev.map((d) =>
+          d.id === delegation.id
+            ? { ...d, progress: response.data.progress, lastcompleteddate: new Date().toISOString() }
+            : d
         )
       );
+
+      if (response.data.progress === "completed") {
+        setCompletedDelegations((prev) => [...prev, delegation]);
+      }
     } catch (error) {
-      console.error("Error completing delegation:", error);
+      console.error("Error updating delegation progress:", error);
     }
   };
 
@@ -211,10 +262,28 @@ const Home = () => {
         { headers: { Authorization: token } }
       );
 
-      // Update the pendingTasks state with the new remarks
       setPendingTasks((prevTasks) =>
         prevTasks.map((task) =>
           task.id === taskId ? { ...task, remarks } : task
+        )
+      );
+    } catch (error) {
+      console.error("Error updating remarks:", error);
+    }
+  };
+
+  const handleUpdateRemarksForDelegation = async (delegationId, remarks) => {
+    const token = localStorage.getItem("token");
+    try {
+      await axios.put(
+        `http://localhost:5000/api/delegations/${delegationId}/remarks`,
+        { remarks },
+        { headers: { Authorization: token } }
+      );
+
+      setPendingDelegations((prev) =>
+        prev.map((delegation) =>
+          delegation.id === delegationId ? { ...delegation, remarks } : delegation
         )
       );
     } catch (error) {
@@ -328,8 +397,6 @@ const Home = () => {
                       <th>Customer</th>
                       <th>Start Date</th>
                       <th>End Date</th>
-                      {activeSubTab === "pending" && <th>Remarks</th>}
-                      {activeSubTab !== "upcoming" && activeSubTab !== "completed" && <th>Action</th>}
                       {activeSubTab === "completed" && <th>Completion Date</th>}
                     </tr>
                   </thead>
@@ -340,28 +407,6 @@ const Home = () => {
                         <td>{task.custname}</td>
                         <td>{new Date(task.startdate).toLocaleDateString()}</td>
                         <td>{new Date(task.enddate).toLocaleDateString()}</td>
-                        {activeSubTab === "pending" && (
-                          <td>
-                            <input
-                              type="text"
-                              placeholder="Enter remarks"
-                              value={task.remarks || ""}
-                              onChange={(e) =>
-                                handleUpdateRemarks(task.id, e.target.value)
-                              }
-                            />
-                          </td>
-                        )}
-                        {activeSubTab !== "upcoming" && activeSubTab !== "completed" && (
-                          <td>
-                            <button
-                              onClick={() => handleCompleteTask(task)}
-                              disabled={isTaskCompletedToday(task)}
-                            >
-                              ✔️
-                            </button>
-                          </td>
-                        )}
                         {activeSubTab === "completed" && (
                           <td>
                             {task.lastCompletedDate
@@ -386,23 +431,28 @@ const Home = () => {
   };
 
   const renderDelegationContent = () => {
-    const filteredDelegations = filterDelegations();
+    let delegationsToShow = [];
     let title = "";
 
     switch (activeSubTab) {
       case "today":
+        delegationsToShow = todaysDelegations;
         title = "Today's Delegations";
         break;
       case "upcoming":
+        delegationsToShow = upcomingDelegations;
         title = "Upcoming & Ongoing Delegations";
         break;
       case "completed":
+        delegationsToShow = completedDelegations;
         title = "Completed Delegations";
         break;
       case "pending":
+        delegationsToShow = pendingDelegations;
         title = "Pending Delegations";
         break;
       default:
+        delegationsToShow = todaysDelegations;
         title = "Today's Delegations";
     }
 
@@ -418,32 +468,31 @@ const Home = () => {
           </div>
         ) : (
           <>
-            {filteredDelegations.length > 0 ? (
+            {delegationsToShow.length > 0 ? (
               <div className="table-container">
                 <table>
                   <thead>
                     <tr>
-                      <th>Employee Name</th>
-                      <th>Customer Name</th>
                       <th>Task</th>
+                      <th>Customer</th>
                       <th>Planned Date</th>
-                      <th>Progress</th>
-                      {activeSubTab !== "upcoming" && activeSubTab !== "completed" && <th>Action</th>}
+                      {activeSubTab === "today" && <th>Action</th>}
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredDelegations.map((delegation, index) => (
+                    {delegationsToShow.map((delegation, index) => (
                       <tr key={index}>
-                        <td>{delegation.empname}</td>
-                        <td>{delegation.custname}</td>
                         <td>{delegation.task}</td>
+                        <td>{delegation.custname}</td>
                         <td>{new Date(delegation.planneddate).toLocaleDateString()}</td>
-                        <td>{delegation.progress || "pending"}</td>
-                        {activeSubTab !== "upcoming" && activeSubTab !== "completed" && (
+                        {activeSubTab === "today" && (
                           <td>
                             <button
                               onClick={() => handleCompleteDelegation(delegation)}
-                              disabled={delegation.progress === "completed"}
+                              disabled={
+                                new Date(delegation.lastcompleteddate || 0).toDateString() ===
+                                new Date().toDateString()
+                              }
                             >
                               ✔️
                             </button>

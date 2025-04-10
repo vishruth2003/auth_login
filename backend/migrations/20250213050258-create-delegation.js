@@ -34,7 +34,11 @@ module.exports = {
       progress: {
         type: Sequelize.STRING,
         allowNull: true, 
-      }
+      },
+      lastcompleteddate: {
+        type: Sequelize.DATE,
+        allowNull: true
+      },
     });
   },
 

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { Delegation, User, Customer } = require("../models");
+const delegationController = require("../controllers/delegationController");
 
 router.get("/employees", async (req, res) => {
   try {
@@ -67,5 +68,11 @@ router.put("/:id/complete", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+router.get("/:userName", delegationController.getDelegationsByUser);
+
+router.put("/:id/progress", delegationController.updateDelegationProgress);
+
+router.put("/:id/remarks", delegationController.updateRemarks);
 
 module.exports = router;

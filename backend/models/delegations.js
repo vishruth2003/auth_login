@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true, 
     },
+    lastcompleteddate: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
   });
 
   return Delegation;
