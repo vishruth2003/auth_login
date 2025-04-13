@@ -82,31 +82,31 @@ const Checklists = () => {
     let isValid = true;
 
     if (!formData.empname) {
-      errors.empname = "Please select an employee";
+      errors.empname = "Required";
       isValid = false;
     }
     if (!formData.custname) {
-      errors.custname = "Please select a customer";
+      errors.custname = "Required";
       isValid = false;
     }
     if (!formData.frequency) {
-      errors.frequency = "Please select a frequency";
+      errors.frequency = "Required";
       isValid = false;
     }
     if (!formData.startdate) {
-      errors.startdate = "Please select a start date";
+      errors.startdate = "Required";
       isValid = false;
     }
     if (!formData.enddate) {
-      errors.enddate = "Please select an end date";
+      errors.enddate = "Required";
       isValid = false;
     }
     if (!formData.taskname) {
-      errors.taskname = "Please enter a task name";
+      errors.taskname = "Required";
       isValid = false;
     }
     if (formData.startdate && formData.enddate && new Date(formData.startdate) > new Date(formData.enddate)) {
-      errors.enddate = "End date must be after start date";
+      errors.enddate = "Must be after start date";
       isValid = false;
     }
 
@@ -148,6 +148,19 @@ const Checklists = () => {
       });
   };
 
+  const resetForm = () => {
+    setFormData({
+      empname: "",
+      department: "",
+      custname: "",
+      frequency: "",
+      startdate: "",
+      enddate: "",
+      taskname: ""
+    });
+    setFormErrors({});
+  };
+
   return (
     <div>
       <Sidebar />
@@ -163,126 +176,116 @@ const Checklists = () => {
           </div>
         )}
 
-        <div className="checklist-form-container">
-          <form className="checklists-form" onSubmit={handleSubmit}>
-            <div className="form-group form-field-transition">
-              <label>Employee Name:</label>
+        <div className="horizontal-form-container">
+          <div className="horizontal-form-header">
+            <div className="header-cell">EMPLOYEE NAME</div>
+            <div className="header-cell">DEPARTMENT</div>
+            <div className="header-cell">TASK NAME</div>
+            <div className="header-cell">CUSTOMER NAME</div>
+            <div className="header-cell">FREQUENCY</div>
+            <div className="header-cell date-cell">START DATE</div>
+            <div className="header-cell date-cell">END DATE</div>
+          </div>
+          
+          <div className="horizontal-form-inputs">
+            <div className="input-cell" data-label="EMPLOYEE NAME">
               <select
                 name="empname"
                 value={formData.empname}
                 onChange={handleEmployeeChange}
                 className={formErrors.empname ? "error" : ""}
               >
-                <option value="">Select Employee</option>
+                <option value="">Select...</option>
                 {usernames.map((user, index) => (
                   <option key={index} value={user.userName}>{user.userName}</option>
                 ))}
               </select>
-              {formErrors.empname && <div className="error-message">{formErrors.empname}</div>}
+              {formErrors.empname && <div className="error-tooltip">{formErrors.empname}</div>}
             </div>
-
-            <div className="form-group form-field-transition">
-              <label>Department:</label>
+            
+            <div className="input-cell" data-label="DEPARTMENT">
               <input
                 type="text"
                 name="department"
                 value={formData.department}
+                placeholder="Department will auto-populate"
                 readOnly
               />
             </div>
-
-            <div className="form-group form-field-transition">
-              <label>Customer Name:</label>
+            
+            <div className="input-cell" data-label="TASK NAME">
+              <input
+                type="text"
+                name="taskname"
+                value={formData.taskname}
+                onChange={handleChange}
+                placeholder="Enter Task Name"
+                className={formErrors.taskname ? "error" : ""}
+              />
+              {formErrors.taskname && <div className="error-tooltip">{formErrors.taskname}</div>}
+            </div>
+            
+            <div className="input-cell" data-label="CUSTOMER NAME">
               <select
                 name="custname"
                 value={formData.custname}
                 onChange={handleChange}
                 className={formErrors.custname ? "error" : ""}
               >
-                <option value="">Select Customer</option>
+                <option value="">Select...</option>
                 {customers.map((customer, index) => (
                   <option key={index} value={customer.custname}>{customer.custname}</option>
                 ))}
               </select>
-              {formErrors.custname && <div className="error-message">{formErrors.custname}</div>}
+              {formErrors.custname && <div className="error-tooltip">{formErrors.custname}</div>}
             </div>
-
-            <div className="form-group form-field-transition">
-              <label>Frequency:</label>
+            
+            <div className="input-cell" data-label="FREQUENCY">
               <select
                 name="frequency"
                 value={formData.frequency}
                 onChange={handleChange}
                 className={formErrors.frequency ? "error" : ""}
               >
-                <option value="">Select Frequency</option>
+                <option value="">Select...</option>
                 <option value="Daily">Daily</option>
                 <option value="Weekly">Weekly</option>
                 <option value="Monthly">Monthly</option>
               </select>
-              {formErrors.frequency && <div className="error-message">{formErrors.frequency}</div>}
+              {formErrors.frequency && <div className="error-tooltip">{formErrors.frequency}</div>}
             </div>
-
-            <div className="form-row">
-              <div className="form-group form-field-transition">
-                <label>Start Date:</label>
-                <div className="date-input-wrapper">
-                  <input
-                    type="date"
-                    name="startdate"
-                    value={formData.startdate}
-                    onChange={handleChange}
-                    className={formErrors.startdate ? "error" : ""}
-                  />
-                </div>
-                {formErrors.startdate && <div className="error-message">{formErrors.startdate}</div>}
-              </div>
-
-              <div className="form-group form-field-transition">
-                <label>End Date:</label>
-                <div className="date-input-wrapper">
-                  <input
-                    type="date"
-                    name="enddate"
-                    value={formData.enddate}
-                    onChange={handleChange}
-                    className={formErrors.enddate ? "error" : ""}
-                  />
-                </div>
-                {formErrors.enddate && <div className="error-message">{formErrors.enddate}</div>}
-              </div>
-            </div>
-
-            <div className="form-group form-field-transition">
-              <label>Task Name:</label>
+            
+            <div className="input-cell date-cell" data-label="START DATE">
               <input
-                type="text"
-                name="taskname"
-                value={formData.taskname}
+                type="date"
+                name="startdate"
+                value={formData.startdate}
                 onChange={handleChange}
-                placeholder="Enter task name"
-                className={formErrors.taskname ? "error" : ""}
+                className={formErrors.startdate ? "error" : ""}
               />
-              {formErrors.taskname && <div className="error-message">{formErrors.taskname}</div>}
+              {formErrors.startdate && <div className="error-tooltip">{formErrors.startdate}</div>}
             </div>
-
-            <div className="form-buttons">
-              <button type="submit" disabled={loading}>
-                {loading ? "Submitting..." : "Create Checklist"}
-              </button>
-              <button type="button" onClick={() => setFormData({
-                empname: "",
-                department: "",
-                custname: "",
-                frequency: "",
-                startdate: "",
-                enddate: "",
-                taskname: ""
-              })}>
-                Reset
-              </button>
+            
+            <div className="input-cell date-cell" data-label="END DATE">
+              <input
+                type="date"
+                name="enddate"
+                value={formData.enddate}
+                onChange={handleChange}
+                className={formErrors.enddate ? "error" : ""}
+              />
+              {formErrors.enddate && <div className="error-tooltip">{formErrors.enddate}</div>}
             </div>
-          </form>
+          </div>
+          
+          <div className="horizontal-form-actions">
+            <button type="button" className="add-button" onClick={handleSubmit} disabled={loading}>
+              {loading ? "Processing..." : "Add New Task"}
+            </button>
+            <button type="button" className="submit-button" onClick={resetForm}>
+              Reset
+            </button>
+          </div>
         </div>
       </div>
     </div>

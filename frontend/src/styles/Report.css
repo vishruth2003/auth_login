@@ -10,14 +10,13 @@ body {
 
 .report-content {
   max-width: 1000px;
-  margin: 0 0 0 350px; 
+  margin: 150px auto 0;
   padding: 30px;
   background-color: #ffffff;
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
-  margin-top: 150px; 
   flex: 1;
 }
 
@@ -94,7 +93,7 @@ h1::after {
   margin-top: 25px;
   background: linear-gradient(90deg, #4776E6, #8E54E9);
   color: white;
-  padding: 12px 24px;
+  padding: 23px 80px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -281,13 +280,23 @@ h1::after {
 @media (max-width: 1500px) {
   .report-content {
     margin-left: 140px;
-    max-width: calc(100% - 260px);
+    max-width: calc(100% - 200px);
   }
 }
 
-@media (max-width: 992px) {
+@media (min-width: 992px) {
   .report-content {
-    margin-left: 140px;
+    margin-left: 280px; /* 250px sidebar + 30px spacing */
+    margin-right: 30px;
+    max-width: calc(100% - 310px);
+    padding-left: 30px; /* Reset the excessive left padding */
+  }
+}
+
+@media (max-width: 991px) {
+  .report-content {
+    margin: 90px 15px 15px 15px;
+    max-width: none;
     padding: 20px;
   }
   
@@ -315,5 +324,4 @@ h1::after {
   .modal-content {
     width: 90%;
   }
-  
 }

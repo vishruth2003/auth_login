@@ -5,6 +5,7 @@ import "../styles/Sidebar.css";
 const Sidebar = ({ onStateChange }) => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 992);
   const sidebarRef = useRef(null);
   const hamburgerRef = useRef(null);
 
@@ -20,10 +21,36 @@ const Sidebar = ({ onStateChange }) => {
     }
   };
 
-  // Close sidebar when clicking outside
+  // Handle responsive behavior
+  useEffect(() => {
+    const handleResize = () => {
+      const desktop = window.innerWidth >= 992;
+      setIsDesktop(desktop);
+      
+      // If switching to desktop, ensure sidebar state is managed properly
+      if (desktop && !isOpen) {
+        if (onStateChange) {
+          onStateChange(true); // Notify parent that sidebar is effectively "open" on desktop
+        }
+      }
+    };
+
+    // Initial check
+    handleResize();
+    
+    // Add resize event listener
+    window.addEventListener("resize", handleResize);
+    
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [isOpen, onStateChange]);
+
+  // Close sidebar when clicking outside (mobile/tablet only)
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
+        !isDesktop &&
         sidebarRef.current && 
         !sidebarRef.current.contains(event.target) &&
         hamburgerRef.current &&
@@ -42,11 +69,11 @@ const Sidebar = ({ onStateChange }) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isOpen, onStateChange]);
+  }, [isOpen, isDesktop, onStateChange]);
 
   return (
     <>
-      {/* Hamburger Menu Button - Now integrated with navbar */}
+      {/* Hamburger Menu Button - Only for mobile/tablet */}
       <div 
         className="hamburger-menu" 
         onClick={toggleSidebar}
@@ -59,56 +86,58 @@ const Sidebar = ({ onStateChange }) => {
         </div>
       </div>
 
-      {/* Overlay - closes sidebar when clicked */}
+      {/* Overlay - only used on mobile/tablet */}
       <div 
-        className={`sidebar-overlay ${isOpen ? "active" : ""}`}
+        className={`sidebar-overlay ${!isDesktop && isOpen ? "active" : ""}`}
         onClick={() => {
-          setIsOpen(false);
-          if (onStateChange) {
-            onStateChange(false);
+          if (!isDesktop) {
+            setIsOpen(false);
+            if (onStateChange) {
+              onStateChange(false);
+            }
           }
         }}
       ></div>
 
-      {/* Sidebar */}
+      {/* Sidebar - always visible on desktop */}
       <div 
-        className={`sidebar ${isOpen ? "open" : ""}`}
+        className={`sidebar ${isOpen || isDesktop ? "open" : ""}`}
         ref={sidebarRef}
       >
         <div className="sidebar-content">
           <ul>
             <li className={isActive("/dashboard") ? "active" : ""}>
-              <Link to="/dashboard" onClick={() => setIsOpen(false)}>
+              <Link to="/dashboard" onClick={() => !isDesktop && setIsOpen(false)}>
                 <i className="icon dashboard-icon"></i>
                 <span>Dashboard</span>
               </Link>
             </li>
             <li className={isActive("/tasks") ? "active" : ""}>
-              <Link to="/tasks" onClick={() => setIsOpen(false)}>
+              <Link to="/tasks" onClick={() => !isDesktop && setIsOpen(false)}>
                 <i className="icon tasks-icon"></i>
-                <span>Tasks</span>
+                <span>My Tasks</span>
               </Link>
             </li>
             <li className={isActive("/profile") ? "active" : ""}>
-              <Link to="/profile" onClick={() => setIsOpen(false)}>
+              <Link to="/profile" onClick={() => !isDesktop && setIsOpen(false)}>
                 <i className="icon profile-icon"></i>
                 <span>Profile</span>
               </Link>
             </li>
             <li className={isActive("/checklist") ? "active" : ""}>
-              <Link to="/checklist" onClick={() => setIsOpen(false)}>
+              <Link to="/checklist" onClick={() => !isDesktop && setIsOpen(false)}>
                 <i className="icon checklist-icon"></i>
                 <span>Checklist</span>
               </Link>
             </li>
             <li className={isActive("/delegation") ? "active" : ""}>
-              <Link to="/delegation" onClick={() => setIsOpen(false)}>
+              <Link to="/delegation" onClick={() => !isDesktop && setIsOpen(false)}>
                 <i className="icon delegation-icon"></i>
                 <span>Delegation</span>
               </Link>
             </li>
             <li className={isActive("/report") ? "active" : ""}>
-              <Link to="/report" onClick={() => setIsOpen(false)}>
+              <Link to="/report" onClick={() => !isDesktop && setIsOpen(false)}>
                 <i className="icon report-icon"></i>
                 <span>Report</span>
               </Link>

@@ -7,14 +7,13 @@ body {
 
 .profile-container {
   max-width: 800px;
-  margin: 0 0 0 450px;
+  margin: 120px auto 0;
   padding: 30px;
   background-color: #ffffff;
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
-  margin-top: 120px;
   transition: all 0.3s ease;
 }
 
@@ -394,13 +393,31 @@ body {
   }
 }
 
-@media (max-width: 992px) {
+@media (min-width: 992px) {
   .profile-container {
-    margin-left: 130px;
-    padding: 20px;
+    margin-left: 280px; /* 250px sidebar + 30px spacing */
+    margin-right: 30px;
+    max-width: calc(100% - 310px);
   }
 }
-
+@media (max-width: 991px) {
+  .profile-container {
+    margin: 90px 15px 15px 15px;
+    max-width: none;
+  }
+  
+  .profile-button-group {
+    flex-direction: column;
+  }
+  
+  .profile-submit-btn, .profile-cancel-btn {
+    margin: 5px 0;
+  }
+  
+  .profile-modal-content {
+    width: 90%;
+  }
+}
 @media (max-width: 768px) {
   .profile-container {
     margin: 90px 15px 15px 15px;

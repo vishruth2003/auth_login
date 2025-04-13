@@ -15,6 +15,7 @@ const Delegations = () => {
   });
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [formErrors, setFormErrors] = useState({});
 
   useEffect(() => {
     document.title = "Delegations";
@@ -43,6 +44,9 @@ const Delegations = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (formErrors[e.target.name]) {
+      setFormErrors({...formErrors, [e.target.name]: null});
+    }
   };
 
   const handleEmployeeChange = (e) => {
@@ -52,10 +56,44 @@ const Delegations = () => {
       empname: selectedUser ? selectedUser.userName : "", 
       dept: selectedUser ? selectedUser.department : "", 
     });
+    
+    if (formErrors.empname) {
+      setFormErrors({...formErrors, empname: null});
+    }
+  };
+
+  const validateForm = () => {
+    const errors = {};
+    let isValid = true;
+
+    if (!formData.empname) {
+      errors.empname = "Required";
+      isValid = false;
+    }
+    if (!formData.custname) {
+      errors.custname = "Required";
+      isValid = false;
+    }
+    if (!formData.task) {
+      errors.task = "Required";
+      isValid = false;
+    }
+    if (!formData.planneddate) {
+      errors.planneddate = "Required";
+      isValid = false;
+    }
+
+    setFormErrors(errors);
+    return isValid;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+    
     setLoading(true);
 
     try {
@@ -67,11 +105,11 @@ const Delegations = () => {
       await axios.post("http://localhost:5000/api/delegations/create-task", dataToSend);
       setShowModal(true);
       setFormData({ empname: "", dept: "", custname: "", task: "", planneddate: "" });
+      setTimeout(() => setShowModal(false), 2000);
     } catch (error) {
       console.error("Error submitting task:", error);
     } finally {
       setLoading(false);
-      setTimeout(() => setShowModal(false), 2000);
     }
   };
 
@@ -83,6 +121,7 @@ const Delegations = () => {
       task: "", 
       planneddate: "" 
     });
+    setFormErrors({});
   };
 
   return (
@@ -94,70 +133,94 @@ const Delegations = () => {
         {showModal && (
           <div className="modal">
             <div className="modal-content">
+              <div className="success-icon">✓</div>
               <p>Delegation created successfully!</p>
             </div>
           </div>
         )}
 
-        <div className="task-form-container">
-          <form className="delegations-form" onSubmit={handleSubmit}>
-            <label>Employee Name:</label>
-            <select 
-              name="empname" 
-              value={formData.empname} 
-              onChange={handleEmployeeChange} 
-              required
-            >
-              <option value="">Select Employee</option>
-              {employees.map((emp, index) => (
-                <option key={index} value={emp.userName}>{emp.userName}</option>
-              ))}
-            </select>
-            
-            <label>Department:</label>
-            <input type="text" name="dept" value={formData.dept} readOnly />
-            
-            <label>Customer Name:</label>
-            <select 
-              name="custname" 
-              value={formData.custname} 
-              onChange={handleChange} 
-              required
-            >
-              <option value="">Select Customer</option>
-              {customers.map((customer, index) => (
-                <option key={index} value={customer.custname}>{customer.custname}</option>
-              ))}
-            </select>
-            
-            <label>Task:</label>
-            <input 
-              type="text" 
-              name="task" 
-              value={formData.task} 
-              onChange={handleChange} 
-              placeholder="Enter task description"
-              required 
-            />
-            
-            <label>Planned Date:</label>
-            <input 
-              type="date" 
-              name="planneddate" 
-              value={formData.planneddate} 
-              onChange={handleChange} 
-              required 
-            />
-            
-            <div className="form-buttons">
-              <button type="submit" disabled={loading}>
-                {loading ? "Submitting..." : "Create Delegation"}
-              </button>
-              <button type="button" onClick={handleReset}>
-                Reset
-              </button>
+        <div className="horizontal-form-container">
+          <div className="horizontal-form-header">
+            <div className="header-cell">EMPLOYEE NAME</div>
+            <div className="header-cell">DEPARTMENT</div>
+            <div className="header-cell">CUSTOMER NAME</div>
+            <div className="header-cell">TASK</div>
+            <div className="header-cell date-cell">PLANNED DATE</div>
+          </div>
+          
+          <div className="horizontal-form-inputs">
+            <div className="input-cell" data-label="EMPLOYEE NAME">
+              <select
+                name="empname"
+                value={formData.empname}
+                onChange={handleEmployeeChange}
+                className={formErrors.empname ? "error" : ""}
+              >
+                <option value="">Select...</option>
+                {employees.map((emp, index) => (
+                  <option key={index} value={emp.userName}>{emp.userName}</option>
+                ))}
+              </select>
+              {formErrors.empname && <div className="error-tooltip">{formErrors.empname}</div>}
             </div>
-          </form>
+            
+            <div className="input-cell" data-label="DEPARTMENT">
+              <input
+                type="text"
+                name="dept"
+                value={formData.dept}
+                placeholder="Department will auto-populate"
+                readOnly
+              />
+            </div>
+            
+            <div className="input-cell" data-label="CUSTOMER NAME">
+              <select
+                name="custname"
+                value={formData.custname}
+                onChange={handleChange}
+                className={formErrors.custname ? "error" : ""}
+              >
+                <option value="">Select...</option>
+                {customers.map((customer, index) => (
+                  <option key={index} value={customer.custname}>{customer.custname}</option>
+                ))}
+              </select>
+              {formErrors.custname && <div className="error-tooltip">{formErrors.custname}</div>}
+            </div>
+            
+            <div className="input-cell" data-label="TASK">
+              <input
+                type="text"
+                name="task"
+                value={formData.task}
+                onChange={handleChange}
+                placeholder="Enter task description"
+                className={formErrors.task ? "error" : ""}
+              />
+              {formErrors.task && <div className="error-tooltip">{formErrors.task}</div>}
+            </div>
+            
+            <div className="input-cell date-cell" data-label="PLANNED DATE">
+              <input
+                type="date"
+                name="planneddate"
+                value={formData.planneddate}
+                onChange={handleChange}
+                className={formErrors.planneddate ? "error" : ""}
+              />
+              {formErrors.planneddate && <div className="error-tooltip">{formErrors.planneddate}</div>}
+            </div>
+          </div>
+          
+          <div className="horizontal-form-actions">
+            <button type="button" className="add-button" onClick={handleSubmit} disabled={loading}>
+              {loading ? "Processing..." : "Add"}
+            </button>
+            <button type="button" className="reset-button" onClick={handleReset}>
+              Reset
+            </button>
+          </div>
         </div>
       </div>
     </div>

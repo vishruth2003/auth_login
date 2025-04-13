@@ -319,33 +319,59 @@ const Home = () => {
     }
   };
 
+  // Helper function to get count for badge notifications
+  const getCountForSubTab = (tabType, subTabType) => {
+    if (tabType === "checklist") {
+      switch (subTabType) {
+        case "today": return todaysTasks.length;
+        case "pending": return pendingTasks.length;
+        case "upcoming": return upcomingTasks.length;
+        case "completed": return completedTasks.length;
+        default: return 0;
+      }
+    } else if (tabType === "delegation") {
+      switch (subTabType) {
+        case "today": return todaysDelegations.length;
+        case "pending": return pendingDelegations.length;
+        case "upcoming": return upcomingDelegations.length;
+        case "completed": return completedDelegations.length;
+        default: return 0;
+      }
+    }
+    return 0;
+  };
+
+  // Get the display title based on active tab
+  const getHeaderTitle = () => {
+    switch (activeTab) {
+      case "checklist": return "Checklist";
+      case "delegation": return "Delegation";
+      case "report": return "Report";
+      default: return "Tasks";
+    }
+  };
+
   const renderSubTabs = () => {
+    // New order: today, pending (delayed), upcoming, completed
+    const subTabs = [
+      { id: "today", label: "Today's" },
+      { id: "pending", label: "Delayed" },
+      { id: "upcoming", label: "Upcoming" },
+      { id: "completed", label: "Completed" }
+    ];
+
     return (
       <div className="subtabs-container">
-        <div
-          className={`subtab ${activeSubTab === "today" ? "active" : ""}`}
-          onClick={() => setActiveSubTab("today")}
-        >
-          Today's
-        </div>
-        <div
-          className={`subtab ${activeSubTab === "upcoming" ? "active" : ""}`}
-          onClick={() => setActiveSubTab("upcoming")}
-        >
-          Upcoming
-        </div>
-        <div
-          className={`subtab ${activeSubTab === "completed" ? "active" : ""}`}
-          onClick={() => setActiveSubTab("completed")}
-        >
-          Completed
-        </div>
-        <div
-          className={`subtab ${activeSubTab === "pending" ? "active" : ""}`}
-          onClick={() => setActiveSubTab("pending")}
-        >
-          Pending
-        </div>
+        {subTabs.map(tab => (
+          <div
+            key={tab.id}
+            className={`subtab ${activeSubTab === tab.id ? "active" : ""}`}
+            onClick={() => setActiveSubTab(tab.id)}
+          >
+            {tab.label}
+            <span className="badge">{getCountForSubTab(activeTab, tab.id)}</span>
+          </div>
+        ))}
       </div>
     );
   };
@@ -369,7 +395,7 @@ const Home = () => {
         break;
       case "pending":
         tasksToShow = pendingTasks;
-        title = "Pending Tasks";
+        title = "Delayed Tasks";
         break;
       default:
         tasksToShow = todaysTasks;
@@ -449,7 +475,7 @@ const Home = () => {
         break;
       case "pending":
         delegationsToShow = pendingDelegations;
-        title = "Pending Delegations";
+        title = "Delayed Delegations";
         break;
       default:
         delegationsToShow = todaysDelegations;
@@ -598,7 +624,7 @@ const Home = () => {
   return (
     <div className="home-container">
       <Sidebar />
-      <h1 className="welcome-text">Hello, {userName}!</h1>
+      <h1 className="welcome-text">{getHeaderTitle()}</h1>
       <div className="main-content">
         <div className="tabs-container">
           <div

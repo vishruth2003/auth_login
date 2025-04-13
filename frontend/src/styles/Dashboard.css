@@ -10,6 +10,7 @@
     background-color: #f0f2f5;
     font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
     transition: all 0.3s ease;
+    margin-left: 250px;
   }
   
   .dashboard-heading {
@@ -134,7 +135,7 @@
   }
   
   .report-card::before {
-    background: linear-gradient(to bottom, #2ecc71, #27ae60);
+    background: linear-gradient(to bottom, #8E54E9, #4776E6);
   }
   
   .stat-card h3 {
@@ -432,4 +433,10 @@
   
   .recharts-pie-sector:nth-child(3) {
     fill: #2ecc71;
+  }
+
+  @media screen and (max-width: 991px) {
+    .dashboard-content {
+      margin-left: 0; 
+    }
   }

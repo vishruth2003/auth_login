@@ -5,18 +5,54 @@
   color: #333;
   height: 100vh;
   position: fixed;
-  left: -280px; /* Start hidden by default with extra space to avoid flickering */
   top: 0;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
-  z-index: 990; /* Below navbar but above most content */
+  z-index: 990; 
   overflow-y: auto;
-  padding-top: 70px; /* Exact height of the navbar */
+  padding-top: 70px; 
 }
 
-.sidebar.open {
-  left: 0;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+@media screen and (min-width: 992px) {
+  .sidebar {
+    left: 0; 
+    width: 250px;
+  }
+  
+  .hamburger-menu {
+    display: none; 
+  }
+  
+  .main-content {
+    margin-left: 250px; 
+  }
+  
+  body .navbar {
+    padding-left: 250px; 
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .sidebar {
+    left: -280px; 
+  }
+  
+  .sidebar.open {
+    left: 0;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .main-content {
+    margin-left: 0;
+  }
+  
+  .main-content.sidebar-open {
+    margin-left: 0; 
+  }
+  
+  body.sidebar-open .navbar {
+    padding-left: 25px; 
+  }
 }
 
 .sidebar-content {
@@ -69,16 +105,15 @@
   background-position: center;
 }
 
-/* Hamburger Menu Styles - Integrated with navbar */
 .hamburger-menu {
   display: flex;
   position: fixed;
-  top: 15px; /* Centered in navbar */
+  top: 15px; 
   left: 25px;
   width: 40px;
   height: 40px;
   cursor: pointer;
-  z-index: 1001; /* Above navbar */
+  z-index: 1001; 
   background-color: transparent;
   justify-content: center;
   align-items: center;
@@ -138,7 +173,6 @@
   transform: rotate(-135deg);
 }
 
-/* Overlay for all views */
 .sidebar-overlay {
   position: fixed;
   top: 0;
@@ -146,7 +180,7 @@
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 980; /* Below sidebar, above content */
+  z-index: 980; 
   display: none;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -157,7 +191,12 @@
   opacity: 1;
 }
 
-/* All the icons */
+@media screen and (min-width: 992px) {
+  .sidebar-overlay {
+    display: none !important;
+  }
+}
+
 .tasks-icon {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='8' y1='6' x2='21' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='12' x2='21' y2='12'%3E%3C/line%3E%3Cline x1='8' y1='18' x2='21' y2='18'%3E%3C/line%3E%3Cline x1='3' y1='6' x2='3.01' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='12' x2='3.01' y2='12'%3E%3C/line%3E%3Cline x1='3' y1='18' x2='3.01' y2='18'%3E%3C/line%3E%3C/svg%3E");
 }
@@ -189,10 +228,9 @@
   background-position: center;
 }
 
-/* Responsive Styles */
 @media screen and (max-width: 768px) {
   .sidebar {
-    width: 280px;
+    width: 250px;
   }
   
   .sidebar ul li a {
@@ -200,17 +238,11 @@
     font-size: 16px;
   }
   
-  /* Adjust logo positioning in navbar when sidebar is open */
   .navbar .navbar-left {
-    transition: margin-left 0.3s ease;
-  }
-  
-  .sidebar.open + .navbar .navbar-left {
-    margin-left: 280px;
+    margin-left: 45px; 
   }
 }
 
-/* Small devices adjustments */
 @media screen and (max-width: 480px) {
   .sidebar {
     width: 85%;
@@ -219,14 +251,8 @@
   .hamburger-menu {
     left: 15px;
   }
-  
-  /* Make sure navbar has space for hamburger */
-  .navbar .navbar-left {
-    margin-left: 45px;
-  }
 }
 
-/* Animation for sidebar transitions */
 @keyframes slideIn {
   from {
     transform: translateX(-100%);
@@ -236,39 +262,13 @@
   }
 }
 
-.sidebar.open {
-  animation: slideIn 0.3s forwards;
-  left: 0;
+@media screen and (max-width: 991px) {
+  .sidebar.open {
+    animation: slideIn 0.3s forwards;
+  }
 }
 
-/* Main content adjustments */
 .main-content {
   transition: margin-left 0.3s ease;
-  margin-left: 0;
   padding: 80px 20px 20px 20px;
-}
-
-.main-content.sidebar-open {
-  margin-left: 250px;
-}
-
-@media screen and (max-width: 768px) {
-  .main-content.sidebar-open {
-    margin-left: 0;
-  }
-}
-
-/* When sidebar is open, push navbar content (optional) */
-.navbar {
-  transition: padding-left 0.3s ease;
-}
-
-body.sidebar-open .navbar {
-  padding-left: 250px;
-}
-
-@media screen and (max-width: 768px) {
-  body.sidebar-open .navbar {
-    padding-left: 25px;
-  }
 }

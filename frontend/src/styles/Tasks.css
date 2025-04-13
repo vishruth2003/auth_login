@@ -1,7 +1,8 @@
 .home-container {
   display: flex;
   min-height: 100vh;
-  background-color: #f9fafc;
+  background-color: #f5f7fa;
+  background-image: linear-gradient(135deg, #f5f7fa 0%, #eef2f9 100%);
 }
 
 .welcome-text {
@@ -23,11 +24,18 @@
   background: linear-gradient(90deg, #4776E6, #8E54E9);
   margin-top: 10px;
   border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(71, 118, 230, 0.2);
+  animation: shimmer 2s infinite linear;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: 200px 0; }
 }
 
 .main-content {
   max-width: 1200px;
-  margin: 0 0px 0 170px;
+  margin: 0 0px 0 250px;
   padding-top: 220px;
   padding-left: 20px;
   flex-grow: 1;
@@ -38,13 +46,19 @@
   margin-bottom: 40px;
   background-color: white;
   border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.tabs-container:hover {
+  box-shadow: 0 10px 25px rgba(71, 118, 230, 0.12);
+  transform: translateY(-2px);
 }
 
 .tab {
   flex: 1;
-  padding: 15px 20px;
+  padding: 16px 20px;
   text-align: center;
   cursor: pointer;
   font-weight: 600;
@@ -69,9 +83,16 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 3px;
+  height: 4px;
   background: linear-gradient(90deg, #4776E6, #8E54E9);
   border-radius: 3px 3px 0 0;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { opacity: 0.8; }
 }
 
 /* Subtabs styling */
@@ -80,20 +101,28 @@
   margin-bottom: 30px;
   background-color: white;
   border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.subtabs-container:hover {
+  box-shadow: 0 8px 18px rgba(71, 118, 230, 0.1);
 }
 
 .subtab {
   flex: 1;
-  padding: 12px 15px;
+  padding: 14px 15px;
   text-align: center;
   cursor: pointer;
   font-weight: 500;
   color: #7f8c8d;
   transition: all 0.3s ease;
   position: relative;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .subtab:hover {
@@ -104,6 +133,7 @@
 .subtab.active {
   color: #4776E6;
   background-color: #f8f9fa;
+  font-weight: 600;
 }
 
 .subtab.active::after {
@@ -112,9 +142,40 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 2px;
+  height: 3px;
   background: linear-gradient(90deg, #4776E6, #8E54E9);
   border-radius: 2px 2px 0 0;
+}
+
+/* Improved Badge styling for subtabs */
+.badge {
+  position: absolute;
+  top: 2px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #4776E6, #8E54E9);
+  border-radius: 11px;
+  line-height: 1;
+  box-shadow: 0 3px 6px rgba(71, 118, 230, 0.25);
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.subtab:hover .badge {
+  transform: scale(1.1);
+}
+
+.subtab.active .badge {
+  background: linear-gradient(135deg, #4776E6, #6c5ce7);
+  box-shadow: 0 4px 8px rgba(71, 118, 230, 0.3);
 }
 
 .tasks-header {
@@ -144,21 +205,27 @@
   top: 50%;
   transform: translateY(-50%);
   width: 5px;
-  height: 25px;
+  height: 30px;
   background: linear-gradient(180deg, #4776E6, #8E54E9);
   border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(71, 118, 230, 0.2);
 }
 
 .table-container {
   background-color: white;
   border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
   overflow: hidden;
-  animation: fadeIn 0.4s ease;
+  animation: fadeIn 0.5s ease;
+  transition: all 0.3s ease;
+}
+
+.table-container:hover {
+  box-shadow: 0 12px 25px rgba(71, 118, 230, 0.1);
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -174,10 +241,10 @@ th, td {
 }
 
 th {
-  background-color: #f8f9fa;
+  background-color: #f5f7fb;
   color: #2c3e50;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
@@ -186,13 +253,43 @@ tr:last-child td {
   border-bottom: none;
 }
 
+tr {
+  transition: all 0.2s ease;
+}
+
 tr:hover {
-  background-color: #f8f8f8;
-  transition: background-color 0.3s ease;
+  background-color: #f5f7fb;
+  transform: translateX(2px);
 }
 
 tr:nth-child(even) {
   background-color: #f9fafc;
+}
+
+button {
+  background-color: transparent;
+  border: 2px solid #4776E6;
+  color: #4776E6;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button:hover:not([disabled]) {
+  background-color: #4776E6;
+  color: white;
+  transform: scale(1.1);
+}
+
+button[disabled] {
+  border-color: #ccc;
+  color: #ccc;
+  cursor: not-allowed;
 }
 
 .empty-state {
@@ -200,11 +297,11 @@ tr:nth-child(even) {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px;
+  padding: 70px 20px;
   background-color: white;
   border-radius: 12px;
   text-align: center;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
 }
 
 .empty-state p {
@@ -220,12 +317,22 @@ tr:nth-child(even) {
   height: 200px;
   background-color: white;
   border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
 }
 
 .loading-state p {
   color: #7f8c8d;
   font-size: 1.1rem;
+  background: linear-gradient(90deg, #f5f7fa, #d8e1ec, #f5f7fa);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  padding: 10px 20px;
+  border-radius: 6px;
+}
+
+@keyframes loading {
+  0% { background-position: -100% 0; }
+  100% { background-position: 100% 0; }
 }
 
 @media (max-width: 1400px) {
@@ -235,7 +342,7 @@ tr:nth-child(even) {
   }
 
   .main-content {
-    margin-left: 20px;
+    margin-left: 250px;
   }
 }
 
@@ -255,8 +362,16 @@ tr:nth-child(even) {
   }
   
   .subtab {
-    padding: 10px 8px;
-    font-size: 0.85rem;
+    padding: 12px 10px;
+    font-size: 0.9rem;
+  }
+  
+  .badge {
+    min-width: 20px;
+    height: 20px;
+    font-size: 0.7rem;
+    top: 6px;
+    right: 8px;
   }
 }
 
@@ -286,7 +401,16 @@ tr:nth-child(even) {
   }
   
   .subtab {
-    padding: 8px 5px;
-    font-size: 0.8rem;
+    padding: 10px 5px;
+    font-size: 0.85rem;
+  }
+  
+  .badge {
+    min-width: 18px;
+    height: 18px;
+    font-size: 0.65rem;
+    padding: 0 4px;
+    top: 5px;
+    right: 5px;
   }
 }

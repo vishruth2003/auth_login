@@ -18,6 +18,11 @@
   align-items: center;
 }
 
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
 .navbar-right {
   display: flex;
   align-items: center;
@@ -27,7 +32,6 @@
   display: flex;
   align-items: center;
   text-decoration: none;
-  padding-left:50px;
 }
 
 .logo {
@@ -38,7 +42,6 @@
 .logo:hover {
   transform: scale(1.05);
 }
-
 
 .logout-btn {
   background-color: #f8f9fa;
@@ -51,7 +54,10 @@
   font-weight: 500;
   display: flex;
   align-items: center;
+  justify-content: center;
   transition: all 0.2s ease;
+  min-width: 100px; /* Ensures minimum width to fit content */
+  white-space: nowrap; /* Prevents text from wrapping */
 }
 
 .logout-btn:hover {
@@ -59,8 +65,13 @@
   color: white;
 }
 
+.logout-text {
+  display: inline-block;
+}
+
 .logout-icon {
   display: inline-block;
+  flex-shrink: 0; /* Prevent icon from shrinking */
   width: 18px;
   height: 18px;
   margin-right: 8px;
@@ -70,3 +81,59 @@
   background-position: center;
 }
 
+/* Medium screens (laptops) */
+@media (min-width: 769px) and (max-width: 1200px) {
+  .logout-btn {
+    min-width: 110px; /* Ensures text fits properly */
+    padding: 8px 14px;
+  }
+}
+
+/* Responsive styles for logout button */
+@media (max-width: 768px) {
+  .logout-btn {
+    padding: 8px;
+    min-width: 40px;
+    justify-content: center;
+    border-radius: 50%;
+  }
+  
+  .logout-text {
+    display: none;
+  }
+  
+  .logout-icon {
+    margin-right: 0;
+    width: 16px;
+    height: 16px;
+  }
+  
+  .logo-link {
+    padding-left: 50px;
+  }
+}
+
+/* For very small devices */
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0 15px;
+  }
+  
+  .logo {
+    height: 40px;
+  }
+  
+  .logout-btn {
+    padding: 6px;
+    min-width: 32px;
+  }
+  
+  .logout-icon {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .logo-link {
+    padding-left: 50px;
+  }
+}
