@@ -395,7 +395,7 @@ body {
 
 @media (min-width: 992px) {
   .profile-container {
-    margin-left: 280px; /* 250px sidebar + 30px spacing */
+    margin-left: 280px; 
     margin-right: 30px;
     max-width: calc(100% - 310px);
   }

@@ -95,7 +95,6 @@
   100% { opacity: 0.8; }
 }
 
-/* Subtabs styling */
 .subtabs-container {
   display: flex;
   margin-bottom: 30px;
@@ -147,7 +146,6 @@
   border-radius: 2px 2px 0 0;
 }
 
-/* Improved Badge styling for subtabs */
 .badge {
   position: absolute;
   top: 2px;

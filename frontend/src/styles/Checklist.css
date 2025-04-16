@@ -7,7 +7,7 @@ body {
 
 .checklists-container {
   max-width: 1200px;
-  margin: 0 0 0 200px; /* Adjusted from 350px to match sidebar width (200px) plus 20px spacing */
+  margin: 0 0 0 200px; 
   padding: 30px;
   position: relative;
   margin-top: 80px; 
@@ -21,7 +21,6 @@ body {
   position: relative;
 }
 
-/* Horizontal Form Container */
 .horizontal-form-container {
   background-color: white;
   border-radius: 8px;
@@ -31,7 +30,6 @@ body {
   margin-left:110px;
 }
 
-/* Form Header */
 .horizontal-form-header {
   display: flex;
   background-color: #f8fafd;
@@ -53,7 +51,11 @@ body {
   flex: 0.8;
 }
 
-/* Form Inputs Row */
+.action-cell {
+  flex: 0.6;
+  text-align: center;
+}
+
 .horizontal-form-inputs {
   display: flex;
   border-bottom: 1px solid #e9ecef;
@@ -98,7 +100,6 @@ body {
   font-style: italic;
 }
 
-/* Form Actions */
 .horizontal-form-actions {
   display: flex;
   justify-content: flex-end;
@@ -109,7 +110,9 @@ body {
 }
 
 .add-button, 
-.submit-button {
+.submit-button,
+.repeat-button,
+.remove-button {
   padding: 12px 24px;
   border: none;
   border-radius: 6px;
@@ -125,10 +128,25 @@ body {
   color: white;
 }
 
-.add-button:hover {
-  background-color: #2b6cb0;
+.repeat-button {
+  background-color: #38a169;
+  color: white;
+}
+
+.repeat-button:hover {
+  background-color: #2f855a;
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.add-button:hover,
+.repeat-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.add-button:hover {
+  background-color: #2b6cb0;
 }
 
 .submit-button {
@@ -142,7 +160,20 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.add-button:disabled {
+.remove-button {
+  background-color: #e53e3e;
+  color: white;
+  padding: 8px 16px;
+  font-size: 0.8rem;
+}
+
+.remove-button:hover {
+  background-color: #c53030;
+  transform: translateY(-1px);
+}
+
+.add-button:disabled,
+.repeat-button:disabled {
   background-color: #a0aec0;
   cursor: not-allowed;
   transform: none;
@@ -150,12 +181,13 @@ body {
 }
 
 .add-button:active,
-.submit-button:active {
+.submit-button:active,
+.repeat-button:active,
+.remove-button:active {
   transform: translateY(1px);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Error Styling */
 .input-cell .error {
   border-color: #e53e3e;
 }
@@ -174,7 +206,6 @@ body {
   white-space: nowrap;
 }
 
-/* Modal Styling */
 .modal {
   position: fixed;
   top: 0;
@@ -229,11 +260,10 @@ body {
   justify-content: center;
 }
 
-/* Responsive Styles */
 @media (max-width: 1500px) {
   .checklists-container {
-    margin-left: 150px; /* Consistent with desktop view */
-    max-width: calc(100% - 200px); /* Adjusted for better spacing */
+    margin-left: 150px; 
+    max-width: calc(100% - 200px); 
   }
 }
 
@@ -253,12 +283,16 @@ body {
     flex: 1 1 25%;
     min-width: 150px;
   }
+  
+  .action-cell {
+    flex: 1 1 15%;
+    min-width: 100px;
+  }
 }
 
-/* Tablet breakpoint - sidebar still showing but narrower content */
 @media (max-width: 991px) {
   .checklists-container {
-    margin-left: 0; /* Reset margin when sidebar is hidden/toggled */
+    margin-left: 0; 
     max-width: 100%;
   }
 }
@@ -310,7 +344,8 @@ body {
   }
   
   .add-button, 
-  .submit-button {
+  .submit-button,
+  .repeat-button {
     width: 100%;
     margin-bottom: 10px;
   }

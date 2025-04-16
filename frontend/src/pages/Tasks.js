@@ -319,7 +319,6 @@ const Home = () => {
     }
   };
 
-  // Helper function to get count for badge notifications
   const getCountForSubTab = (tabType, subTabType) => {
     if (tabType === "checklist") {
       switch (subTabType) {
@@ -341,7 +340,6 @@ const Home = () => {
     return 0;
   };
 
-  // Get the display title based on active tab
   const getHeaderTitle = () => {
     switch (activeTab) {
       case "checklist": return "Checklist";
@@ -352,7 +350,6 @@ const Home = () => {
   };
 
   const renderSubTabs = () => {
-    // New order: today, pending (delayed), upcoming, completed
     const subTabs = [
       { id: "today", label: "Today's" },
       { id: "pending", label: "Delayed" },

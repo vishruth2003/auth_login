@@ -6,16 +6,18 @@ import Sidebar from "./Sidebar.js";
 const Delegations = () => {
   const [employees, setEmployees] = useState([]);
   const [customers, setCustomers] = useState([]);
-  const [formData, setFormData] = useState({
-    empname: "",
-    dept: "",
-    custname: "",
-    task: "",
-    planneddate: "",
-  });
+  const [formRows, setFormRows] = useState([
+    {
+      empname: "",
+      dept: "",
+      custname: "",
+      task: "",
+      planneddate: "",
+    }
+  ]);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [formErrors, setFormErrors] = useState({});
+  const [formErrors, setFormErrors] = useState([{}]);
 
   useEffect(() => {
     document.title = "Delegations";
@@ -42,49 +44,52 @@ const Delegations = () => {
     }
   };
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    if (formErrors[e.target.name]) {
-      setFormErrors({...formErrors, [e.target.name]: null});
+  const handleChange = (index, e) => {
+    const updatedRows = [...formRows];
+    updatedRows[index] = { ...updatedRows[index], [e.target.name]: e.target.value };
+    setFormRows(updatedRows);
+
+    if (formErrors[index] && formErrors[index][e.target.name]) {
+      const updatedErrors = [...formErrors];
+      updatedErrors[index] = {...updatedErrors[index], [e.target.name]: null};
+      setFormErrors(updatedErrors);
     }
   };
 
-  const handleEmployeeChange = (e) => {
+  const handleEmployeeChange = (index, e) => {
     const selectedUser = employees.find(emp => emp.userName === e.target.value);
-    setFormData({
-      ...formData,
-      empname: selectedUser ? selectedUser.userName : "", 
-      dept: selectedUser ? selectedUser.department : "", 
-    });
     
-    if (formErrors.empname) {
-      setFormErrors({...formErrors, empname: null});
+    const updatedRows = [...formRows];
+    updatedRows[index] = { 
+      ...updatedRows[index], 
+      empname: selectedUser ? selectedUser.userName : "", 
+      dept: selectedUser ? selectedUser.department : ""
+    };
+    setFormRows(updatedRows);
+    
+    if (formErrors[index] && formErrors[index].empname) {
+      const updatedErrors = [...formErrors];
+      updatedErrors[index] = {...updatedErrors[index], empname: null};
+      setFormErrors(updatedErrors);
     }
   };
 
   const validateForm = () => {
-    const errors = {};
-    let isValid = true;
-
-    if (!formData.empname) {
-      errors.empname = "Required";
-      isValid = false;
-    }
-    if (!formData.custname) {
-      errors.custname = "Required";
-      isValid = false;
-    }
-    if (!formData.task) {
-      errors.task = "Required";
-      isValid = false;
-    }
-    if (!formData.planneddate) {
-      errors.planneddate = "Required";
-      isValid = false;
-    }
-
-    setFormErrors(errors);
-    return isValid;
+    const allErrors = formRows.map(row => {
+      const errors = {};
+      
+      if (!row.empname) errors.empname = "Required";
+      if (!row.custname) errors.custname = "Required";
+      if (!row.task) errors.task = "Required";
+      if (!row.planneddate) errors.planneddate = "Required";
+      
+      return errors;
+    });
+    
+    setFormErrors(allErrors);
+    
+    // Check if any row has errors
+    return allErrors.every(errors => Object.keys(errors).length === 0);
   };
 
   const handleSubmit = async (e) => {
@@ -97,31 +102,63 @@ const Delegations = () => {
     setLoading(true);
 
     try {
-      const dataToSend = {
-        ...formData,
-        startdate: new Date().toISOString(), 
-      };
+      // Add current date as start date for all rows
+      const currentDate = new Date().toISOString();
+      const dataToSend = formRows.map(row => ({
+        ...row,
+        startdate: currentDate,
+      }));
 
-      await axios.post("http://localhost:5000/api/delegations/create-task", dataToSend);
+      await axios.post("http://localhost:5000/api/delegations/create-multiple-tasks", { tasks: dataToSend });
       setShowModal(true);
-      setFormData({ empname: "", dept: "", custname: "", task: "", planneddate: "" });
+      
+      // Reset form after successful submission
+      setFormRows([{ 
+        empname: "", 
+        dept: "", 
+        custname: "", 
+        task: "", 
+        planneddate: "" 
+      }]);
+      setFormErrors([{}]);
+      
       setTimeout(() => setShowModal(false), 2000);
     } catch (error) {
-      console.error("Error submitting task:", error);
+      console.error("Error submitting tasks:", error);
     } finally {
       setLoading(false);
     }
   };
 
   const handleReset = () => {
-    setFormData({ 
+    setFormRows([{ 
       empname: "", 
       dept: "", 
       custname: "", 
       task: "", 
       planneddate: "" 
-    });
-    setFormErrors({});
+    }]);
+    setFormErrors([{}]);
+  };
+
+  const handleRepeat = () => {
+    setFormRows([...formRows, {
+      empname: "",
+      dept: "",
+      custname: "",
+      task: "",
+      planneddate: "",
+    }]);
+    setFormErrors([...formErrors, {}]);
+  };
+
+  const removeRow = (index) => {
+    if (formRows.length > 1) {
+      const updatedRows = formRows.filter((_, i) => i !== index);
+      const updatedErrors = formErrors.filter((_, i) => i !== index);
+      setFormRows(updatedRows);
+      setFormErrors(updatedErrors);
+    }
   };
 
   return (
@@ -134,7 +171,7 @@ const Delegations = () => {
           <div className="modal">
             <div className="modal-content">
               <div className="success-icon">✓</div>
-              <p>Delegation created successfully!</p>
+              <p>Delegations created successfully!</p>
             </div>
           </div>
         )}
@@ -146,74 +183,88 @@ const Delegations = () => {
             <div className="header-cell">CUSTOMER NAME</div>
             <div className="header-cell">TASK</div>
             <div className="header-cell date-cell">PLANNED DATE</div>
+            {formRows.length > 1 && <div className="header-cell action-cell">ACTION</div>}
           </div>
           
-          <div className="horizontal-form-inputs">
-            <div className="input-cell" data-label="EMPLOYEE NAME">
-              <select
-                name="empname"
-                value={formData.empname}
-                onChange={handleEmployeeChange}
-                className={formErrors.empname ? "error" : ""}
-              >
-                <option value="">Select...</option>
-                {employees.map((emp, index) => (
-                  <option key={index} value={emp.userName}>{emp.userName}</option>
-                ))}
-              </select>
-              {formErrors.empname && <div className="error-tooltip">{formErrors.empname}</div>}
+          {formRows.map((formData, rowIndex) => (
+            <div className="horizontal-form-inputs" key={rowIndex}>
+              <div className="input-cell" data-label="EMPLOYEE NAME">
+                <select
+                  name="empname"
+                  value={formData.empname}
+                  onChange={(e) => handleEmployeeChange(rowIndex, e)}
+                  className={formErrors[rowIndex]?.empname ? "error" : ""}
+                >
+                  <option value="">Select...</option>
+                  {employees.map((emp, index) => (
+                    <option key={index} value={emp.userName}>{emp.userName}</option>
+                  ))}
+                </select>
+                {formErrors[rowIndex]?.empname && <div className="error-tooltip">{formErrors[rowIndex].empname}</div>}
+              </div>
+              
+              <div className="input-cell" data-label="DEPARTMENT">
+                <input
+                  type="text"
+                  name="dept"
+                  value={formData.dept}
+                  placeholder="Department will auto-populate"
+                  readOnly
+                />
+              </div>
+              
+              <div className="input-cell" data-label="CUSTOMER NAME">
+                <select
+                  name="custname"
+                  value={formData.custname}
+                  onChange={(e) => handleChange(rowIndex, e)}
+                  className={formErrors[rowIndex]?.custname ? "error" : ""}
+                >
+                  <option value="">Select...</option>
+                  {customers.map((customer, index) => (
+                    <option key={index} value={customer.custname}>{customer.custname}</option>
+                  ))}
+                </select>
+                {formErrors[rowIndex]?.custname && <div className="error-tooltip">{formErrors[rowIndex].custname}</div>}
+              </div>
+              
+              <div className="input-cell" data-label="TASK">
+                <input
+                  type="text"
+                  name="task"
+                  value={formData.task}
+                  onChange={(e) => handleChange(rowIndex, e)}
+                  placeholder="Enter task description"
+                  className={formErrors[rowIndex]?.task ? "error" : ""}
+                />
+                {formErrors[rowIndex]?.task && <div className="error-tooltip">{formErrors[rowIndex].task}</div>}
+              </div>
+              
+              <div className="input-cell date-cell" data-label="PLANNED DATE">
+                <input
+                  type="date"
+                  name="planneddate"
+                  value={formData.planneddate}
+                  onChange={(e) => handleChange(rowIndex, e)}
+                  className={formErrors[rowIndex]?.planneddate ? "error" : ""}
+                />
+                {formErrors[rowIndex]?.planneddate && <div className="error-tooltip">{formErrors[rowIndex].planneddate}</div>}
+              </div>
+              
+              {formRows.length > 1 && (
+                <div className="input-cell action-cell" data-label="ACTION">
+                  <button type="button" className="remove-button" onClick={() => removeRow(rowIndex)}>
+                    Remove
+                  </button>
+                </div>
+              )}
             </div>
-            
-            <div className="input-cell" data-label="DEPARTMENT">
-              <input
-                type="text"
-                name="dept"
-                value={formData.dept}
-                placeholder="Department will auto-populate"
-                readOnly
-              />
-            </div>
-            
-            <div className="input-cell" data-label="CUSTOMER NAME">
-              <select
-                name="custname"
-                value={formData.custname}
-                onChange={handleChange}
-                className={formErrors.custname ? "error" : ""}
-              >
-                <option value="">Select...</option>
-                {customers.map((customer, index) => (
-                  <option key={index} value={customer.custname}>{customer.custname}</option>
-                ))}
-              </select>
-              {formErrors.custname && <div className="error-tooltip">{formErrors.custname}</div>}
-            </div>
-            
-            <div className="input-cell" data-label="TASK">
-              <input
-                type="text"
-                name="task"
-                value={formData.task}
-                onChange={handleChange}
-                placeholder="Enter task description"
-                className={formErrors.task ? "error" : ""}
-              />
-              {formErrors.task && <div className="error-tooltip">{formErrors.task}</div>}
-            </div>
-            
-            <div className="input-cell date-cell" data-label="PLANNED DATE">
-              <input
-                type="date"
-                name="planneddate"
-                value={formData.planneddate}
-                onChange={handleChange}
-                className={formErrors.planneddate ? "error" : ""}
-              />
-              {formErrors.planneddate && <div className="error-tooltip">{formErrors.planneddate}</div>}
-            </div>
-          </div>
+          ))}
           
           <div className="horizontal-form-actions">
+            <button type="button" className="repeat-button" onClick={handleRepeat}>
+              Repeat
+            </button>
             <button type="button" className="add-button" onClick={handleSubmit} disabled={loading}>
               {loading ? "Processing..." : "Add"}
             </button>

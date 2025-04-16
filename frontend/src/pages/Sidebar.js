@@ -21,24 +21,20 @@ const Sidebar = ({ onStateChange }) => {
     }
   };
 
-  // Handle responsive behavior
   useEffect(() => {
     const handleResize = () => {
       const desktop = window.innerWidth >= 992;
       setIsDesktop(desktop);
       
-      // If switching to desktop, ensure sidebar state is managed properly
       if (desktop && !isOpen) {
         if (onStateChange) {
-          onStateChange(true); // Notify parent that sidebar is effectively "open" on desktop
+          onStateChange(true); 
         }
       }
     };
 
-    // Initial check
     handleResize();
     
-    // Add resize event listener
     window.addEventListener("resize", handleResize);
     
     return () => {
@@ -46,7 +42,6 @@ const Sidebar = ({ onStateChange }) => {
     };
   }, [isOpen, onStateChange]);
 
-  // Close sidebar when clicking outside (mobile/tablet only)
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -73,7 +68,6 @@ const Sidebar = ({ onStateChange }) => {
 
   return (
     <>
-      {/* Hamburger Menu Button - Only for mobile/tablet */}
       <div 
         className="hamburger-menu" 
         onClick={toggleSidebar}
@@ -86,7 +80,6 @@ const Sidebar = ({ onStateChange }) => {
         </div>
       </div>
 
-      {/* Overlay - only used on mobile/tablet */}
       <div 
         className={`sidebar-overlay ${!isDesktop && isOpen ? "active" : ""}`}
         onClick={() => {
@@ -99,7 +92,6 @@ const Sidebar = ({ onStateChange }) => {
         }}
       ></div>
 
-      {/* Sidebar - always visible on desktop */}
       <div 
         className={`sidebar ${isOpen || isDesktop ? "open" : ""}`}
         ref={sidebarRef}

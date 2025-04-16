@@ -13,7 +13,7 @@
   align-items: center;
   min-height: 100vh;
   background-color: #f8f9fa;
-  padding: 40px 20px; /* Reduced padding on smaller screens */
+  padding: 40px 20px; 
 }
 
 .signup-content {
@@ -146,7 +146,6 @@
   }
 }
 
-/* Tablet Responsive Styles */
 @media screen and (max-width: 1024px) {
   .signup-form-container {
     padding: 40px 50px;
@@ -158,7 +157,6 @@
   }
 }
 
-/* Mobile Responsive Styles */
 @media screen and (max-width: 768px) {
   .signup-content {
     flex-direction: column-reverse;
@@ -198,7 +196,6 @@
   }
 }
 
-/* Small Mobile Devices */
 @media screen and (max-width: 480px) {
   .signup-container {
     padding: 20px 10px;

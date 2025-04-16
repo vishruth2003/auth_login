@@ -21,7 +21,6 @@ body {
   position: relative;
 }
 
-/* Horizontal Form Container */
 .horizontal-form-container {
   background-color: white;
   border-radius: 8px;
@@ -31,7 +30,6 @@ body {
   margin-left: 110px;
 }
 
-/* Form Header */
 .horizontal-form-header {
   display: flex;
   background-color: #f8fafd;
@@ -53,7 +51,11 @@ body {
   flex: 0.8;
 }
 
-/* Form Inputs Row */
+.action-cell {
+  flex: 0.6;
+  text-align: center;
+}
+
 .horizontal-form-inputs {
   display: flex;
   border-bottom: 1px solid #e9ecef;
@@ -98,7 +100,6 @@ body {
   font-style: italic;
 }
 
-/* Form Actions */
 .horizontal-form-actions {
   display: flex;
   justify-content: flex-end;
@@ -109,7 +110,9 @@ body {
 }
 
 .add-button, 
-.reset-button {
+.reset-button,
+.repeat-button,
+.remove-button {
   padding: 12px 24px;
   border: none;
   border-radius: 6px;
@@ -131,6 +134,17 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+.repeat-button {
+  background-color: #38a169;
+  color: white;
+}
+
+.repeat-button:hover {
+  background-color: #2f855a;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
 .reset-button {
   background-color: #718096;
   color: white;
@@ -142,7 +156,20 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.add-button:disabled {
+.remove-button {
+  background-color: #e53e3e;
+  color: white;
+  padding: 8px 16px;
+  font-size: 0.8rem;
+}
+
+.remove-button:hover {
+  background-color: #c53030;
+  transform: translateY(-1px);
+}
+
+.add-button:disabled,
+.repeat-button:disabled {
   background-color: #a0aec0;
   cursor: not-allowed;
   transform: none;
@@ -150,12 +177,13 @@ body {
 }
 
 .add-button:active,
-.reset-button:active {
+.reset-button:active,
+.repeat-button:active,
+.remove-button:active {
   transform: translateY(1px);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Error Styling */
 .input-cell .error {
   border-color: #e53e3e;
 }
@@ -174,7 +202,6 @@ body {
   white-space: nowrap;
 }
 
-/* Modal Styling */
 .modal {
   position: fixed;
   top: 0;
@@ -229,7 +256,6 @@ body {
   justify-content: center;
 }
 
-/* Responsive Styles */
 @media (max-width: 1500px) {
   .delegations-container {
     margin-left: 140px;
@@ -252,6 +278,11 @@ body {
   .date-cell {
     flex: 1 1 25%;
     min-width: 150px;
+  }
+  
+  .action-cell {
+    flex: 1 1 15%;
+    min-width: 100px;
   }
 }
 
@@ -310,7 +341,8 @@ body {
   }
   
   .add-button, 
-  .reset-button {
+  .reset-button,
+  .repeat-button {
     width: 100%;
     margin-bottom: 10px;
   }
