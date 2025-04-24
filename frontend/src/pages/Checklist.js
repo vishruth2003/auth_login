@@ -46,27 +46,34 @@ const Checklists = () => {
     }
   };
 
-  const handleChange = (index, e) => {
+  const handleChange = (e, index) => {
+    const { name, value } = e.target;
     const updatedRows = [...formRows];
-    updatedRows[index] = { ...updatedRows[index], [e.target.name]: e.target.value };
+    updatedRows[index] = { ...updatedRows[index], [name]: value };
     setFormRows(updatedRows);
 
-    if (formErrors[index] && formErrors[index][e.target.name]) {
+    // Clear error for this field if it exists
+    if (formErrors[index] && formErrors[index][name]) {
       const updatedErrors = [...formErrors];
-      updatedErrors[index] = {...updatedErrors[index], [e.target.name]: null};
+      updatedErrors[index] = { ...updatedErrors[index], [name]: null };
       setFormErrors(updatedErrors);
     }
   };
 
-  const handleEmployeeChange = async (index, e) => {
+  const handleEmployeeChange = async (e, index) => {
     const empname = e.target.value;
+    
+    // Debug logs - you can remove these later
+    console.log("Selected employee:", empname);
+    
     const updatedRows = [...formRows];
     updatedRows[index] = { ...updatedRows[index], empname };
     setFormRows(updatedRows);
 
+    // Clear error for this field if it exists
     if (formErrors[index] && formErrors[index].empname) {
       const updatedErrors = [...formErrors];
-      updatedErrors[index] = {...updatedErrors[index], empname: null};
+      updatedErrors[index] = { ...updatedErrors[index], empname: null };
       setFormErrors(updatedErrors);
     }
 
@@ -74,21 +81,27 @@ const Checklists = () => {
       try {
         const response = await axios.get(`http://localhost:5000/auth/users/${empname}/department`);
         const updatedRowsWithDept = [...formRows];
-        updatedRowsWithDept[index] = {
-          ...updatedRowsWithDept[index],
-          department: response.data.department,
+        updatedRowsWithDept[index] = { 
+          ...updatedRowsWithDept[index], 
+          empname, // Explicitly setting empname again
+          department: response.data.department 
         };
         setFormRows(updatedRowsWithDept);
+        
+        // Debug logs - you can remove these later
+        console.log("Department fetched:", response.data.department);
+        console.log("Updated row:", updatedRowsWithDept[index]);
       } catch (error) {
         console.error("Error fetching department:", error);
       }
     } else {
-      const updatedRowsNoDept = [...formRows];
-      updatedRowsNoDept[index] = {
-        ...updatedRowsNoDept[index],
-        department: "",
+      const updatedRowsWithEmptyDept = [...formRows];
+      updatedRowsWithEmptyDept[index] = { 
+        ...updatedRowsWithEmptyDept[index], 
+        empname, // Explicitly setting empname again
+        department: "" 
       };
-      setFormRows(updatedRowsNoDept);
+      setFormRows(updatedRowsWithEmptyDept);
     }
   };
 
@@ -113,10 +126,10 @@ const Checklists = () => {
     setFormErrors(allErrors);
     
     // Check if any row has errors
-    return allErrors.every(errors => Object.keys(errors).length === 0);
+    return allErrors.every(rowErrors => Object.keys(rowErrors).length === 0);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) {
@@ -125,34 +138,63 @@ const Checklists = () => {
 
     setLoading(true);
     
-    // Submit all form rows at once
-    axios.post("http://localhost:5000/api/create-multiple-checklists", { checklists: formRows })
-      .then(() => {
-        setShowModal(true);
+    try {
+      // Submit all form rows as separate checklist entries
+      await Promise.all(
+        formRows.map(rowData => 
+          axios.post("http://localhost:5000/api/create-checklist", rowData)
+        )
+      );
+      
+      setShowModal(true);
+      
+      // Reset form after successful submission
+      setFormRows([{
+        empname: "",
+        department: "",
+        custname: "",
+        frequency: "",
+        startdate: "",
+        enddate: "",
+        taskname: ""
+      }]);
+      
+      setFormErrors([{}]);
+      
+      setTimeout(() => {
+        setShowModal(false);
+      }, 2000);
+    } catch (error) {
+      console.error("Error submitting checklists:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        // Reset form with a single empty row
-        setFormRows([{
-          empname: "",
-          department: "",
-          custname: "",
-          frequency: "",
-          startdate: "",
-          enddate: "",
-          taskname: ""
-        }]);
-        
-        setFormErrors([{}]);
+  const addFormRow = () => {
+    setFormRows([...formRows, {
+      empname: "",
+      department: "",
+      custname: "",
+      frequency: "",
+      startdate: "",
+      enddate: "",
+      taskname: ""
+    }]);
+    
+    setFormErrors([...formErrors, {}]);
+  };
 
-        setTimeout(() => {
-          setShowModal(false);
-        }, 2000);
-      })
-      .catch((error) => {
-        console.error("Error submitting checklists:", error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+  const removeFormRow = (index) => {
+    if (formRows.length > 1) {
+      const updatedRows = [...formRows];
+      updatedRows.splice(index, 1);
+      setFormRows(updatedRows);
+      
+      const updatedErrors = [...formErrors];
+      updatedErrors.splice(index, 1);
+      setFormErrors(updatedErrors);
+    }
   };
 
   const resetForm = () => {
@@ -168,27 +210,8 @@ const Checklists = () => {
     setFormErrors([{}]);
   };
 
-  const handleRepeat = () => {
-    setFormRows([...formRows, {
-      empname: "",
-      department: "",
-      custname: "",
-      frequency: "",
-      startdate: "",
-      enddate: "",
-      taskname: ""
-    }]);
-    setFormErrors([...formErrors, {}]);
-  };
-
-  const removeRow = (index) => {
-    if (formRows.length > 1) {
-      const updatedRows = formRows.filter((_, i) => i !== index);
-      const updatedErrors = formErrors.filter((_, i) => i !== index);
-      setFormRows(updatedRows);
-      setFormErrors(updatedErrors);
-    }
-  };
+  // Debug log - you can remove this later
+  console.log("Current form rows:", formRows);
 
   return (
     <div>
@@ -200,7 +223,7 @@ const Checklists = () => {
           <div className="modal">
             <div className="modal-content">
               <div className="success-icon">✓</div>
-              <p>Checklists created successfully!</p>
+              <p>{formRows.length > 1 ? "Checklists created successfully!" : "Checklist created successfully!"}</p>
             </div>
           </div>
         )}
@@ -214,31 +237,33 @@ const Checklists = () => {
             <div className="header-cell">FREQUENCY</div>
             <div className="header-cell date-cell">START DATE</div>
             <div className="header-cell date-cell">END DATE</div>
-            {formRows.length > 1 && <div className="header-cell action-cell">ACTION</div>}
+            <div className="header-cell action-cell">ACTION</div>
           </div>
           
-          {formRows.map((formData, rowIndex) => (
-            <div className="horizontal-form-inputs" key={rowIndex}>
+          {formRows.map((row, index) => (
+            <div className="horizontal-form-inputs" key={index}>
               <div className="input-cell" data-label="EMPLOYEE NAME">
                 <select
                   name="empname"
-                  value={formData.empname}
-                  onChange={(e) => handleEmployeeChange(rowIndex, e)}
-                  className={formErrors[rowIndex]?.empname ? "error" : ""}
+                  value={row.empname}
+                  onChange={(e) => handleEmployeeChange(e, index)}
+                  className={formErrors[index]?.empname ? "error" : ""}
                 >
                   <option value="">Select...</option>
-                  {usernames.map((user, index) => (
-                    <option key={index} value={user.userName}>{user.userName}</option>
+                  {usernames.map((user, userIndex) => (
+                    <option key={userIndex} value={user.userName}>
+                      {user.userName}
+                    </option>
                   ))}
                 </select>
-                {formErrors[rowIndex]?.empname && <div className="error-tooltip">{formErrors[rowIndex].empname}</div>}
+                {formErrors[index]?.empname && <div className="error-tooltip">{formErrors[index].empname}</div>}
               </div>
               
               <div className="input-cell" data-label="DEPARTMENT">
                 <input
                   type="text"
                   name="department"
-                  value={formData.department}
+                  value={row.department || ""}
                   placeholder="Department will auto-populate"
                   readOnly
                 />
@@ -248,84 +273,103 @@ const Checklists = () => {
                 <input
                   type="text"
                   name="taskname"
-                  value={formData.taskname}
-                  onChange={(e) => handleChange(rowIndex, e)}
+                  value={row.taskname || ""}
+                  onChange={(e) => handleChange(e, index)}
                   placeholder="Enter Task Name"
-                  className={formErrors[rowIndex]?.taskname ? "error" : ""}
+                  className={formErrors[index]?.taskname ? "error" : ""}
                 />
-                {formErrors[rowIndex]?.taskname && <div className="error-tooltip">{formErrors[rowIndex].taskname}</div>}
+                {formErrors[index]?.taskname && <div className="error-tooltip">{formErrors[index].taskname}</div>}
               </div>
               
               <div className="input-cell" data-label="CUSTOMER NAME">
                 <select
                   name="custname"
-                  value={formData.custname}
-                  onChange={(e) => handleChange(rowIndex, e)}
-                  className={formErrors[rowIndex]?.custname ? "error" : ""}
+                  value={row.custname || ""}
+                  onChange={(e) => handleChange(e, index)}
+                  className={formErrors[index]?.custname ? "error" : ""}
                 >
                   <option value="">Select...</option>
-                  {customers.map((customer, index) => (
-                    <option key={index} value={customer.custname}>{customer.custname}</option>
+                  {customers.map((customer, custIndex) => (
+                    <option key={custIndex} value={customer.custname}>
+                      {customer.custname}
+                    </option>
                   ))}
                 </select>
-                {formErrors[rowIndex]?.custname && <div className="error-tooltip">{formErrors[rowIndex].custname}</div>}
+                {formErrors[index]?.custname && <div className="error-tooltip">{formErrors[index].custname}</div>}
               </div>
               
               <div className="input-cell" data-label="FREQUENCY">
                 <select
                   name="frequency"
-                  value={formData.frequency}
-                  onChange={(e) => handleChange(rowIndex, e)}
-                  className={formErrors[rowIndex]?.frequency ? "error" : ""}
+                  value={row.frequency || ""}
+                  onChange={(e) => handleChange(e, index)}
+                  className={formErrors[index]?.frequency ? "error" : ""}
                 >
                   <option value="">Select...</option>
                   <option value="Daily">Daily</option>
                   <option value="Weekly">Weekly</option>
                   <option value="Monthly">Monthly</option>
                 </select>
-                {formErrors[rowIndex]?.frequency && <div className="error-tooltip">{formErrors[rowIndex].frequency}</div>}
+                {formErrors[index]?.frequency && <div className="error-tooltip">{formErrors[index].frequency}</div>}
               </div>
               
               <div className="input-cell date-cell" data-label="START DATE">
                 <input
                   type="date"
                   name="startdate"
-                  value={formData.startdate}
-                  onChange={(e) => handleChange(rowIndex, e)}
-                  className={formErrors[rowIndex]?.startdate ? "error" : ""}
+                  value={row.startdate || ""}
+                  onChange={(e) => handleChange(e, index)}
+                  className={formErrors[index]?.startdate ? "error" : ""}
                 />
-                {formErrors[rowIndex]?.startdate && <div className="error-tooltip">{formErrors[rowIndex].startdate}</div>}
+                {formErrors[index]?.startdate && <div className="error-tooltip">{formErrors[index].startdate}</div>}
               </div>
               
               <div className="input-cell date-cell" data-label="END DATE">
                 <input
                   type="date"
                   name="enddate"
-                  value={formData.enddate}
-                  onChange={(e) => handleChange(rowIndex, e)}
-                  className={formErrors[rowIndex]?.enddate ? "error" : ""}
+                  value={row.enddate || ""}
+                  onChange={(e) => handleChange(e, index)}
+                  className={formErrors[index]?.enddate ? "error" : ""}
                 />
-                {formErrors[rowIndex]?.enddate && <div className="error-tooltip">{formErrors[rowIndex].enddate}</div>}
+                {formErrors[index]?.enddate && <div className="error-tooltip">{formErrors[index].enddate}</div>}
               </div>
               
-              {formRows.length > 1 && (
-                <div className="input-cell action-cell" data-label="ACTION">
-                  <button type="button" className="remove-button" onClick={() => removeRow(rowIndex)}>
+              <div className="input-cell action-cell" data-label="ACTION">
+                {formRows.length > 1 && (
+                  <button 
+                    type="button" 
+                    className="remove-button"
+                    onClick={() => removeFormRow(index)}
+                  >
                     Remove
                   </button>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           ))}
           
           <div className="horizontal-form-actions">
-            <button type="button" className="repeat-button" onClick={handleRepeat}>
+            <button 
+              type="button" 
+              className="repeat-button" 
+              onClick={addFormRow}
+            >
               Repeat
             </button>
-            <button type="button" className="add-button" onClick={handleSubmit} disabled={loading}>
-              {loading ? "Processing..." : "Add"}
+            <button 
+              type="button" 
+              className="add-button" 
+              onClick={handleSubmit} 
+              disabled={loading}
+            >
+              {loading ? "Processing..." : "Add New Task" + (formRows.length > 1 ? "s" : "")}
             </button>
-            <button type="button" className="submit-button" onClick={resetForm}>
+            <button 
+              type="button" 
+              className="submit-button" 
+              onClick={resetForm}
+            >
               Reset
             </button>
           </div>

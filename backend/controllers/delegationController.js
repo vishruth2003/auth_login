@@ -2,7 +2,7 @@ const { User, Delegation } = require("../models");
 
 const createDelegation = async (req, res) => {
   try {
-    const { userName, custName, task, plannedDate, startdate } = req.body;
+    const { userName, custname, task, plannedDate, startdate } = req.body;
 
     const user = await User.findOne({ where: { userName } });
 
@@ -11,9 +11,9 @@ const createDelegation = async (req, res) => {
     }
 
     const delegation = await Delegation.create({
-      userName,
+      empname: user.userName,       // Fixed field
       dept: user.department,
-      custName,
+      custname,                     // Fixed field
       task,
       planneddate: plannedDate,
       startdate: startdate || new Date(), 
@@ -22,6 +22,57 @@ const createDelegation = async (req, res) => {
     res.status(201).json({ message: "Delegation created successfully", delegation });
   } catch (error) {
     res.status(500).json({ message: "Error creating delegation", error: error.message });
+  }
+};
+
+// New function to handle multiple delegations
+const createMultipleDelegations = async (req, res) => {
+  try {
+    const delegations = req.body;
+    
+    if (!Array.isArray(delegations)) {
+      return res.status(400).json({ message: "Expected an array of delegations" });
+    }
+
+    const createdDelegations = [];
+    const errors = [];
+
+    for (const delegation of delegations) {
+      try {
+        const { empname, dept, custname, task, planneddate, startdate } = delegation;
+
+        const newDelegation = await Delegation.create({
+          empname,          // Fixed field
+          dept,
+          custname,         // Fixed field
+          task,
+          planneddate,
+          startdate: startdate || new Date(),
+        });
+
+        createdDelegations.push(newDelegation);
+      } catch (error) {
+        errors.push({
+          delegation: delegation,
+          error: error.message
+        });
+      }
+    }
+
+    if (errors.length > 0) {
+      return res.status(207).json({
+        message: "Some delegations failed to create",
+        created: createdDelegations,
+        errors: errors
+      });
+    }
+
+    res.status(201).json({ 
+      message: "All delegations created successfully", 
+      delegations: createdDelegations 
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error creating delegations", error: error.message });
   }
 };
 
@@ -84,7 +135,6 @@ const updateDelegationProgress = async (req, res) => {
 
     const totalWorkingDays = getWorkingDays(startDate, endDate);
 
-    // Prevent updates on weekends
     const isWeekend = (date) => {
       const day = date.getDay();
       return day === 0 || day === 6; 
@@ -134,4 +184,11 @@ const updateRemarks = async (req, res) => {
   }
 };
 
-module.exports = { createDelegation, completeDelegation, getDelegationsByUser, updateDelegationProgress, updateRemarks };
+module.exports = { 
+  createDelegation, 
+  createMultipleDelegations, 
+  completeDelegation, 
+  getDelegationsByUser, 
+  updateDelegationProgress, 
+  updateRemarks 
+};

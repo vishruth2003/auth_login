@@ -75,4 +75,7 @@ router.put("/:id/progress", delegationController.updateDelegationProgress);
 
 router.put("/:id/remarks", delegationController.updateRemarks);
 
+router.post('/create-multiple-tasks', delegationController.createMultipleDelegations);
+
+
 module.exports = router;
