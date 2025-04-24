@@ -24,7 +24,12 @@ const Login = () => {
         userPassword: password,
       });
 
+      // Store token and email in localStorage
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("userEmail", email);
+
+      // Ensure we have an active session
+      sessionStorage.setItem("appSession", "active");
 
       if (response.data.isNewUser) {
         navigate("/profile");

@@ -18,14 +18,10 @@
   align-items: center;
 }
 
-.navbar-left {
-  display: flex;
-  align-items: center;
-}
-
 .navbar-right {
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 .logo-link {
@@ -43,79 +39,287 @@
   transform: scale(1.05);
 }
 
-.logout-btn {
-  background-color: #f8f9fa;
-  color: #dc3545;
-  border: 1px solid #dc3545;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
+/* Enhanced User Avatar Button */
+.user-avatar-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #dc3545, #e83e8c);
+  color: white;
+  border: 2px solid white;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
-  min-width: 100px; /* Ensures minimum width to fit content */
-  white-space: nowrap; /* Prevents text from wrapping */
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(220, 53, 69, 0.3);
+  position: relative;
 }
 
-.logout-btn:hover {
+.user-avatar-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(220, 53, 69, 0.4);
+}
+
+.user-avatar-btn:active {
+  transform: translateY(0);
+}
+
+.user-avatar-btn.active {
+  border-color: #f8d7da;
+}
+
+.user-initial {
+  font-size: 18px;
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Enhanced User Dropdown */
+.user-dropdown {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  width: 300px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  z-index: 1001;
+  border: 1px solid #f1f1f1;
+  transform-origin: top right;
+  animation: dropdownAppear 0.25s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes dropdownAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Enhanced dropdown header with cover photo */
+.dropdown-header {
+  height: 70px;
+  background: linear-gradient(135deg, #dc3545, #e83e8c);
+  position: relative;
+}
+
+.user-info {
+  padding: 20px;
+  position: relative;
+  padding-top: 40px;
+}
+
+.user-avatar-large {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #dc3545, #e83e8c);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 600;
+  position: absolute;
+  top: -35px;
+  left: 20px;
+  border: 4px solid white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+  margin-left: 80px;
+}
+
+.user-email {
+  font-size: 14px;
+  color: #666;
+  word-break: break-all;
+  margin-left: 80px;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background-color: #f1f1f1;
+  margin: 0;
+}
+
+/* Menu items */
+.dropdown-menu {
+  padding: 8px 0;
+}
+
+.dropdown-item {
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  color: #444;
+  font-weight: 500;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: #dc3545;
+}
+
+.dropdown-item i {
+  margin-right: 12px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdown-item span {
+  font-size: 14px;
+}
+
+.logout-btn-dropdown {
+  width: 100%;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border: none;
+  border-top: 1px solid #eee;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.25s ease;
+  color: #dc3545;
+  font-weight: 600;
+  margin-top: 5px;
+  font-size: 14px;
+  justify-content: center;
+  border-radius: 0 0 12px 12px;
+}
+
+.logout-btn-dropdown:hover {
   background-color: #dc3545;
   color: white;
 }
 
-.logout-text {
-  display: inline-block;
+.logout-btn-dropdown:hover .logout-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4'/%3E%3Cpolyline points='16 17 21 12 16 7'/%3E%3Cline x1='21' y1='12' x2='9' y2='12'/%3E%3C/svg%3E");
 }
 
 .logout-icon {
   display: inline-block;
-  flex-shrink: 0; /* Prevent icon from shrinking */
+  flex-shrink: 0;
   width: 18px;
   height: 18px;
   margin-right: 8px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4'/%3E%3Cpolyline points='16 17 21 12 16 7'/%3E%3Cline x1='21' y1='12' x2='9' y2='12'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23dc3545' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4'/%3E%3Cpolyline points='16 17 21 12 16 7'/%3E%3Cline x1='21' y1='12' x2='9' y2='12'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: all 0.25s ease;
+}
+
+/* User status indicator */
+.user-status {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #28a745;
+  margin-left: 8px;
+  box-shadow: 0 0 0 2px white;
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+}
+
+/* Menu icons */
+.icon-profile {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='12' cy='7' r='4'/%3E%3C/svg%3E");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 }
 
-/* Medium screens (laptops) */
+.icon-settings {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3Cpath d='M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.icon-help {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3'/%3E%3Cline x1='12' y1='17' x2='12.01' y2='17'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Greeting in dropdown */
+.greeting {
+  font-size: 13px;
+  color: #dc3545;
+  margin-bottom: 5px;
+  font-weight: 500;
+  margin-left: 80px;
+}
+
+/* Hamburger menu */
+.hamburger-menu {
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.hamburger-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+}
+
+.hamburger-icon span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background-color: #333;
+  transition: all 0.3s ease;
+}
+
+.hamburger-icon.active span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger-icon.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-icon.active span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Responsive styles */
 @media (min-width: 769px) and (max-width: 1200px) {
-  .logout-btn {
-    min-width: 110px; /* Ensures text fits properly */
-    padding: 8px 14px;
+  .user-dropdown {
+    width: 280px;
   }
 }
 
-/* Responsive styles for logout button */
 @media (max-width: 768px) {
-  .logout-btn {
-    padding: 8px;
-    min-width: 40px;
-    justify-content: center;
-    border-radius: 50%;
-  }
-  
-  .logout-text {
-    display: none;
-  }
-  
-  .logout-icon {
-    margin-right: 0;
-    width: 16px;
-    height: 16px;
-  }
-  
-  .logo-link {
-    padding-left: 50px;
-  }
-}
-
-/* For very small devices */
-@media (max-width: 480px) {
   .navbar {
+    height: 60px;
     padding: 0 15px;
   }
   
@@ -123,17 +327,85 @@
     height: 40px;
   }
   
-  .logout-btn {
-    padding: 6px;
-    min-width: 32px;
+  .user-avatar-btn {
+    width: 38px;
+    height: 38px;
   }
   
-  .logout-icon {
-    width: 14px;
-    height: 14px;
+  .user-initial {
+    font-size: 16px;
+  }
+  
+  .user-dropdown {
+    width: 260px;
+    right: -5px;
   }
   
   .logo-link {
     padding-left: 50px;
+  }
+  
+  .user-avatar-large {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    top: -30px;
+  }
+  
+  .user-name, .user-email, .greeting {
+    margin-left: 70px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    height: 55px;
+    padding: 0 12px;
+  }
+  
+  .logo {
+    height: 35px;
+  }
+  
+  .user-avatar-btn {
+    width: 34px;
+    height: 34px;
+  }
+  
+  .user-initial {
+    font-size: 14px;
+  }
+  
+  .user-dropdown {
+    width: 230px;
+    right: -8px;
+  }
+  
+  .user-info {
+    padding: 16px;
+    padding-top: 35px;
+  }
+  
+  .logout-btn-dropdown {
+    padding: 12px 16px;
+  }
+  
+  .logo-link {
+    padding-left: 40px;
+  }
+  
+  .user-avatar-large {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    top: -25px;
+  }
+  
+  .dropdown-header {
+    height: 50px;
+  }
+  
+  .user-name, .user-email, .greeting {
+    margin-left: 60px;
   }
 }
