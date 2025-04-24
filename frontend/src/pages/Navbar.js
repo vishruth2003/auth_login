@@ -13,7 +13,6 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
   const hideHomeLink = location.pathname === "/login" || location.pathname === "/signup";
 
   useEffect(() => {
-    // Fetch user data from localStorage
     const fetchUserData = () => {
       const userName = localStorage.getItem("userName");
       const userEmail = localStorage.getItem("userEmail");
@@ -32,7 +31,6 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
   }, [location.pathname]);
 
   useEffect(() => {
-    // Close dropdown when clicking outside
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDropdownOpen(false);
@@ -46,9 +44,7 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
   }, []);
 
   const handleLogout = () => {
-    // Clear all localStorage items on explicit logout
     localStorage.clear();
-    // Clear session storage as well
     sessionStorage.removeItem("appSession");
     setIsDropdownOpen(false);
     navigate("/login", { replace: true });
@@ -63,7 +59,6 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
     navigate(path);
   };
 
-  // Get first letter of user's name for the avatar
   const userInitial = userData.name ? userData.name.charAt(0).toUpperCase() : "U";
 
   return (

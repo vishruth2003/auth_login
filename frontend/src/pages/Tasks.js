@@ -24,6 +24,37 @@ const Home = () => {
   const [completedDelegations, setCompletedDelegations] = useState([]);
   const [pendingDelegations, setPendingDelegations] = useState([]);
 
+  const shouldShowTaskToday = (task) => {
+    if (!task.frequency) return true; 
+    
+    const today = new Date();
+    const startDate = new Date(task.startdate);
+    const lastCompletedDate = task.lastCompletedDate ? new Date(task.lastCompletedDate) : null;
+    
+    if (lastCompletedDate && lastCompletedDate.toDateString() === today.toDateString()) {
+      return false;
+    }
+    
+    if (today < startDate || today > new Date(task.enddate)) {
+      return false;
+    }
+    
+    switch (task.frequency.toLowerCase()) {
+      case "daily":
+        return true; 
+        
+      case "weekly":
+        const daysSinceStart = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+        return daysSinceStart % 7 === 0;
+        
+      case "monthly":
+        return today.getDate() === startDate.getDate();
+        
+      default:
+        return true;
+    }
+  };
+
   const isTaskCompletedToday = (task) => {
     if (!task.lastCompletedDate) return false;
     const lastCompletedDate = new Date(task.lastCompletedDate);
@@ -56,11 +87,12 @@ const Home = () => {
         const todaysTasks = allTasks.filter((task) => {
           const startDate = new Date(task.startdate);
           const endDate = new Date(task.enddate);
+          
           return (
             today >= startDate &&
             today <= endDate &&
-            today.toDateString() === startDate.toDateString() &&
-            !isTaskCompletedToday(task)
+            !isTaskCompletedToday(task) &&
+            shouldShowTaskToday(task)
           );
         });
 
@@ -188,6 +220,30 @@ const Home = () => {
       await axios.put(`http://localhost:5000/api/checklists/${task.id}/complete`, {}, {
         headers: { Authorization: token },
       });
+
+      const today = new Date().toISOString();
+
+      setTodaysTasks((prevTasks) =>
+        prevTasks.filter((t) => t.id !== task.id)
+      );
+
+      setCompletedTasks((prevTasks) => [
+        ...prevTasks,
+        { ...task, lastCompletedDate: today, completedToday: true }
+      ]);
+    } catch (error) {
+      console.error("Error completing task:", error);
+    }
+  };
+
+  const handleCompleteChecklist = async (task) => {
+    const token = localStorage.getItem("token");
+    try {
+      await axios.put(
+        `http://localhost:5000/api/checklists/${task.id}/complete`,
+        {},
+        { headers: { Authorization: token } }
+      );
 
       const today = new Date().toISOString();
 
@@ -382,21 +438,21 @@ const Home = () => {
         tasksToShow = todaysTasks;
         title = "Today's Tasks";
         break;
+      case "pending":
+        tasksToShow = pendingTasks;
+        title = "Delayed Tasks";
+        break;
       case "upcoming":
         tasksToShow = upcomingTasks;
-        title = "Upcoming & Ongoing Tasks";
+        title = "Upcoming Tasks";
         break;
       case "completed":
         tasksToShow = completedTasks;
         title = "Completed Tasks";
         break;
-      case "pending":
-        tasksToShow = pendingTasks;
-        title = "Delayed Tasks";
-        break;
       default:
-        tasksToShow = todaysTasks;
-        title = "Today's Tasks";
+        tasksToShow = [];
+        title = "Tasks";
     }
 
     return (
@@ -404,50 +460,48 @@ const Home = () => {
         <div className="tasks-header">
           <h2>{title}</h2>
         </div>
-
-        {isLoading ? (
-          <div className="loading-state">
-            <p>Loading your tasks...</p>
+        {tasksToShow.length > 0 ? (
+          <div className="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Task</th>
+                  <th>Customer</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  {activeSubTab === "today" && <th>Action</th>}
+                </tr>
+              </thead>
+              <tbody>
+                {tasksToShow.map((task, index) => (
+                  <tr key={index}>
+                    <td>{task.taskname}</td>
+                    <td>{task.custname}</td>
+                    <td>{new Date(task.startdate).toLocaleDateString()}</td>
+                    <td>{new Date(task.enddate).toLocaleDateString()}</td>
+                    {activeSubTab === "today" && (
+                      <td>
+                        <button
+                          className="circle-btn"
+                          onClick={() => handleCompleteChecklist(task)}
+                          disabled={
+                            new Date(task.lastCompletedDate || 0).toDateString() ===
+                            new Date().toDateString()
+                          }
+                        >
+                          ✔️
+                        </button>
+                      </td>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         ) : (
-          <>
-            {tasksToShow.length > 0 ? (
-              <div className="table-container">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Task</th>
-                      <th>Customer</th>
-                      <th>Start Date</th>
-                      <th>End Date</th>
-                      {activeSubTab === "completed" && <th>Completion Date</th>}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tasksToShow.map((task, index) => (
-                      <tr key={index}>
-                        <td>{task.taskname}</td>
-                        <td>{task.custname}</td>
-                        <td>{new Date(task.startdate).toLocaleDateString()}</td>
-                        <td>{new Date(task.enddate).toLocaleDateString()}</td>
-                        {activeSubTab === "completed" && (
-                          <td>
-                            {task.lastCompletedDate
-                              ? new Date(task.lastCompletedDate).toLocaleDateString()
-                              : "N/A"}
-                          </td>
-                        )}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <div className="empty-state">
-                <p>No {title.toLowerCase()} found.</p>
-              </div>
-            )}
-          </>
+          <div className="empty-state">
+            <p>No {title.toLowerCase()} found.</p>
+          </div>
         )}
       </>
     );

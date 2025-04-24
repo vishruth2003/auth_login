@@ -149,7 +149,6 @@
   font-size: 14px;
 }
 
-/* Tablet Responsive Styles */
 @media screen and (max-width: 1024px) {
   .login-form-wrapper {
     padding: 40px 50px;
@@ -161,7 +160,6 @@
   }
 }
 
-/* Mobile Responsive Styles */
 @media screen and (max-width: 768px) {
   .login-page-content {
     flex-direction: column-reverse;
@@ -196,7 +194,6 @@
   }
 }
 
-/* Small Mobile Devices */
 @media screen and (max-width: 480px) {
   .login-page-container {
     padding: 20px 10px;

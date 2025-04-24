@@ -43,7 +43,6 @@ const Profile = () => {
         setUser(userData);
         setOriginalUser(userData);
 
-        // If username exists, store it in localStorage
         if (userData.userName) {
           localStorage.setItem("userName", userData.userName);
         }
@@ -74,7 +73,6 @@ const Profile = () => {
         headers: { Authorization: token },
       });
 
-      // Store username in localStorage
       localStorage.setItem("userName", user.userName);
 
       setSuccess("Profile updated successfully!");

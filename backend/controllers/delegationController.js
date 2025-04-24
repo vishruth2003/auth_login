@@ -11,9 +11,9 @@ const createDelegation = async (req, res) => {
     }
 
     const delegation = await Delegation.create({
-      empname: user.userName,       // Fixed field
+      empname: user.userName,       
       dept: user.department,
-      custname,                     // Fixed field
+      custname,                     
       task,
       planneddate: plannedDate,
       startdate: startdate || new Date(), 
@@ -25,7 +25,6 @@ const createDelegation = async (req, res) => {
   }
 };
 
-// New function to handle multiple delegations
 const createMultipleDelegations = async (req, res) => {
   try {
     const delegations = req.body;
@@ -42,9 +41,9 @@ const createMultipleDelegations = async (req, res) => {
         const { empname, dept, custname, task, planneddate, startdate } = delegation;
 
         const newDelegation = await Delegation.create({
-          empname,          // Fixed field
+          empname,         
           dept,
-          custname,         // Fixed field
+          custname,         
           task,
           planneddate,
           startdate: startdate || new Date(),

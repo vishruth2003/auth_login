@@ -39,7 +39,6 @@
   transform: scale(1.05);
 }
 
-/* Enhanced User Avatar Button */
 .user-avatar-btn {
   width: 42px;
   height: 42px;
@@ -77,7 +76,6 @@
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-/* Enhanced User Dropdown */
 .user-dropdown {
   position: absolute;
   top: 60px;
@@ -105,7 +103,6 @@
   }
 }
 
-/* Enhanced dropdown header with cover photo */
 .dropdown-header {
   height: 70px;
   background: linear-gradient(135deg, #dc3545, #e83e8c);
@@ -157,7 +154,6 @@
   margin: 0;
 }
 
-/* Menu items */
 .dropdown-menu {
   padding: 8px 0;
 }
@@ -231,7 +227,6 @@
   transition: all 0.25s ease;
 }
 
-/* User status indicator */
 .user-status {
   display: inline-block;
   width: 10px;
@@ -245,7 +240,6 @@
   right: 3px;
 }
 
-/* Menu icons */
 .icon-profile {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='12' cy='7' r='4'/%3E%3C/svg%3E");
   background-size: contain;
@@ -267,7 +261,6 @@
   background-position: center;
 }
 
-/* Greeting in dropdown */
 .greeting {
   font-size: 13px;
   color: #dc3545;
@@ -276,7 +269,6 @@
   margin-left: 80px;
 }
 
-/* Hamburger menu */
 .hamburger-menu {
   margin-right: 15px;
   cursor: pointer;
@@ -310,7 +302,6 @@
   transform: translateY(-8px) rotate(-45deg);
 }
 
-/* Responsive styles */
 @media (min-width: 769px) and (max-width: 1200px) {
   .user-dropdown {
     width: 280px;
