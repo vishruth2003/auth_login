@@ -13,30 +13,14 @@ import Dashboard from "./pages/Dashboard";
 
 function App() {
   useEffect(() => {
-    // Use sessionStorage to detect tab/browser closing vs refreshing
-    // sessionStorage persists during page refreshes but clears when the tab/browser is closed
-    
-    // When the app starts, check if we have a session
     if (!sessionStorage.getItem("appSession")) {
-      // No session exists, which means either:
-      // 1. This is the first load of the app
-      // 2. The browser/tab was closed and reopened
-      
-      // Check if the user was logged in (token exists in localStorage)
       const token = localStorage.getItem("token");
       if (token) {
-        // User was logged in but the browser/tab was closed
-        // Now they're back in a new session - clear their data
         localStorage.clear();
       }
-      
-      // Start a new session
       sessionStorage.setItem("appSession", "active");
     }
-    
-    // Normal app initialization continues...
   }, []);
-
   return (
     <Router>
       <Navbar />
@@ -53,5 +37,4 @@ function App() {
     </Router>
   );
 }
-
 export default App;

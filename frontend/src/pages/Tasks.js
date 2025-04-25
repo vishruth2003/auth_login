@@ -429,6 +429,50 @@ const Home = () => {
     );
   };
 
+  const generateUpcomingTasks = (tasks) => {
+    const upcomingTasks = [];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); 
+  
+    tasks.forEach((task) => {
+      const startDate = new Date(task.startdate);
+      const endDate = new Date(task.enddate);
+      const frequency = task.frequency.toLowerCase();
+  
+      let currentDate = new Date(startDate);
+  
+      while (currentDate <= endDate) {
+        const day = currentDate.getDay();
+  
+        if (currentDate.toDateString() === today.toDateString()) {
+          currentDate.setDate(currentDate.getDate() + 1);
+          continue;
+        }
+  
+        if (frequency === "daily" && day !== 0 && day !== 6) {
+          upcomingTasks.push({ ...task, date: new Date(currentDate) });
+        }
+  
+        if (frequency === "weekly" && currentDate.getDay() === startDate.getDay()) {
+          upcomingTasks.push({ ...task, date: new Date(currentDate) });
+        }
+  
+        if (
+          frequency === "monthly" &&
+          currentDate.getDate() === startDate.getDate()
+        ) {
+          upcomingTasks.push({ ...task, date: new Date(currentDate) });
+        }
+  
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+    });
+  
+    upcomingTasks.sort((a, b) => new Date(a.date) - new Date(b.date));
+  
+    return upcomingTasks;
+  };
+
   const renderChecklistContent = () => {
     let tasksToShow = [];
     let title = "";
@@ -443,7 +487,7 @@ const Home = () => {
         title = "Delayed Tasks";
         break;
       case "upcoming":
-        tasksToShow = upcomingTasks;
+        tasksToShow = generateUpcomingTasks(upcomingTasks);
         title = "Upcoming Tasks";
         break;
       case "completed":
@@ -467,8 +511,8 @@ const Home = () => {
                 <tr>
                   <th>Task</th>
                   <th>Customer</th>
-                  <th>Start Date</th>
-                  <th>End Date</th>
+                  <th>Date</th>
+                  <th>Frequency</th>
                   {activeSubTab === "today" && <th>Action</th>}
                 </tr>
               </thead>
@@ -477,13 +521,16 @@ const Home = () => {
                   <tr key={index}>
                     <td>{task.taskname}</td>
                     <td>{task.custname}</td>
-                    <td>{new Date(task.startdate).toLocaleDateString()}</td>
-                    <td>{new Date(task.enddate).toLocaleDateString()}</td>
+                    <td>
+                      {activeSubTab === "today"
+                        ? new Date(task.startdate).toLocaleDateString() 
+                        : new Date(task.date).toLocaleDateString()} 
+                    </td>
+                    <td>{task.frequency}</td>
                     {activeSubTab === "today" && (
                       <td>
                         <button
-                          className="circle-btn"
-                          onClick={() => handleCompleteChecklist(task)}
+                          onClick={() => handleCompleteTask(task)}
                           disabled={
                             new Date(task.lastCompletedDate || 0).toDateString() ===
                             new Date().toDateString()
