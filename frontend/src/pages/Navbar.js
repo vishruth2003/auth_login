@@ -123,9 +123,9 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
               </div>
               
               <button className="logout-btn-dropdown" onClick={handleLogout}>
-  <i className="logout-icon"></i>
-  <span>Sign Out</span>
-</button>
+                <i className="logout-icon"></i>
+                <span>Sign Out</span>
+              </button>
             </div>
           )}
         </div>

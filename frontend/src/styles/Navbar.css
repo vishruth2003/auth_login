@@ -32,6 +32,7 @@
 
 .logo {
   height: 50px;
+  padding-left: 43px;
   transition: transform 0.2s ease;
 }
 
@@ -270,8 +271,11 @@
 }
 
 .hamburger-menu {
-  margin-right: 15px;
+  display: flex;
   cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
 }
 
 .hamburger-icon {
@@ -302,6 +306,10 @@
   transform: translateY(-8px) rotate(-45deg);
 }
 
+.logo-link {
+  padding-left: 0 !important;
+}
+
 @media (min-width: 769px) and (max-width: 1200px) {
   .user-dropdown {
     width: 280px;
@@ -315,7 +323,8 @@
   }
   
   .logo {
-    height: 40px;
+    height: 50px;
+    padding-left: 5px;
   }
   
   .user-avatar-btn {
@@ -332,10 +341,6 @@
     right: -5px;
   }
   
-  .logo-link {
-    padding-left: 50px;
-  }
-  
   .user-avatar-large {
     width: 60px;
     height: 60px;
@@ -350,12 +355,12 @@
 
 @media (max-width: 480px) {
   .navbar {
-    height: 55px;
+    height: 60px;
     padding: 0 12px;
   }
   
   .logo {
-    height: 35px;
+    height: 50px;
   }
   
   .user-avatar-btn {
@@ -381,10 +386,6 @@
     padding: 12px 16px;
   }
   
-  .logo-link {
-    padding-left: 40px;
-  }
-  
   .user-avatar-large {
     width: 50px;
     height: 50px;
@@ -398,5 +399,15 @@
   
   .user-name, .user-email, .greeting {
     margin-left: 60px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .hamburger-menu {
+    display: flex;
+  }
+  
+  body .navbar {
+    padding-left: 20px;
   }
 }
