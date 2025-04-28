@@ -51,7 +51,7 @@ const Login = () => {
         <div className="login-form-wrapper">
           <h1 className="login-heading">User Login</h1>
 
-          {error && <div className="login-error-msg">{error}</div>}
+          {error && <div className="auth-error-msg">{error}</div>}
 
           <form onSubmit={handleLogin}>
             <div className="login-input-group">
@@ -76,18 +76,18 @@ const Login = () => {
               />
             </div>
 
-            <button type="submit" className="login-submit-btn">Login</button>
+            <button type="submit" className="auth-btn">Login</button>
 
-            <div className="login-extra-option">
+            <div className="auth-extra-option">
               <p>
                 Don't have an account?{" "}
-                <Link to="/signup" className="login-signup-link">Sign up</Link>
+                <Link to="/signup" className="auth-link">Sign up</Link>
               </p>
             </div>
           </form>
         </div>
 
-        <div className="login-image-container">
+        <div className="auth-image-container">
           <img src={loginImage} alt="Login illustration" />
         </div>
       </div>

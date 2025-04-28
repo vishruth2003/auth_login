@@ -24,6 +24,7 @@
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.5s ease;
 }
 
 .login-form-wrapper {
@@ -40,11 +41,13 @@
   font-weight: 600;
   margin-bottom: 40px;
   text-align: center;
+  animation: fadeIn 0.8s ease;
 }
 
 .login-input-group {
   margin-bottom: 25px;
   position: relative;
+  animation: slideUp 0.5s ease;
 }
 
 .login-input-field {
@@ -60,9 +63,10 @@
 
 .login-input-field:focus {
   box-shadow: 0 0 0 2px rgba(241, 90, 41, 0.2);
+  transform: translateY(-2px);
 }
 
-.login-submit-btn {
+.auth-btn {
   width: 100%;
   padding: 15px;
   background-color: #f15a29;
@@ -77,35 +81,38 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   box-shadow: 0 5px 15px rgba(241, 90, 41, 0.3);
+  animation: fadeIn 0.8s ease;
 }
 
-.login-submit-btn:hover {
+.auth-btn:hover {
   background-color: #e04d1c;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 7px 20px rgba(241, 90, 41, 0.4);
 }
 
-.login-extra-option {
+.auth-extra-option {
   text-align: center;
   margin-top: 25px;
+  animation: fadeIn 1s ease;
 }
 
-.login-extra-option p {
+.auth-extra-option p {
   color: #666;
   font-size: 14px;
 }
 
-.login-signup-link {
+.auth-link {
   color: #f15a29;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
 }
 
-.login-signup-link:hover {
+.auth-link:hover {
   text-decoration: underline;
 }
 
-.login-image-container {
+.auth-image-container {
   width: 50%;
   background: linear-gradient(45deg, #f0f4ff, #e6f0ff);
   position: relative;
@@ -116,7 +123,7 @@
   padding: 20px;
 }
 
-.login-image-container img {
+.auth-image-container img {
   width: 100%;
   height: auto;
   object-fit: contain;
@@ -125,6 +132,7 @@
   z-index: 2;
   animation: float 6s ease-in-out infinite;
   filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+  transition: all 0.5s ease;
 }
 
 @keyframes float {
@@ -139,7 +147,27 @@
   }
 }
 
-.login-error-msg {
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-error-msg {
   color: #e74c3c;
   margin-bottom: 20px;
   padding: 10px;
@@ -147,6 +175,19 @@
   border-radius: 8px;
   text-align: center;
   font-size: 14px;
+  animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20%, 60% {
+    transform: translateX(-5px);
+  }
+  40%, 80% {
+    transform: translateX(5px);
+  }
 }
 
 @media screen and (max-width: 1024px) {
@@ -166,7 +207,7 @@
   }
   
   .login-form-wrapper,
-  .login-image-container {
+  .auth-image-container {
     width: 100%;
   }
   
@@ -174,17 +215,17 @@
     padding: 40px 30px;
   }
   
-  .login-image-container {
+  .auth-image-container {
     max-height: 250px;
     padding: 15px;
   }
   
-  .login-image-container img {
+  .auth-image-container img {
     max-height: 200px;
   }
   
   .login-input-field,
-  .login-submit-btn {
+  .auth-btn {
     padding: 12px 15px;
     font-size: 14px;
   }
@@ -203,11 +244,11 @@
     padding: 30px 20px;
   }
   
-  .login-image-container {
+  .auth-image-container {
     max-height: 180px;
   }
   
-  .login-image-container img {
+  .auth-image-container img {
     max-height: 150px;
   }
   
@@ -216,7 +257,7 @@
     margin-bottom: 20px;
   }
   
-  .login-extra-option p {
+  .auth-extra-option p {
     font-size: 13px;
   }
 }

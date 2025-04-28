@@ -264,7 +264,7 @@ tr:nth-child(even) {
   background-color: #f9fafc;
 }
 
-button {
+.task-action-btn {
   background-color: transparent;
   border: 2px solid #4776E6;
   color: #4776E6;
@@ -278,13 +278,13 @@ button {
   justify-content: center;
 }
 
-button:hover:not([disabled]) {
+.task-action-btn:hover:not([disabled]) {
   background-color: #4776E6;
   color: white;
   transform: scale(1.1);
 }
 
-button[disabled] {
+.task-action-btn[disabled] {
   border-color: #ccc;
   color: #ccc;
   cursor: not-allowed;

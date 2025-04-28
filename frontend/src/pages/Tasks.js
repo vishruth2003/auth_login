@@ -530,6 +530,7 @@ const Home = () => {
                     {activeSubTab === "today" && (
                       <td>
                         <button
+                        className ="task-complete-btn"
                           onClick={() => handleCompleteTask(task)}
                           disabled={
                             new Date(task.lastCompletedDate || 0).toDateString() ===
@@ -612,6 +613,7 @@ const Home = () => {
                         {activeSubTab === "today" && (
                           <td>
                             <button
+                              className ="task-complete-btn"
                               onClick={() => handleCompleteDelegation(delegation)}
                               disabled={
                                 new Date(delegation.lastcompleteddate || 0).toDateString() ===
@@ -694,6 +696,7 @@ const Home = () => {
                               </td>
                               <td>
                                 <button
+                                  className ="task-complete-btn"
                                   onClick={() => handleCompleteReport(report)}
                                   disabled={report.progress === "completed"}
                                 >

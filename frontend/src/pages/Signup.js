@@ -39,7 +39,7 @@ const Signup = () => {
       <div className="signup-content">
         <div className="signup-form-container">
           <h1 className="signup-title">Create Account</h1>
-          {error && <div className="signup-error-message">{error}</div>}
+          {error && <div className="auth-error-msg">{error}</div>}
           <form onSubmit={handleSignup}>
             <div className="signup-form-group">
               <input
@@ -61,16 +61,16 @@ const Signup = () => {
                 required
               />
             </div>
-            <button type="submit" className="signup-submit-button">Sign Up</button>
+            <button type="submit" className="auth-btn">Sign Up</button>
           </form>
-          <div className="signup-option">
-            <p>Already have an account? <Link to="/login" className="signup-login-link">Log In</Link></p>
+          <div className="auth-extra-option">
+            <p>Already have an account? <Link to="/login" className="auth-link">Log In</Link></p>
           </div>
         </div>
-        <div className="signup-illustration">
+        <div className="auth-image-container">
           <img 
             src={signImage} 
-            alt="Login illustration" 
+            alt="Signup illustration" 
           />
         </div>
       </div>

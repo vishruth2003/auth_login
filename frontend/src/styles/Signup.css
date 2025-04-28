@@ -24,6 +24,7 @@
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.5s ease;
 }
 
 .signup-form-container {
@@ -40,11 +41,13 @@
   font-weight: 600;
   margin-bottom: 40px;
   text-align: center;
+  animation: fadeIn 0.8s ease;
 }
 
 .signup-form-group {
   margin-bottom: 25px;
   position: relative;
+  animation: slideUp 0.5s ease;
 }
 
 .signup-input-field {
@@ -60,9 +63,10 @@
 
 .signup-input-field:focus {
   box-shadow: 0 0 0 2px rgba(241, 90, 41, 0.2);
+  transform: translateY(-2px);
 }
 
-.signup-submit-button {
+.auth-btn {
   width: 100%;
   padding: 15px;
   background-color: #f15a29;
@@ -72,24 +76,32 @@
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
   margin-bottom: 25px;
   text-transform: uppercase;
   letter-spacing: 1px;
   box-shadow: 0 5px 15px rgba(241, 90, 41, 0.3);
+  animation: fadeIn 0.8s ease;
 }
 
-.signup-submit-button:hover {
+.auth-btn:hover {
   background-color: #e04d1c;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 7px 20px rgba(241, 90, 41, 0.4);
 }
 
-.signup-option {
+.auth-extra-option {
   text-align: center;
   margin-top: 25px;
+  animation: fadeIn 1s ease;
 }
 
-.signup-login-link {
+.auth-extra-option p {
+  color: #666;
+  font-size: 14px;
+}
+
+.auth-link {
   color: #f15a29;
   cursor: pointer;
   font-weight: 500;
@@ -97,12 +109,11 @@
   text-decoration: none;
 }
 
-.signup-login-link:hover {
-  color: #f15a29;
+.auth-link:hover {
   text-decoration: underline;
 }
 
-.signup-illustration {
+.auth-image-container {
   width: 50%;
   background: linear-gradient(45deg, #f0f4ff, #e6f0ff);
   position: relative;
@@ -113,18 +124,19 @@
   padding: 20px;
 }
 
-.signup-illustration img {
+.auth-image-container img {
   width: 100%;
   height: auto;
   object-fit: contain;
-  max-height: 500px;
+  max-height: 400px;
   position: relative;
   z-index: 2;
   animation: float 6s ease-in-out infinite;
   filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+  transition: all 0.5s ease;
 }
 
-.signup-error-message {
+.auth-error-msg {
   color: #e74c3c;
   margin-bottom: 20px;
   padding: 10px;
@@ -132,6 +144,7 @@
   border-radius: 8px;
   text-align: center;
   font-size: 14px;
+  animation: shake 0.5s ease;
 }
 
 @keyframes float {
@@ -143,6 +156,38 @@
   }
   100% {
     transform: translateY(0px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20%, 60% {
+    transform: translateX(-5px);
+  }
+  40%, 80% {
+    transform: translateX(5px);
   }
 }
 
@@ -163,7 +208,7 @@
   }
   
   .signup-form-container,
-  .signup-illustration {
+  .auth-image-container {
     width: 100%;
   }
   
@@ -176,17 +221,17 @@
     margin-bottom: 25px;
   }
   
-  .signup-illustration {
+  .auth-image-container {
     max-height: 250px;
     padding: 15px;
   }
   
-  .signup-illustration img {
+  .auth-image-container img {
     max-height: 200px;
   }
   
   .signup-input-field,
-  .signup-submit-button {
+  .auth-btn {
     padding: 12px 15px;
     font-size: 14px;
   }
@@ -205,11 +250,11 @@
     padding: 30px 20px;
   }
   
-  .signup-illustration {
+  .auth-image-container {
     max-height: 180px;
   }
   
-  .signup-illustration img {
+  .auth-image-container img {
     max-height: 150px;
   }
   
@@ -218,7 +263,7 @@
     margin-bottom: 20px;
   }
   
-  .signup-option {
+  .auth-extra-option {
     font-size: 14px;
   }
 }
