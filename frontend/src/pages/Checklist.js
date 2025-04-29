@@ -52,7 +52,6 @@ const Checklists = () => {
     updatedRows[index] = { ...updatedRows[index], [name]: value };
     setFormRows(updatedRows);
 
-    // Clear error for this field if it exists
     if (formErrors[index] && formErrors[index][name]) {
       const updatedErrors = [...formErrors];
       updatedErrors[index] = { ...updatedErrors[index], [name]: null };
@@ -63,14 +62,10 @@ const Checklists = () => {
   const handleEmployeeChange = async (e, index) => {
     const empname = e.target.value;
     
-    // Debug logs - you can remove these later
-    console.log("Selected employee:", empname);
-    
     const updatedRows = [...formRows];
     updatedRows[index] = { ...updatedRows[index], empname };
     setFormRows(updatedRows);
 
-    // Clear error for this field if it exists
     if (formErrors[index] && formErrors[index].empname) {
       const updatedErrors = [...formErrors];
       updatedErrors[index] = { ...updatedErrors[index], empname: null };
@@ -83,14 +78,10 @@ const Checklists = () => {
         const updatedRowsWithDept = [...formRows];
         updatedRowsWithDept[index] = { 
           ...updatedRowsWithDept[index], 
-          empname, // Explicitly setting empname again
+          empname, 
           department: response.data.department 
         };
         setFormRows(updatedRowsWithDept);
-        
-        // Debug logs - you can remove these later
-        console.log("Department fetched:", response.data.department);
-        console.log("Updated row:", updatedRowsWithDept[index]);
       } catch (error) {
         console.error("Error fetching department:", error);
       }
@@ -98,7 +89,7 @@ const Checklists = () => {
       const updatedRowsWithEmptyDept = [...formRows];
       updatedRowsWithEmptyDept[index] = { 
         ...updatedRowsWithEmptyDept[index], 
-        empname, // Explicitly setting empname again
+        empname,
         department: "" 
       };
       setFormRows(updatedRowsWithEmptyDept);
@@ -125,7 +116,6 @@ const Checklists = () => {
     
     setFormErrors(allErrors);
     
-    // Check if any row has errors
     return allErrors.every(rowErrors => Object.keys(rowErrors).length === 0);
   };
 
@@ -139,7 +129,6 @@ const Checklists = () => {
     setLoading(true);
     
     try {
-      // Submit all form rows as separate checklist entries
       await Promise.all(
         formRows.map(rowData => 
           axios.post("http://localhost:5000/api/create-checklist", rowData)
@@ -148,7 +137,6 @@ const Checklists = () => {
       
       setShowModal(true);
       
-      // Reset form after successful submission
       setFormRows([{
         empname: "",
         department: "",
@@ -210,9 +198,6 @@ const Checklists = () => {
     setFormErrors([{}]);
   };
 
-  // Debug log - you can remove this later
-  console.log("Current form rows:", formRows);
-
   return (
     <div>
       <Sidebar />
@@ -230,11 +215,11 @@ const Checklists = () => {
 
         <div className="horizontal-form-container">
           <div className="horizontal-form-header">
-            <div className="header-cell">EMPLOYEE NAME</div>
-            <div className="header-cell">DEPARTMENT</div>
-            <div className="header-cell">TASK NAME</div>
-            <div className="header-cell">CUSTOMER NAME</div>
-            <div className="header-cell">FREQUENCY</div>
+            <div className="header-cell employee-name-cell">EMPLOYEE NAME</div>
+            <div className="header-cell department-cell">DEPARTMENT</div>
+            <div className="header-cell task-name-cell">TASK NAME</div>
+            <div className="header-cell customer-name-cell">CUSTOMER NAME</div>
+            <div className="header-cell frequency-cell">FREQUENCY</div>
             <div className="header-cell date-cell">START DATE</div>
             <div className="header-cell date-cell">END DATE</div>
             <div className="header-cell action-cell">ACTION</div>
@@ -242,7 +227,7 @@ const Checklists = () => {
           
           {formRows.map((row, index) => (
             <div className="horizontal-form-inputs" key={index}>
-              <div className="input-cell" data-label="EMPLOYEE NAME">
+              <div className="input-cell employee-name-cell" data-label="EMPLOYEE NAME">
                 <select
                   name="empname"
                   value={row.empname}
@@ -259,7 +244,7 @@ const Checklists = () => {
                 {formErrors[index]?.empname && <div className="error-tooltip">{formErrors[index].empname}</div>}
               </div>
               
-              <div className="input-cell" data-label="DEPARTMENT">
+              <div className="input-cell department-cell" data-label="DEPARTMENT">
                 <input
                   type="text"
                   name="department"
@@ -269,7 +254,7 @@ const Checklists = () => {
                 />
               </div>
               
-              <div className="input-cell" data-label="TASK NAME">
+              <div className="input-cell task-name-cell" data-label="TASK NAME">
                 <input
                   type="text"
                   name="taskname"
@@ -281,7 +266,7 @@ const Checklists = () => {
                 {formErrors[index]?.taskname && <div className="error-tooltip">{formErrors[index].taskname}</div>}
               </div>
               
-              <div className="input-cell" data-label="CUSTOMER NAME">
+              <div className="input-cell customer-name-cell" data-label="CUSTOMER NAME">
                 <select
                   name="custname"
                   value={row.custname || ""}
@@ -298,7 +283,7 @@ const Checklists = () => {
                 {formErrors[index]?.custname && <div className="error-tooltip">{formErrors[index].custname}</div>}
               </div>
               
-              <div className="input-cell" data-label="FREQUENCY">
+              <div className="input-cell frequency-cell" data-label="FREQUENCY">
                 <select
                   name="frequency"
                   value={row.frequency || ""}
@@ -339,7 +324,7 @@ const Checklists = () => {
                 {formRows.length > 1 && (
                   <button 
                     type="button" 
-                    className="remove-button"
+                    className="checklist-remove-button"
                     onClick={() => removeFormRow(index)}
                   >
                     Remove
@@ -352,14 +337,14 @@ const Checklists = () => {
           <div className="horizontal-form-actions">
             <button 
               type="button" 
-              className="repeat-button" 
+              className="checklist-repeat-button" 
               onClick={addFormRow}
             >
               Repeat
             </button>
             <button 
               type="button" 
-              className="add-button" 
+              className="checklist-add-button" 
               onClick={handleSubmit} 
               disabled={loading}
             >
@@ -367,7 +352,7 @@ const Checklists = () => {
             </button>
             <button 
               type="button" 
-              className="submit-button" 
+              className="checklist-submit-button" 
               onClick={resetForm}
             >
               Reset

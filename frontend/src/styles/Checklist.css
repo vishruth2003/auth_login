@@ -7,10 +7,10 @@ body {
 
 .checklists-container {
   max-width: 1200px;
-  margin: 0 0 0 200px; 
+  margin: 0 auto;
   padding: 30px;
   position: relative;
-  margin-top: 80px; 
+  margin-top: 80px;
 }
 
 .checklists-heading {
@@ -19,6 +19,7 @@ body {
   font-size: 1.8rem;
   font-weight: 600;
   position: relative;
+  text-align: center;
 }
 
 .horizontal-form-container {
@@ -26,8 +27,7 @@ body {
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-  margin-bottom: 30px;
-  margin-left:110px;
+  margin: 0 auto 30px auto;
 }
 
 .horizontal-form-header {
@@ -39,21 +39,61 @@ body {
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  width: 100%;
+  align-items: center;
 }
 
 .header-cell {
   padding: 14px 15px;
   flex: 1;
   text-align: left;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.input-cell {
+  padding: 8px 15px;
+  flex: 1;
+  position: relative;
+  box-sizing: border-box;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.employee-name-cell,
+.department-cell,
+.task-name-cell,
+.customer-name-cell,
+.frequency-cell {
+  flex: 1 1 15%;
 }
 
 .date-cell {
-  flex: 0.8;
+  flex: 0.8 1 12%;
 }
 
 .action-cell {
-  flex: 0.6;
+  flex: 0.9 1 10%;
   text-align: center;
+}
+
+.header-cell.date-cell,
+.input-cell.date-cell {
+  flex: 0.8 1 12%;
+}
+
+.header-cell.action-cell,
+.input-cell.action-cell {
+  flex: 0.9 1 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  box-sizing: border-box;
+  min-width: 100px;
 }
 
 .horizontal-form-inputs {
@@ -61,12 +101,7 @@ body {
   border-bottom: 1px solid #e9ecef;
   align-items: center;
   padding: 10px 0;
-}
-
-.input-cell {
-  padding: 8px 15px;
-  flex: 1;
-  position: relative;
+  width: 100%;
 }
 
 .input-cell input,
@@ -79,6 +114,7 @@ body {
   color: #37474f;
   background-color: #fff;
   transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
 .input-cell input::placeholder {
@@ -102,17 +138,17 @@ body {
 
 .horizontal-form-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   padding: 20px;
   gap: 15px;
   background-color: #f8fafd;
   border-top: 1px solid #e9ecef;
 }
 
-.add-button, 
-.submit-button,
-.repeat-button,
-.remove-button {
+.checklist-add-button,
+.checklist-submit-button,
+.checklist-repeat-button,
+.checklist-remove-button {
   padding: 12px 24px;
   border: none;
   border-radius: 6px;
@@ -123,67 +159,78 @@ body {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.add-button {
+.checklist-remove-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.checklist-add-button {
   background-color: #3182ce;
   color: white;
 }
 
-.repeat-button {
+.checklist-repeat-button {
   background-color: #38a169;
   color: white;
 }
 
-.repeat-button:hover {
+.checklist-repeat-button:hover {
   background-color: #2f855a;
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.add-button:hover,
-.repeat-button:hover {
+.checklist-add-button:hover,
+.checklist-repeat-button:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.add-button:hover {
+.checklist-add-button:hover {
   background-color: #2b6cb0;
 }
 
-.submit-button {
+.checklist-submit-button {
   background-color: #718096;
   color: white;
 }
 
-.submit-button:hover {
+.checklist-submit-button:hover {
   background-color: #4a5568;
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.remove-button {
+.checklist-remove-button {
   background-color: #e53e3e;
   color: white;
   padding: 8px 16px;
   font-size: 0.8rem;
 }
 
-.remove-button:hover {
+.checklist-remove-button:hover {
   background-color: #c53030;
   transform: translateY(-1px);
 }
 
-.add-button:disabled,
-.repeat-button:disabled {
+.checklist-add-button:disabled,
+.checklist-repeat-button:disabled {
   background-color: #a0aec0;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
 }
 
-.add-button:active,
-.submit-button:active,
-.repeat-button:active,
-.remove-button:active {
+.checklist-add-button:active,
+.checklist-submit-button:active,
+.checklist-repeat-button:active,
+.checklist-remove-button:active {
   transform: translateY(1px);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
@@ -260,10 +307,19 @@ body {
   justify-content: center;
 }
 
-@media (max-width: 1500px) {
+@media (min-width: 992px) {
   .checklists-container {
-    margin-left: 150px; 
-    max-width: calc(100% - 200px); 
+    margin-left: 270px;
+    margin-right: 20px;
+    max-width: calc(100% - 290px);
+  }
+}
+
+@media (max-width: 991px) {
+  .checklists-container {
+    margin: 80px auto 0;
+    padding: 20px;
+    max-width: 95%;
   }
 }
 
@@ -272,54 +328,47 @@ body {
   .horizontal-form-inputs {
     flex-wrap: wrap;
   }
-  
+
   .header-cell,
   .input-cell {
     flex: 1 1 33.333%;
     min-width: 200px;
   }
-  
+
   .date-cell {
     flex: 1 1 25%;
     min-width: 150px;
   }
-  
+
   .action-cell {
     flex: 1 1 15%;
     min-width: 100px;
   }
 }
 
-@media (max-width: 991px) {
-  .checklists-container {
-    margin-left: 0; 
-    max-width: 100%;
-  }
-}
-
 @media (max-width: 768px) {
   .checklists-container {
-    margin: 70px 15px 15px 15px;
-    max-width: none;
-    padding: 20px 10px;
+    margin: 70px auto 0;
+    padding: 15px;
+    max-width: 98%;
   }
-  
+
   .horizontal-form-header {
     display: none;
   }
-  
+
   .horizontal-form-inputs {
     flex-direction: column;
     padding: 15px;
     border-bottom: 1px solid #e9ecef;
   }
-  
+
   .input-cell {
     width: 100%;
     margin-bottom: 15px;
     position: relative;
   }
-  
+
   .input-cell::before {
     content: attr(data-label);
     font-size: 0.75rem;
@@ -329,7 +378,7 @@ body {
     display: block;
     margin-bottom: 5px;
   }
-  
+
   .error-tooltip {
     position: static;
     display: block;
@@ -338,14 +387,14 @@ body {
     padding: 0;
     background: transparent;
   }
-  
+
   .horizontal-form-actions {
     flex-direction: column;
   }
-  
-  .add-button, 
-  .submit-button,
-  .repeat-button {
+
+  .checklist-add-button,
+  .checklist-submit-button,
+  .checklist-repeat-button {
     width: 100%;
     margin-bottom: 10px;
   }

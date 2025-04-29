@@ -37,15 +37,12 @@ const Delegations = () => {
 
       setEmployees(employeesRes.data);
       
-      // Process customer data
       let processedCustomers = customersRes.data;
       
-      // If data is wrapped in another object (common API pattern)
       if (customersRes.data && !Array.isArray(customersRes.data) && customersRes.data.customers) {
         processedCustomers = customersRes.data.customers;
       }
       
-      // If data is nested differently
       if (customersRes.data && customersRes.data.data && Array.isArray(customersRes.data.data)) {
         processedCustomers = customersRes.data.data;
       }
@@ -63,7 +60,6 @@ const Delegations = () => {
     updatedRows[index] = { ...updatedRows[index], [e.target.name]: e.target.value };
     setFormRows(updatedRows);
 
-    // Clear error for this field if it exists
     if (formErrors[index] && formErrors[index][e.target.name]) {
       const updatedErrors = [...formErrors];
       updatedErrors[index] = { ...updatedErrors[index], [e.target.name]: null };
@@ -81,7 +77,6 @@ const Delegations = () => {
     };
     setFormRows(updatedRows);
     
-    // Clear error for empname if it exists
     if (formErrors[index] && formErrors[index].empname) {
       const updatedErrors = [...formErrors];
       updatedErrors[index] = { ...updatedErrors[index], empname: null };
@@ -97,7 +92,6 @@ const Delegations = () => {
     };
     setFormRows(updatedRows);
     
-    // Clear error for custname if it exists
     if (formErrors[index] && formErrors[index].custname) {
       const updatedErrors = [...formErrors];
       updatedErrors[index] = { ...updatedErrors[index], custname: null };
@@ -129,7 +123,6 @@ const Delegations = () => {
     setLoading(true);
 
     try {
-      // Add startdate to each row and send all tasks to the backend
       const dataToSend = formRows.map(row => ({
         ...row,
         startdate: new Date().toISOString(),
@@ -181,11 +174,9 @@ const Delegations = () => {
     setFormErrors(updatedErrors);
   };
 
-  // Helper function to safely access customer name property
   const getCustomerDisplayName = (customer) => {
     if (!customer) return "";
     
-    // Try all possible property names one by one
     if (customer.customerName) return customer.customerName;
     if (customer.name) return customer.name;
     if (customer.customer_name) return customer.customer_name;
@@ -193,12 +184,10 @@ const Delegations = () => {
     if (customer.full_name) return customer.full_name;
     if (customer.title) return customer.title;
     
-    // If we have a customer ID and no name, show a placeholder
     if (customer.id || customer.customerId || customer.customer_id) {
       return `Customer #${customer.id || customer.customerId || customer.customer_id}`;
     }
     
-    // Last resort: stringify the first property we can find
     const firstKey = Object.keys(customer)[0];
     if (firstKey) return String(customer[firstKey]);
     
@@ -303,7 +292,7 @@ const Delegations = () => {
               
               <div className="input-cell action-cell">
                 {formRows.length > 1 && (
-                  <button className="remove-button" onClick={() => removeRow(index)}>
+                  <button className="delegation-remove-button" onClick={() => removeRow(index)}>
                     Remove
                   </button>
                 )}
@@ -312,13 +301,13 @@ const Delegations = () => {
           ))}
 
           <div className="horizontal-form-actions">
-            <button className="reset-button" onClick={resetForm}>
+            <button className="delegation-reset-button" onClick={resetForm}>
               Reset
             </button>
-            <button className="repeat-button" onClick={addNewRow}>
+            <button className="delegation-repeat-button" onClick={addNewRow}>
               Repeat
             </button>
-            <button className="add-button" onClick={handleSubmit} disabled={loading}>
+            <button className="delegation-add-button" onClick={handleSubmit} disabled={loading}>
               {loading ? "Saving..." : "New Task"}
             </button>
           </div>
