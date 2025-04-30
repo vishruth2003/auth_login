@@ -103,8 +103,8 @@ const Report = () => {
         <h1>Report Page</h1>
 
         {showModal && (
-          <div className="modal">
-            <div className="modal-content">
+          <div className="report-modal">
+            <div className="report-modal-content">
               <p>Report created successfully!</p>
             </div>
           </div>
@@ -119,21 +119,20 @@ const Report = () => {
             </tr>
           </thead>
           <tbody>
-  {reports.length > 0 ? (
-    reports.map((report, index) => (
-      <tr key={index}>
-        <td>{report.name || ""}</td>
-        <td>{formatDate(report.startDate)}</td>
-        <td>{formatDate(report.endDate)}</td>
-      </tr>
-    ))
-  ) : (
-    <tr>
-      <td colSpan="3" style={{ textAlign: "center" }}>No reports created</td>
-    </tr>
-  )}
-</tbody>
-
+            {reports.length > 0 ? (
+              reports.map((report, index) => (
+                <tr key={index}>
+                  <td>{report.name || ""}</td>
+                  <td>{formatDate(report.startDate)}</td>
+                  <td>{formatDate(report.endDate)}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="3" style={{ textAlign: "center" }}>No reports created</td>
+              </tr>
+            )}
+          </tbody>
         </table>
 
         <button onClick={() => setShowForm(true)} className="create-report-btn">
@@ -141,31 +140,31 @@ const Report = () => {
         </button>
 
         {showForm && (
-          <div className="form-modal">
-            <div className="form-modal-content">
+          <div className="report-form-modal">
+            <div className="report-form-modal-content">
               <form className="report-form" onSubmit={handleSubmit}>
-              <label>Name:</label>
-<select 
-  name="name" 
-  value={formData.name} 
-  onChange={handleChange} 
-  required
->
-  <option value="" disabled>Select User</option>
-  {loading ? (
-    <option disabled>Loading users...</option>
-  ) : error ? (
-    <option disabled>{error}</option>
-  ) : users.length > 0 ? (
-    users.map((user, index) => (
-      <option key={index} value={user.userName}>
-        {user.userName}
-      </option>
-    ))
-  ) : (
-    <option disabled>No users found</option>
-  )}
-</select>
+                <label>Name:</label>
+                <select 
+                  name="name" 
+                  value={formData.name} 
+                  onChange={handleChange} 
+                  required
+                >
+                  <option value="" disabled>Select User</option>
+                  {loading ? (
+                    <option disabled>Loading users...</option>
+                  ) : error ? (
+                    <option disabled>{error}</option>
+                  ) : users.length > 0 ? (
+                    users.map((user, index) => (
+                      <option key={index} value={user.userName}>
+                        {user.userName}
+                      </option>
+                    ))
+                  ) : (
+                    <option disabled>No users found</option>
+                  )}
+                </select>
 
                 <label>Start Date:</label>
                 <input 

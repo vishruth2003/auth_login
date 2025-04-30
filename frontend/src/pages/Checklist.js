@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/Checklist.css";
 import Sidebar from "./Sidebar.js";
+import CalendarPicker from "./CalendarPicker.js"; 
 
 const Checklists = () => {
   useEffect(() => {
@@ -249,7 +250,7 @@ const Checklists = () => {
                   type="text"
                   name="department"
                   value={row.department || ""}
-                  placeholder="Department will auto-populate"
+                  placeholder="Department"
                   readOnly
                 />
               </div>
@@ -299,25 +300,24 @@ const Checklists = () => {
               </div>
               
               <div className="input-cell date-cell" data-label="START DATE">
-                <input
-                  type="date"
-                  name="startdate"
+                <CalendarPicker
                   value={row.startdate || ""}
                   onChange={(e) => handleChange(e, index)}
+                  placeholder="Start Date"
                   className={formErrors[index]?.startdate ? "error" : ""}
+                  error={formErrors[index]?.startdate}
                 />
-                {formErrors[index]?.startdate && <div className="error-tooltip">{formErrors[index].startdate}</div>}
               </div>
               
               <div className="input-cell date-cell" data-label="END DATE">
-                <input
-                  type="date"
-                  name="enddate"
+                <CalendarPicker
                   value={row.enddate || ""}
                   onChange={(e) => handleChange(e, index)}
+                  placeholder="End Date"
+                  minDate={row.startdate || ""} 
                   className={formErrors[index]?.enddate ? "error" : ""}
+                  error={formErrors[index]?.enddate}
                 />
-                {formErrors[index]?.enddate && <div className="error-tooltip">{formErrors[index].enddate}</div>}
               </div>
               
               <div className="input-cell action-cell" data-label="ACTION">

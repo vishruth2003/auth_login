@@ -97,11 +97,12 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
           
           {isDropdownOpen && (
             <div className="user-dropdown">
-              <div className="dropdown-header"></div>
-              <div className="user-info">
+              <div className="dropdown-header">
                 <div className="user-avatar-large">
                   <span>{userInitial}</span>
                 </div>
+              </div>
+              <div className="user-info">
                 <div className="greeting">Welcome</div>
                 <div className="user-name">{userData.name || "User"}</div>
                 <div className="user-email">{userData.email || "No email available"}</div>

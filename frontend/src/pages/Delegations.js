@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/Delegations.css";
 import Sidebar from "./Sidebar.js";
+import CalendarPicker from "./CalendarPicker.js"; 
 
 const Delegations = () => {
   const [employees, setEmployees] = useState([]);
@@ -241,7 +242,7 @@ const Delegations = () => {
                   type="text"
                   name="dept"
                   value={row.dept}
-                  placeholder="Department will auto-populate"
+                  placeholder="Department"
                   readOnly
                 />
               </div>
@@ -280,14 +281,13 @@ const Delegations = () => {
               </div>
               
               <div className="input-cell date-cell" data-label="PLANNED DATE">
-                <input
-                  type="date"
-                  name="planneddate"
-                  value={row.planneddate}
+                <CalendarPicker
+                  value={row.planneddate || ""}
                   onChange={(e) => handleChange(index, e)}
+                  placeholder="Planned Date"
                   className={formErrors[index]?.planneddate ? "error" : ""}
+                  error={formErrors[index]?.planneddate}
                 />
-                {formErrors[index]?.planneddate && <div className="error-tooltip">{formErrors[index].planneddate}</div>}
               </div>
               
               <div className="input-cell action-cell">
@@ -301,14 +301,14 @@ const Delegations = () => {
           ))}
 
           <div className="horizontal-form-actions">
-            <button className="delegation-reset-button" onClick={resetForm}>
-              Reset
-            </button>
             <button className="delegation-repeat-button" onClick={addNewRow}>
               Repeat
             </button>
             <button className="delegation-add-button" onClick={handleSubmit} disabled={loading}>
-              {loading ? "Saving..." : "New Task"}
+              {loading ? "Saving..." : "Add New Task" + (formRows.length > 1 ? "s" : "")}
+            </button>
+            <button className="delegation-reset-button" onClick={resetForm}>
+              Reset
             </button>
           </div>
         </div>

@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f7f9fc;
+  background-color: #f8f9fa;
 }
 
 .checklists-container {
@@ -14,28 +14,52 @@ body {
 }
 
 .checklists-heading {
-  color: #333;
+  color: #4776E6;
   margin-bottom: 25px;
-  font-size: 1.8rem;
-  font-weight: 600;
+  font-size: 2.5rem;
+  font-weight: 700;
   position: relative;
   text-align: center;
+  animation: fadeIn 0.8s ease;
+}
+
+.checklists-heading::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, #4776E6, #8E54E9);
+  margin: 10px auto 0;
+  border-radius: 3px;
 }
 
 .horizontal-form-container {
   background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   margin: 0 auto 30px auto;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.horizontal-form-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: linear-gradient(90deg, #4776E6, #8E54E9);
 }
 
 .horizontal-form-header {
   display: flex;
-  background-color: #f8fafd;
+  background: linear-gradient(90deg, #4776E6, #8E54E9);
   border-bottom: 1px solid #e9ecef;
   font-weight: 600;
-  color: #546e7a;
+  color: white;
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -44,7 +68,7 @@ body {
 }
 
 .header-cell {
-  padding: 14px 15px;
+  padding: 16px 15px;
   flex: 1;
   text-align: left;
   display: flex;
@@ -55,7 +79,7 @@ body {
 }
 
 .input-cell {
-  padding: 8px 15px;
+  padding: 12px 15px;
   flex: 1;
   position: relative;
   box-sizing: border-box;
@@ -98,40 +122,47 @@ body {
 
 .horizontal-form-inputs {
   display: flex;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid rgba(71, 118, 230, 0.1);
   align-items: center;
-  padding: 10px 0;
+  padding: 15px 0;
   width: 100%;
+  transition: all 0.3s ease;
+  animation: slideUp 0.5s ease;
+}
+
+.horizontal-form-inputs:hover {
+  background-color: rgba(71, 118, 230, 0.03);
 }
 
 .input-cell input,
 .input-cell select {
   width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #dbe0e5;
-  border-radius: 5px;
+  padding: 12px 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
   font-size: 0.9rem;
-  color: #37474f;
-  background-color: #fff;
-  transition: all 0.2s ease;
+  color: #2c3e50;
+  background-color: #f9fafc;
+  transition: all 0.3s ease;
   box-sizing: border-box;
 }
 
 .input-cell input::placeholder {
-  color: #a0aec0;
-  font-style: italic;
+  color: #bbb;
+  opacity: 0.7;
 }
 
 .input-cell input:focus,
 .input-cell select:focus {
-  border-color: #4299e1;
-  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+  border-color: #4776E6;
+  box-shadow: 0 0 0 3px rgba(71, 118, 230, 0.15);
   outline: none;
+  transform: translateY(-2px);
 }
 
 .input-cell input[readonly] {
   background-color: #f1f5f9;
-  border: 1px solid #dbe0e5;
+  border: 1px solid #e0e0e0;
   color: #64748b;
   font-style: italic;
 }
@@ -139,9 +170,9 @@ body {
 .horizontal-form-actions {
   display: flex;
   justify-content: center;
-  padding: 20px;
+  padding: 25px;
   gap: 15px;
-  background-color: #f8fafd;
+  background: linear-gradient(to right, rgba(240, 244, 255, 0.8), rgba(230, 240, 255, 0.9));
   border-top: 1px solid #e9ecef;
 }
 
@@ -151,77 +182,74 @@ body {
 .checklist-remove-button {
   padding: 12px 24px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
   font-size: 0.95rem;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.checklist-remove-button {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .checklist-add-button {
-  background-color: #3182ce;
+  background: linear-gradient(90deg, #4776E6, #8E54E9);
   color: white;
+  box-shadow: 0 4px 15px rgba(71, 118, 230, 0.2);
 }
 
 .checklist-repeat-button {
-  background-color: #38a169;
+  background: linear-gradient(90deg, #2ecc71, #27ae60);
   color: white;
+  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);
 }
 
 .checklist-repeat-button:hover {
-  background-color: #2f855a;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(90deg, #27ae60, #219652);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(46, 204, 113, 0.3);
 }
 
 .checklist-add-button:hover,
 .checklist-repeat-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px);
+  box-shadow: 0 7px 20px rgba(0, 0, 0, 0.15);
 }
 
 .checklist-add-button:hover {
-  background-color: #2b6cb0;
+  background: linear-gradient(90deg, #3a5fc8, #7740c8);
+  box-shadow: 0 6px 20px rgba(71, 118, 230, 0.3);
 }
 
 .checklist-submit-button {
-  background-color: #718096;
+  background: linear-gradient(90deg, #95a5a6, #7f8c8d);
   color: white;
 }
 
 .checklist-submit-button:hover {
-  background-color: #4a5568;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(90deg, #7f8c8d, #6c7a7d);
+  transform: translateY(-3px);
+  box-shadow: 0 7px 20px rgba(127, 140, 141, 0.4);
 }
 
 .checklist-remove-button {
-  background-color: #e53e3e;
+  background: linear-gradient(90deg, #e74c3c, #c0392b);
   color: white;
   padding: 8px 16px;
   font-size: 0.8rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
 }
 
 .checklist-remove-button:hover {
-  background-color: #c53030;
-  transform: translateY(-1px);
+  background: linear-gradient(90deg, #c0392b, #a33225);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.3);
 }
 
 .checklist-add-button:disabled,
 .checklist-repeat-button:disabled {
-  background-color: #a0aec0;
+  background: linear-gradient(90deg, #95a5a6, #7f8c8d);
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -236,21 +264,22 @@ body {
 }
 
 .input-cell .error {
-  border-color: #e53e3e;
+  border-color: #e74c3c;
 }
 
 .error-tooltip {
   position: absolute;
   bottom: -20px;
   left: 15px;
-  background-color: #fff5f5;
-  color: #e53e3e;
+  background-color: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
   font-size: 0.7rem;
   padding: 2px 6px;
-  border-radius: 3px;
+  border-radius: 6px;
   z-index: 10;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   white-space: nowrap;
+  border-left: 2px solid #e74c3c;
 }
 
 .modal {
@@ -265,6 +294,7 @@ body {
   align-items: center;
   z-index: 1000;
   animation: fadeIn 0.3s ease;
+  backdrop-filter: blur(5px);
 }
 
 @keyframes fadeIn {
@@ -274,12 +304,13 @@ body {
 
 .modal-content {
   background: white;
-  padding: 25px;
-  border-radius: 8px;
+  padding: 30px;
+  border-radius: 12px;
   text-align: center;
   width: 350px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
   animation: slideIn 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 @keyframes slideIn {
@@ -290,36 +321,47 @@ body {
 .modal-content p {
   font-size: 1.1rem;
   margin: 15px 0 0;
-  color: #2f855a;
+  color: #2ecc71;
   font-weight: 600;
 }
 
 .success-icon {
   display: flex;
-  width: 50px;
-  height: 50px;
-  background: #48bb78;
+  width: 60px;
+  height: 60px;
+  background: #2ecc71;
   color: white;
-  font-size: 1.8rem;
+  font-size: 2rem;
   border-radius: 50%;
-  margin: 0 auto 15px;
+  margin: 0 auto 20px;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 10px 20px rgba(46, 204, 113, 0.3);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (min-width: 992px) {
   .checklists-container {
-    margin-left: 270px;
-    margin-right: 20px;
-    max-width: calc(100% - 290px);
+    margin-left: 280px;
+    margin-right: 30px;
+    max-width: calc(100% - 310px);
   }
 }
 
 @media (max-width: 991px) {
   .checklists-container {
-    margin: 80px auto 0;
-    padding: 20px;
-    max-width: 95%;
+    margin: 90px 15px 15px 15px;
+    max-width: none;
   }
 }
 
@@ -348,9 +390,8 @@ body {
 
 @media (max-width: 768px) {
   .checklists-container {
-    margin: 70px auto 0;
-    padding: 15px;
-    max-width: 98%;
+    margin: 90px 15px 15px 15px;
+    max-width: none;
   }
 
   .horizontal-form-header {
@@ -374,7 +415,7 @@ body {
     font-size: 0.75rem;
     text-transform: uppercase;
     font-weight: 600;
-    color: #718096;
+    color: #4776E6;
     display: block;
     margin-bottom: 5px;
   }
