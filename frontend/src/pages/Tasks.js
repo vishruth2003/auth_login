@@ -432,22 +432,20 @@ const Home = () => {
   const generateUpcomingTasks = (tasks) => {
     const upcomingTasks = [];
     const today = new Date();
-    today.setHours(0, 0, 0, 0); 
+    today.setHours(0, 0, 0, 0);
+    
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
   
     tasks.forEach((task) => {
       const startDate = new Date(task.startdate);
       const endDate = new Date(task.enddate);
       const frequency = task.frequency.toLowerCase();
   
-      let currentDate = new Date(startDate);
+      let currentDate = new Date(Math.max(tomorrow.getTime(), startDate.getTime()));
   
       while (currentDate <= endDate) {
         const day = currentDate.getDay();
-  
-        if (currentDate.toDateString() === today.toDateString()) {
-          currentDate.setDate(currentDate.getDate() + 1);
-          continue;
-        }
   
         if (frequency === "daily" && day !== 0 && day !== 6) {
           upcomingTasks.push({ ...task, date: new Date(currentDate) });
@@ -457,10 +455,7 @@ const Home = () => {
           upcomingTasks.push({ ...task, date: new Date(currentDate) });
         }
   
-        if (
-          frequency === "monthly" &&
-          currentDate.getDate() === startDate.getDate()
-        ) {
+        if (frequency === "monthly" && currentDate.getDate() === startDate.getDate()) {
           upcomingTasks.push({ ...task, date: new Date(currentDate) });
         }
   
